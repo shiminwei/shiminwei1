@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysDepartmentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysDepartmentInfo" >
+    <id column="DEPARTMENT_ID" property="departmentId" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT_NAME" property="departmentName" jdbcType="VARCHAR" />
+    <result column="PARENT_DEPARTMENT_ID" property="parentDepartmentId" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT_CODE" property="departmentCode" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT_AREA_ID" property="departmentAreaId" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" jdbcType="DECIMAL" property="isDelete"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DEPARTMENT_ID, DEPARTMENT_NAME, PARENT_DEPARTMENT_ID, DEPARTMENT_CODE, DEPARTMENT_AREA_ID
+  </sql>
+ 
+  <select id="selectDapartmentInfoByID" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_INFO
+    where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectDapartmentInfoBydepartmentCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_INFO
+    where DEPARTMENT_CODE = #{departmentCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectDapartmentInfo2" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_INFO
+  </select>
+  
+  	<update id="isdelete" parameterType="java.lang.String">
+		update SYS_DEPARTMENT_INFO
+		set 
+		IS_DELETE = 1
+		where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+	</update>
+  
+  <insert id="insertDepartmentInfo" parameterType="com.ahcd.pojo.SysDepartmentInfo" >
+    insert into SYS_DEPARTMENT_INFO (DEPARTMENT_NAME, PARENT_DEPARTMENT_ID, 
+      DEPARTMENT_CODE, DEPARTMENT_AREA_ID,IS_DELETE)
+      values (
+      #{departmentName,jdbcType=VARCHAR},
+      #{parentDepartmentId,jdbcType=VARCHAR}, 
+      #{departmentCode,jdbcType=VARCHAR}, 
+      #{departmentAreaId,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=DECIMAL})
+  </insert>
+
+  
+  <update id="updateDapartmentInfoByID" parameterType="com.ahcd.pojo.SysDepartmentInfo" >
+    update SYS_DEPARTMENT_INFO
+    	set
+        DEPARTMENT_NAME = #{departmentName,jdbcType=VARCHAR},
+        PARENT_DEPARTMENT_ID = #{parentDepartmentId,jdbcType=VARCHAR},
+        DEPARTMENT_AREA_ID = #{departmentAreaId,jdbcType=VARCHAR},
+        DEPARTMENT_CODE = #{departmentCode,jdbcType=VARCHAR},
+   		IS_DELETE =  #{isDelete,jdbcType=DECIMAL}
+   		where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysDepartmentInfo" >
+    update SYS_DEPARTMENT_INFO
+    set DEPARTMENT_NAME = #{departmentName,jdbcType=VARCHAR},
+      PARENT_DEPARTMENT_ID = #{parentDepartmentId,jdbcType=VARCHAR},
+      DEPARTMENT_CODE = #{departmentCode,jdbcType=VARCHAR},
+      DEPARTMENT_AREA_ID = #{departmentAreaId,jdbcType=VARCHAR}
+      IS_DELETE =  #{isDelete,jdbcType=DECIMAL})
+    where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+  </update>
+ 
+  <select id="selectSysDepartmentInfo" resultMap="BaseResultMap" >
+    select 
+    t.DEPARTMENT_ID,t2.area_name||'--'||t.department_name DEPARTMENT_NAME,  t.PARENT_DEPARTMENT_ID,  t.DEPARTMENT_CODE,  t.DEPARTMENT_AREA_ID,t.is_delete
+    from sys_department_info t ,SYS_AREA_INFO t2
+	where t.department_area_id=t2.area_id and t.IS_DELETE = 0 and t2.IS_DELETE = 0 order by DEPARTMENT_NAME
+  </select>
+  
+   <select id="selectSysDepartmentInfoByName" resultMap="BaseResultMap" >
+    select t3.* from (select 
+    t.DEPARTMENT_ID,t2.area_name||'--'||t.department_name DEPARTMENT_NAME,  t.PARENT_DEPARTMENT_ID,  t.DEPARTMENT_CODE,  t.DEPARTMENT_AREA_ID,t.is_delete
+    from sys_department_info t ,SYS_AREA_INFO t2
+	where t.department_area_id=t2.area_id and t.IS_DELETE = 0 and t2.IS_DELETE = 0 order by is_delete desc) t3
+	where t3.DEPARTMENT_NAME like '%'||#{departmentName,jdbcType=VARCHAR}||'%'
+  </select>
+  
+  <select id="selectSysDepartmentInfoAreaID2" resultMap="BaseResultMap" >
+	select t.DEPARTMENT_ID,
+	t2.area_name || '--' || t.department_name DEPARTMENT_NAME,
+	t.PARENT_DEPARTMENT_ID,
+	t.DEPARTMENT_CODE,
+	t.DEPARTMENT_AREA_ID,
+	t.is_delete
+	from sys_department_info t, SYS_AREA_INFO t2
+	where t.department_area_id = t2.area_id
+	and t.IS_DELETE = 0 and t2.IS_DELETE = 0
+	and DEPARTMENT_AREA_ID = #{departmentAreaId,jdbcType=VARCHAR} order by department_name desc
+  </select>
+  
+  
+  
+  
+  
+  
+  <select id="selectSysDepartmentInfoByID" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap" >
+   	select * from (select a.*, rownum rnum from (select 
+    t.DEPARTMENT_ID,t2.area_name||'--'||t.department_name DEPARTMENT_NAME,  t.PARENT_DEPARTMENT_ID,  t.DEPARTMENT_CODE,  t.DEPARTMENT_AREA_ID,t.is_delete
+    from sys_department_info t ,SYS_AREA_INFO t2
+	where t.department_area_id=t2.area_id and t.IS_DELETE = 0 
+	<if test="queryBean !=null">
+         <if test="queryBean.departmentName !=null and queryBean.departmentName !=''">
+          	and DEPARTMENT_NAME like '%'||#{queryBean.departmentName}||'%'
+         </if>
+         <if test="queryBean.departmentAreaId !=null and queryBean.departmentAreaId !=''">
+          	and DEPARTMENT_AREA_ID = #{queryBean.departmentAreaId}
+         </if>
+    </if>) a
+	<if  test="endRow !=null">
+		where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+		where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+  <select id="selectPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap" >
+ 	 select *
+ 	 from (select a.*, rownum rnum
+          from (select t.DEPARTMENT_ID,
+                         t2.area_name || '--' || t.department_name DEPARTMENT_NAME,
+                         t.PARENT_DEPARTMENT_ID,
+                         t.DEPARTMENT_CODE,
+                         t.DEPARTMENT_AREA_ID,
+                         t.is_delete
+                    from sys_department_info t, SYS_AREA_INFO t2
+                   where t.department_area_id = t2.area_id
+                     and t.IS_DELETE = 0 and t2.is_delete=0
+            <if test="queryBean !=null">
+            	<if test="queryBean.department_id !=null and queryBean.department_id !=''">
+          		and department_id like '%'||#{queryBean.department_id}||'%'
+            	</if>
+            </if>  
+                   	 order by DEPARTMENT_NAME
+          ) a
+	<if  test="endRow !=null">
+		where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+		where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+  <select id="countPageAreaDepartment" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+	  select count(*) from (select t.DEPARTMENT_ID,
+               t2.area_name || '--' || t.department_name DEPARTMENT_NAME,
+               t.PARENT_DEPARTMENT_ID,
+               t.DEPARTMENT_CODE,
+               t.DEPARTMENT_AREA_ID,
+               t.is_delete
+	           from sys_department_info t, SYS_AREA_INFO t2
+	           where t.department_area_id = t2.area_id
+         	   and t.IS_DELETE = 0
+               <if test="queryBean !=null">
+            		<if test="queryBean.departmentAreaId !=null and queryBean.departmentAreaId !=''">
+          			and department_area_id = #{queryBean.departmentAreaId}
+            		</if>
+           	   </if>)
+  </select>
+  
+  
+  
+   <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	select count(1)
+	from 
+	(select t.DEPARTMENT_ID,
+        t2.area_name || '--' || t.department_name DEPARTMENT_NAME,
+         t.PARENT_DEPARTMENT_ID,
+         t.DEPARTMENT_CODE,
+         t.DEPARTMENT_AREA_ID,
+         t.is_delete
+         from sys_department_info t, SYS_AREA_INFO t2
+         where t.department_area_id = t2.area_id
+         and t.IS_DELETE = 0)
+  </select>
+  
+  
+
+  
+  <select id="selectSysDepartmentInfoByAreaId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_INFO
+    where DEPARTMENT_AREA_ID = #{departmentAreaId,jdbcType=VARCHAR} and IS_DELETE = 0 
+  </select>
+
+  
+  <select id="selectSysDepartmentInfoBySub" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_INFO
+    where (DEPARTMENT_ID = #{DEPARTMENT_ID,jdbcType=VARCHAR} or  PARENT_DEPARTMENT_ID = #{DEPARTMENT_ID,jdbcType=VARCHAR})and IS_DELETE = 0 
+  </select>
+</mapper>

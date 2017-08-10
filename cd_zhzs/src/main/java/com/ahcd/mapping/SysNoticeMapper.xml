@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysNoticeMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysNotice">
+		<id column="NOTICE_ID" property="noticeId" jdbcType="VARCHAR" />
+		<result column="NOTICE_TITLE" property="noticeTitle" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+		<result column="NOTICE_SYNOPSIS" property="noticeSynopsis"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.ahcd.pojo.SysNotice"
+		extends="BaseResultMap">
+		<result column="NOTICE_CONTENT" property="noticeContent"
+			jdbcType="CLOB" />
+	</resultMap>
+
+	<resultMap id="ResultMapWithBLOBs2" type="com.ahcd.pojo.SysNotice"
+		extends="BaseResultMap">
+		<result column="NOTICE_CONTENT" property="noticeContent"
+			jdbcType="CLOB" />
+		<association property="sysNoticeFileList" column="NOTICE_ID"
+			select="getNoticeFile" />
+		<association property="sysNoticeDepartmentList" column="NOTICE_ID"
+			select="getNoticeDepartment" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap2" type="com.ahcd.pojo.SysNotice"
+		extends="BaseResultMap">
+		<result column="readed_id" property="readedId" jdbcType="VARCHAR" />
+		<result column="is_readed" property="isReaded" jdbcType="INTEGER" />
+		<association property="sysNoticeFileList" column="NOTICE_ID"
+			select="getNoticeFile" />
+		<association property="sysNoticeDepartmentList" column="NOTICE_ID"
+			select="getNoticeDepartment" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		NOTICE_ID, NOTICE_TITLE, CREATE_TIME, USER_ID,
+		NOTICE_SYNOPSIS
+	</sql>
+	<sql id="Blob_Column_List">
+		NOTICE_CONTENT
+	</sql>
+
+	<delete id="deleteByNoticeId" parameterType="java.lang.String">
+		delete from
+		SYS_NOTICE
+		where NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insertSysNotice" parameterType="com.ahcd.pojo.SysNotice">
+		<selectKey keyProperty="noticeId" resultType="java.lang.String"
+			order="BEFORE">
+			select sys_guid() from dual
+		</selectKey>
+		insert into SYS_NOTICE (NOTICE_ID,NOTICE_TITLE, CREATE_TIME,
+		USER_ID,
+		NOTICE_SYNOPSIS, NOTICE_CONTENT)
+		values
+		(#{noticeId,jdbcType=VARCHAR},#{noticeTitle,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{userId,jdbcType=DECIMAL},
+		#{noticeSynopsis,jdbcType=VARCHAR}, #{noticeContent,jdbcType=CLOB})
+	</insert>
+
+	<update id="updateSysNotice" parameterType="com.ahcd.pojo.SysNotice">
+		update SYS_NOTICE
+		set
+		NOTICE_TITLE = #{noticeTitle,jdbcType=VARCHAR},
+		CREATE_TIME =
+		#{createTime,jdbcType=TIMESTAMP},
+		USER_ID = #{userId,jdbcType=DECIMAL},
+		NOTICE_SYNOPSIS = #{noticeSynopsis,jdbcType=VARCHAR},
+		NOTICE_CONTENT =
+		#{noticeContent,jdbcType=CLOB}
+		where NOTICE_ID =
+		#{noticeId,jdbcType=VARCHAR}
+	</update>
+
+
+	<update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysNotice">
+		update SYS_NOTICE
+		set NOTICE_TITLE = #{noticeTitle,jdbcType=VARCHAR},
+		CREATE_TIME =
+		#{createTime,jdbcType=TIMESTAMP},
+		USER_ID = #{userId,jdbcType=DECIMAL},
+		NOTICE_SYNOPSIS = #{noticeSynopsis,jdbcType=VARCHAR}
+		where NOTICE_ID =
+		#{noticeId,jdbcType=VARCHAR}
+	</update>
+
+
+
+	<select id="countByUser" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select count(1)
+		from sys_notice sn
+		where 1=1
+		<if test="queryBean!=null">
+			<if test="queryBean.departmentId !=null and queryBean.departmentId !=''">
+				and sn.notice_id in (select distinct notice_id from
+				sys_notice_department where department_id=#{queryBean.departmentId})
+			</if>
+			<if test="queryBean.noticeTitle !=null and queryBean.noticeTitle !=''">
+				and sn.NOTICE_TITLE like
+				'%'||#{queryBean.noticeTitle}||'%'
+			</if>
+		</if>
+	</select>
+
+
+	<select id="getNoticeById" resultMap="ResultMapWithBLOBs2"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from SYS_NOTICE
+		where NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getNoticeFile" parameterType="String"
+		resultMap="com.ahcd.dao.SysNoticeFileMapper.BaseResultMap">
+		SELECT ID,NOTICE_ID,FILE_PATH FROM SYS_NOTICE_FILE where
+		NOTICE_ID =
+		#{noticeId,jdbcType=VARCHAR}
+	</select>
+	<select id="getNoticeDepartment" parameterType="java.lang.String"
+		resultMap="com.ahcd.dao.SysNoticeDepartmentMapper.BaseResultMap">
+		SELECT ID,NOTICE_ID,DEPARTMENT_ID FROM SYS_NOTICE_DEPARTMENT
+		WHERE
+		NOTICE_ID=#{id}
+	</select>
+
+	<select id="countByNoticeIdUserId" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		select count(1)
+		from SYS_NOTICE_USER
+		where NOTICE_ID =
+		#{noticeId} and USER_ID=#{userId}
+	</select>
+	<insert id="insertReaded" parameterType="java.util.Map">
+		insert into
+		SYS_NOTICE_USER(NOTICE_ID,USER_ID) values
+		(#{noticeId},#{userId})
+	</insert>
+
+	<select id="countPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select count(1)
+		from sys_notice sn
+		where 1=1
+		<if test="queryBean!=null">
+			<if test="queryBean.noticeTitle !=null and queryBean.noticeTitle !=''">
+				and sn.NOTICE_TITLE like
+				'%'||#{queryBean.noticeTitle}||'%'
+			</if>
+		</if>
+	</select>
+
+	<select id="selectPage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap2">
+		select *
+		from (select a.*, rownum rnum
+		from (
+		select
+		<include refid="Base_Column_List" />
+		from sys_notice
+		where 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.noticeTitle !=null and queryBean.noticeTitle !=''">
+				and NOTICE_TITLE like '%'||#{queryBean.noticeTitle}||'%'
+			</if>
+		</if>
+		order by create_time desc, rowid
+		) a
+		<if test="endRow !=null">
+			where rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="beginRow !=null">
+			where rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+
+	<resultMap type="com.ahcd.pojo.SysNotice" id="BaseResultMap21"
+		extends="BaseResultMap">
+		<result column="NOTICE_CONTENT" property="noticeContent"
+			jdbcType="CLOB" />
+		<association property="sysNoticeFile" javaType="com.ahcd.pojo.SysNoticeFile">
+			<id column="ID" property="id" jdbcType="VARCHAR" />
+			<result column="NOTICE_ID" property="noticeId" jdbcType="VARCHAR" />
+			<result column="FILE_PATH" property="filePath" jdbcType="VARCHAR" />
+		</association>
+		
+	</resultMap>
+
+
+	<select id="getNoticeInfoById" parameterType="java.lang.String"
+		resultMap="BaseResultMap21">
+
+		select * from sys_notice n,sys_notice_file f where
+		n.notice_Id = f.notice_Id and n.notice_Id=#{noticeId,jdbcType=VARCHAR}
+
+
+	</select>
+
+	<resultMap type="com.ahcd.pojo.SysNotice" id="BaseResultMap22"
+		extends="BaseResultMap">
+		<result column="NOTICE_CONTENT" property="noticeContent"
+			jdbcType="CLOB" />
+		<association property="sysNoticeDepartmentList" column="NOTICE_ID"
+			select="getNoticeDepartment" />
+		<collection property="sysNoticeFileList" column="notice_id"
+			ofType="com.ahcd.pojo.SysNoticeFile">
+			<id column="ID" property="id" jdbcType="VARCHAR" />
+			<result column="NOTICE_ID" property="noticeId" jdbcType="VARCHAR" />
+			<result column="FILE_PATH" property="filePath" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+
+    
+    <!-- <select id="selectByUser" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap2"> 
+		select * from (select a.*, rownum rnum from ( select sn.NOTICE_ID, sn.NOTICE_TITLE, 
+		sn.CREATE_TIME, sn.USER_ID,sn.NOTICE_SYNOPSIS,decode(NVL(snu.id,'-1'),'-1',0,1) 
+		is_readed,snu.id readed_id from sys_notice sn left join sys_notice_user snu 
+		on sn.notice_id=snu.notice_id and snu.user_id=#{queryBean.userId} where 1=1 
+		<if test="queryBean !=null"> <if test="queryBean.departmentId !=null and 
+		queryBean.departmentId !=''"> and sn.notice_id in (select distinct notice_id 
+		from sys_notice_department where department_id=#{queryBean.departmentId}) 
+		</if> <if test="queryBean.noticeTitle !=null and queryBean.noticeTitle !=''"> 
+		and sn.NOTICE_TITLE like '%'||#{queryBean.noticeTitle}||'%' </if> </if> order 
+		by sn.create_time desc, sn.rowid ) a <if test="endRow !=null"> where rownum 
+		<![CDATA[<=]]> #{endRow} </if> ) <if test="beginRow !=null"> where rnum <![CDATA[>]]> 
+		#{beginRow} </if> </select> -->
+    <!--上面注释的多表查询会产生N+1条SQL，性能比较差  -->
+    
+    
+	<select id="selectByUser" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap22">
+		select *
+		from (select a.*, rownum rnum
+		from (
+		select sn.NOTICE_ID,
+		sn.NOTICE_TITLE, sn.CREATE_TIME,
+		sn.USER_ID,sn.NOTICE_SYNOPSIS,decode(NVL(snu.id,'-1'),'-1',0,1)
+		is_readed,snu.id readed_id
+		from sys_notice sn
+		left join sys_notice_user
+		snu on
+		sn.notice_id=snu.notice_id and snu.user_id=#{queryBean.userId}
+		where
+		1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.departmentId !=null and queryBean.departmentId !=''">
+				and sn.notice_id in (select distinct notice_id from
+				sys_notice_department where department_id=#{queryBean.departmentId})
+			</if>
+			<if test="queryBean.noticeTitle !=null and queryBean.noticeTitle !=''">
+				and sn.NOTICE_TITLE like
+				'%'||#{queryBean.noticeTitle}||'%'
+			</if>
+		</if>
+		order by sn.create_time desc, sn.rowid
+		) a
+		<if test="endRow !=null">
+			where rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="beginRow !=null">
+			where rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

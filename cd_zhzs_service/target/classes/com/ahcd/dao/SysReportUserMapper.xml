@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.SysReportUserMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysReportUser">
+		<id column="USER_ID" jdbcType="DECIMAL" property="userId" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="USER_CODE" jdbcType="VARCHAR" property="userCode" />
+		<result column="USER_PWD" jdbcType="VARCHAR" property="userPwd" />
+		<result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+		<result column="LAST_LOGIN_TIME" jdbcType="DATE" property="lastLoginTime" />
+		<result column="HAS_REPORT" jdbcType="DECIMAL" property="hasReport" />
+		<result column="HAS_WEB" jdbcType="DECIMAL" property="hasWeb" />
+		<result column="STATUS" jdbcType="DECIMAL" property="status" />
+		<result column="BUSSINESS_CONCACT" jdbcType="VARCHAR" property="bussinessConcact" />
+		<result column="BUSSINESS_CONCACT_PHONE" jdbcType="VARCHAR"
+			property="bussinessConcactPhone" />
+		<result column="TECH_CONCACT" jdbcType="VARCHAR" property="techConcact" />
+		<result column="TECH_CONCACT_PHONE" jdbcType="VARCHAR"
+			property="techConcactPhone" />
+		<result column="EMAIL" jdbcType="VARCHAR" property="email" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="LEADER" jdbcType="VARCHAR" property="leader" />
+		<result column="IS_DELETE" jdbcType="DECIMAL" property="isDelete" />
+		<result column="DEPARTMENT_ID" jdbcType="VARCHAR" property="departmentId" />
+	</resultMap>
+	
+	<resultMap id="BaseResultMap2" type="com.ahcd.pojo.SysReportUser" extends="BaseResultMap">
+		<result column="DEPARTMENT_NAME" jdbcType="VARCHAR" property="departmentName" />
+	</resultMap>
+	<resultMap id="BaseResultMap3" type="com.ahcd.pojo.SysReportUser" extends="BaseResultMap2">
+		<result column="DEPARTMENT_CODE" jdbcType="VARCHAR" property="departmentCode" />
+		<result column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+		<result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+		<result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		USER_ID, USER_NAME, USER_CODE, USER_PWD, CREATE_TIME, LAST_LOGIN_TIME,
+		HAS_REPORT,
+		HAS_WEB, STATUS, BUSSINESS_CONCACT, BUSSINESS_CONCACT_PHONE, TECH_CONCACT,
+		TECH_CONCACT_PHONE,
+		EMAIL, ADDRESS, LEADER,IS_DELETE,DEPARTMENT_ID
+	</sql>
+	
+	<select id="selectByUserId" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_REPORT_USER
+		where USER_ID = #{userId,jdbcType=DECIMAL}
+	</select>
+	
+	<select id="selectUseridByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_REPORT_USER
+		where USER_NAME = #{userName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectUserInfo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_REPORT_USER where is_delete = '0'
+	</select>
+
+
+	<select id="selectUserReportInfo" resultMap="BaseResultMap2">
+	select a1.user_id,user_name,user_code,user_pwd,create_time,last_login_time,has_report,
+	has_web,status,bussiness_concact,bussiness_concact_phone,tech_concact,tech_concact_phone,email,
+	address,leader,IS_DELETE,a2.department_name from SYS_REPORT_USER a1,
+  	(select 
+    t.DEPARTMENT_ID, t2.area_name||'-'||t.department_name DEPARTMENT_NAME,  t.PARENT_DEPARTMENT_ID,  t.DEPARTMENT_CODE,  t.DEPARTMENT_AREA_ID
+    from sys_department_info t ,SYS_AREA_INFO t2 where t.department_area_id=t2.area_id ) a2
+	where a1.DEPARTMENT_ID=a2.department_id and IS_DELETE =0  order by user_id asc
+	</select>
+
+	<select id="selectUserInfoByUserCode" resultMap="BaseResultMap2" parameterType="java.lang.String">
+	select a1.user_id,user_name,user_code,user_pwd,create_time,last_login_time,has_report,
+	has_web,status,bussiness_concact,bussiness_concact_phone,tech_concact,tech_concact_phone,email,
+	address,leader,IS_DELETE,a2.department_name from SYS_REPORT_USER a1,
+  	(select 
+    t.DEPARTMENT_ID, t2.area_name||'-'||t.department_name DEPARTMENT_NAME,  t.PARENT_DEPARTMENT_ID,  t.DEPARTMENT_CODE,  t.DEPARTMENT_AREA_ID
+    from sys_department_info t ,SYS_AREA_INFO t2 where t.department_area_id=t2.area_id ) a2
+	where a1.DEPARTMENT_ID=a2.department_id and IS_DELETE = 0 and USER_CODE = #{userCode,jdbcType=VARCHAR} order by user_id asc
+	</select>
+
+	<delete id="deleteByUserId" parameterType="java.math.BigDecimal">
+    delete from SYS_REPORT_USER
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  	</delete>
+
+	<insert id="insert" parameterType="com.ahcd.pojo.SysReportUser">
+		<selectKey keyProperty="userId" resultType="DECIMAL" order="BEFORE">
+			select SEQ_SYS_REPORT_USER_ID.nextVal from dual
+		</selectKey>
+		insert into SYS_REPORT_USER (USER_ID,USER_NAME, USER_CODE, USER_PWD,
+		CREATE_TIME, LAST_LOGIN_TIME, HAS_REPORT, HAS_WEB, STATUS,
+		BUSSINESS_CONCACT, BUSSINESS_CONCACT_PHONE, TECH_CONCACT,
+		TECH_CONCACT_PHONE, EMAIL, ADDRESS, LEADER,IS_DELETE,DEPARTMENT_ID) values
+		(#{userId,jdbcType=DECIMAL},#{userName,jdbcType=VARCHAR},
+		#{userCode,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP},
+		#{hasReport,jdbcType=DECIMAL}, #{hasWeb,jdbcType=DECIMAL},
+		#{status,jdbcType=DECIMAL}, #{bussinessConcact,jdbcType=VARCHAR},
+		#{bussinessConcactPhone,jdbcType=VARCHAR},
+		#{techConcact,jdbcType=VARCHAR}, #{techConcactPhone,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{leader,jdbcType=VARCHAR},#{isDelete,jdbcType=DECIMAL},#{departmentId,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updatePwdByUserCode" parameterType="com.ahcd.pojo.SysReportUser">
+		update SYS_REPORT_USER
+		<set>
+			USER_PWD = #{userPwd,jdbcType=VARCHAR}
+		</set>
+		where USER_CODE = #{userCode,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updatePwdByUserName" parameterType="com.ahcd.pojo.SysReportUser">
+		update SYS_REPORT_USER
+		<set>
+			USER_PWD = #{userPwd,jdbcType=VARCHAR}
+		</set>
+		where USER_CODE = #{userCode,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateInfo" parameterType="com.ahcd.pojo.SysReportUser">
+		update SYS_REPORT_USER
+		set USER_NAME = #{userName,jdbcType=VARCHAR},
+		USER_CODE = #{userCode,jdbcType=VARCHAR},
+		USER_PWD = #{userPwd,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+		LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+		HAS_REPORT = #{hasReport,jdbcType=DECIMAL},
+		HAS_WEB = #{hasWeb,jdbcType=DECIMAL},
+		STATUS = #{status,jdbcType=DECIMAL},
+		BUSSINESS_CONCACT = #{bussinessConcact,jdbcType=VARCHAR},
+		BUSSINESS_CONCACT_PHONE = #{bussinessConcactPhone,jdbcType=VARCHAR},
+		TECH_CONCACT = #{techConcact,jdbcType=VARCHAR},
+		TECH_CONCACT_PHONE = #{techConcactPhone,jdbcType=VARCHAR},
+		EMAIL = #{email,jdbcType=VARCHAR},
+		ADDRESS = #{address,jdbcType=VARCHAR},
+		LEADER = #{leader,jdbcType=VARCHAR},
+		DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+		where USER_ID = #{userId,jdbcType=DECIMAL}
+	</update>
+	
+	
+	<update id="isdelete" parameterType="java.math.BigDecimal">
+		update SYS_REPORT_USER
+		set 
+		IS_DELETE = 1
+		where USER_ID = #{userId,jdbcType=DECIMAL}
+	</update>
+
+	<select id="selectByLoginCode" resultMap="BaseResultMap3"
+		parameterType="java.lang.String">
+		select  SU.*,SD.DEPARTMENT_NAME,SD.DEPARTMENT_CODE,SA.AREA_ID,SA.AREA_NAME,SA.AREA_CODE
+		from SYS_REPORT_USER su
+		left join SYS_DEPARTMENT_INFO sd on su.DEPARTMENT_ID= sd.DEPARTMENT_ID 
+    	left join SYS_AREA_INFO sa on sd.DEPARTMENT_AREA_ID=sa.AREA_ID
+		where su.IS_DELETE= 0 and su.HAS_REPORT=1 and USER_CODE = #{userCode,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByLoginCodeForWeb" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from SYS_REPORT_USER 
+	    where IS_DELETE= 0  and HAS_WEB=1 and USER_CODE = #{userCode,jdbcType=VARCHAR} 
+    </select>
+
+	<select id="selectUserNum" resultType="java.lang.Integer">
+		select
+		count(*)+1
+		from SYS_REPORT_USER
+	</select>
+
+	<select id="countUserPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+		select count(1)
+			from sys_report_user a1 left join 
+	  		(
+	  			select t.department_id, t2.area_name||'-'||t.department_name department_name,  t.parent_department_id,  t.department_code,  t.department_area_id
+	    		from sys_department_info t ,sys_area_info t2 where t.department_area_id=t2.area_id and t.is_delete='0' 
+	    	) a2
+			on  a1.department_id=a2.department_id where 1=1 
+			<if test="queryBean !=null">
+			    <if test="queryBean.status !=null and queryBean.status !=''">
+			        AND a1.status =#{queryBean.status}
+			    </if>
+			     <if test="queryBean.isDelete !=null">
+			        AND a1.is_delete =#{queryBean.isDelete}
+			    </if>
+			    <if test="queryBean.userName !=null and queryBean.userName !=''">
+			        AND a1.user_name like '%'||#{queryBean.userName}||'%' 
+			    </if>
+			    <if test="queryBean.userCode !=null and queryBean.userCode !=''">
+			        AND a1.user_code like '%'||#{queryBean.userCode}||'%' 
+			    </if>
+			</if>
+	</select>
+	<select id="selectUserPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap2" >
+  	select * from  (
+  		select a.*, rownum rnum from (
+	     	select a1.user_id,user_name,user_code,user_pwd,create_time,last_login_time,has_report,
+			has_web,status,bussiness_concact,bussiness_concact_phone,tech_concact,tech_concact_phone,email,
+			address,leader,is_delete,a2.department_name 
+			from sys_report_user a1 left join
+	  		(select t.department_id, t2.area_name||'-'||t.department_name department_name,  t.parent_department_id,  t.department_code,  t.department_area_id
+	    		from sys_department_info t ,sys_area_info t2 where t.department_area_id=t2.area_id and t.is_delete='0'
+	    	) a2
+			on  a1.department_id=a2.department_id
+			where 1=1 
+			<if test="queryBean !=null">
+			    <if test="queryBean.status !=null and queryBean.status !=''">
+			        AND a1.status =#{queryBean.status}
+			    </if>
+			    <if test="queryBean.isDelete !=null">
+			        AND a1.is_delete =#{queryBean.isDelete}
+			    </if>
+			    <if test="queryBean.userName !=null and queryBean.userName !=''">
+			        AND a1.user_name like '%'||#{queryBean.userName}||'%' 
+			    </if>
+			    <if test="queryBean.userCode !=null and queryBean.userCode !=''">
+			        AND a1.user_code like '%'||#{queryBean.userCode}||'%' 
+			    </if>
+			</if>
+				order by a1.department_id,a1.rowid
+			) a
+			<if  test="endRow !=null">
+			where rownum <![CDATA[<=]]>  #{endRow} 
+			</if>
+			)
+		<if  test="endRow !=null">
+		where rnum <![CDATA[>]]>  #{beginRow} 
+		</if>
+  	</select>
+</mapper>

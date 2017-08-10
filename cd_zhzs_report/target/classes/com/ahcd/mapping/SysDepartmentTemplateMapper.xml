@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.SysDepartmentTemplateMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysDepartmentTemplate">
+		<result column="DEPARTMENT_ID" jdbcType="VARCHAR" property="departmentId" />
+		<result column="TEMPLATE_NAME" jdbcType="VARCHAR" property="templateName" />
+		<result column="REPORT_PERIOD" jdbcType="INTEGER" property="reportPeroid" />
+	</resultMap>
+	<resultMap id="BaseResultMap2" type="com.ahcd.pojo.SysDepartmentTemplate"
+		extends="BaseResultMap">
+		<result column="DEPARTMENT_NAME" jdbcType="VARCHAR" property="departmentName" />
+	</resultMap>
+	<insert id="insert" parameterType="com.ahcd.pojo.SysDepartmentTemplate">
+		insert into SYS_DEPARTMENT_TEMPLATE (DEPARTMENT_ID,
+		TEMPLATE_NAME,REPORT_PERIOD)
+		values (#{departmentId,jdbcType=VARCHAR}, #{templateName,jdbcType=VARCHAR},
+		#{reportPeroid,jdbcType=INTEGER})
+	</insert>
+	
+	<update id="updateTemplateById" parameterType="hashmap">
+	    update SYS_DEPARTMENT_TEMPLATE set REPORT_PERIOD = #{reportPeroid,jdbcType=DECIMAL}
+	    where TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR} and DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+  	</update>
+	
+	<insert id="insertSelective" parameterType="com.ahcd.pojo.SysDepartmentTemplate">
+		insert into SYS_DEPARTMENT_TEMPLATE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="departmentId != null">
+				DEPARTMENT_ID,
+			</if>
+			<if test="templateName != null">
+				TEMPLATE_NAME,
+			</if>
+			<if test="reportPeroid != null">
+				REPORT_PERIOD,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="departmentId != null">
+				#{departmentId,jdbcType=VARCHAR},
+			</if>
+			<if test="templateName != null">
+				#{templateName,jdbcType=VARCHAR},
+			</if>
+			<if test="reportPeroid != null">
+				#{REPORT_PERIOD,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="selectDepartmentTemplate" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select DEPARTMENT_ID, TEMPLATE_NAME,REPORT_PERIOD
+		from SYS_DEPARTMENT_TEMPLATE
+		where DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="delete" parameterType="com.ahcd.pojo.SysDepartmentTemplate">
+		delete from SYS_DEPARTMENT_TEMPLATE
+		where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR} and
+		TEMPLATE_NAME=#{templateName,jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteByDepartmentId" parameterType="java.lang.String">
+		delete from SYS_DEPARTMENT_TEMPLATE
+		where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteByTemplateName" parameterType="java.lang.String">
+		delete from SYS_DEPARTMENT_TEMPLATE
+		where TEMPLATE_NAME=#{templateName,jdbcType=VARCHAR}
+	</delete>
+	
+	
+	
+	<insert id="batchAdd" parameterType="java.util.Map">
+		insert into SYS_DEPARTMENT_TEMPLATE (DEPARTMENT_ID,
+		TEMPLATE_NAME,REPORT_PERIOD)
+		<foreach open="(" close=")" collection="sysDepartmentTemplateList"
+			item="sysDepartmentTemplate" index="index" separator="union">
+			select
+			#{sysDepartmentTemplate.departmentId},#{sysDepartmentTemplate.templateName},#{sysDepartmentTemplate.reportPeroid}
+			from dual
+		</foreach>
+	</insert>
+
+	<delete id="batchDelete" parameterType="java.util.Map">
+		delete from SYS_DEPARTMENT_TEMPLATE
+		where DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR} and TEMPLATE_NAME in
+		<foreach collection="sysDepartmentTemplateList" item="sysDepartmentTemplate"
+			open="(" separator="," close=")">
+			#{sysDepartmentTemplate.templateName}
+		</foreach>
+	</delete>
+
+	<select id="countDepartmentTemplatePage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select  count(1)
+		from (select s1.*,
+		s3.area_name || '-' || s2.department_name as DEPARTMENT_NAME
+		from SYS_DEPARTMENT_TEMPLATE s1,
+		sys_department_info s2,
+		sys_area_info s3
+		where s1.department_id = s2.department_id
+		and s2.department_area_id = s3.area_id
+		<if test="queryBean !=null">
+			<if test="queryBean.templateName !=null and queryBean.templateName !=''">
+				AND s1.TEMPLATE_NAME LIKE '%'||#{queryBean.templateName}||'%'
+			</if>
+			<if test="queryBean.departmentId!=null and queryBean.departmentId !=''">
+				AND s1.DEPARTMENT_ID = #{queryBean.departmentId}
+			</if>
+		</if>
+		) a
+	</select>
+	<select id="selectDepartmentTemplatePage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap2">
+		select   DEPARTMENT_ID, DEPARTMENT_NAME,TEMPLATE_NAME,REPORT_PERIOD,TEMPLATE_NAME,  rnum
+		from (select a.*, rownum rnum
+		from (select s1.*,s3.area_name||'-'||s2.department_name as DEPARTMENT_NAME
+		from SYS_DEPARTMENT_TEMPLATE s1,sys_department_info s2,sys_area_info
+		s3
+		where s1.department_id=s2.department_id and
+		s2.department_area_id=s3.area_id
+		<if test="queryBean !=null">
+			<if test="queryBean.templateName !=null and queryBean.templateName !=''">
+				AND s1.TEMPLATE_NAME LIKE '%'||#{queryBean.templateName}||'%'
+			</if>
+			<if test="queryBean.departmentId!=null and queryBean.departmentId !=''">
+				AND s1.DEPARTMENT_ID = #{queryBean.departmentId}
+			</if>
+		</if>
+		order by s3.area_id,s1.DEPARTMENT_ID, s1.rowid
+		) a
+		<if test="endRow !=null">
+			where rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="endRow !=null">
+			where rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+
+	<select id="selectDepartmentTemplateByuserId" parameterType="java.math.BigDecimal"
+		resultMap="BaseResultMap">
+		select t.DEPARTMENT_ID, t.TEMPLATE_NAME,t.REPORT_PERIOD from
+		SYS_DEPARTMENT_TEMPLATE t,
+		( select * from sys_report_user where user_id=
+		#{userId,jdbcType=DECIMAL} ) b where t.department_id=b.department_id
+	</select>
+
+	<select id="countDepartmentTemplateByuserIdPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		SELECT  count(1)
+		FROM SYS_DEPARTMENT_TEMPLATE t,
+		(
+			SELECT * FROM sys_report_user 
+			<if test="queryBean !=null">
+				<if test="queryBean.userId !=null ">
+					WHERE user_id = #{queryBean.userId,jdbcType=DECIMAL} 
+				</if>
+			</if>	
+		) b 	
+		WHERE t.department_id=b.department_id
+	</select>
+	<select id="selectDepartmentTemplateByuserIdPage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap">
+		SELECT DEPARTMENT_ID,TEMPLATE_NAME,REPORT_PERIOD
+		FROM (SELECT a.*, rownum rnum
+		FROM (	
+		SELECT t.DEPARTMENT_ID, t.TEMPLATE_NAME,t.REPORT_PERIOD
+		FROM SYS_DEPARTMENT_TEMPLATE t,
+		(
+			SELECT * FROM sys_report_user 
+			<if test="queryBean !=null">
+				<if test="queryBean.userId !=null ">
+					WHERE user_id = #{queryBean.userId,jdbcType=DECIMAL} 
+				</if>
+			</if>	
+		) b 	
+		WHERE t.department_id=b.department_id		
+		) a
+		<if test="endRow !=null">
+			WHERE rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="endRow !=null">
+			WHERE rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+</mapper>

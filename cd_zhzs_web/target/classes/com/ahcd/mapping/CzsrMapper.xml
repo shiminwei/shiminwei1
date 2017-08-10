@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.CzsrMapper">
+  <!-- 查询地税记录数 -->
+  <select id="selectAllResult" resultType="Map"  parameterType="java.lang.String">
+select k2.code,k2.jh,
+       case when k2.bsnzz = '%'
+       then ''
+       else   bsnzz
+       end   bsnzz,
+       k2.dyrk,
+       k2.ljrk,
+       k2.sntqlj,
+       case when k2.gzmbzxjd = '%'
+       then ''
+       else   gzmbzxjd
+       end   gzmbzxjd,
+       
+      
+       
+       k2.bsnzzt,
+       k3.je,
+       case
+         when (k3.je / k2.jh) IS NOT NULL THEN
+          to_char((k3.je / k2.jh) * 100, 'fm9999999990.00') || '%'
+         ELSE
+          ''
+       END FSZF,
+       k2.fbm,
+       k2.gzmb,
+       k2.dyrkt,
+       k2.ljrkt,
+       
+        case when k2.gzmbzxjdt = '%'
+       then ''
+       else   gzmbzxjdt
+       end   gzmbzxjdt,
+       
+   
+       
+       
+       
+       k2.bsnzzs
+  from (select k.*, k1.value
+          from (select t3.*,
+                       t4.fbm,
+                       t4. gzmb,
+                       t4.dyrkt,
+                       t4.ljrkt,
+                       t4. GZMBZXJDT,
+                       t4. bsnzzs
+                  from (select t1.*, t2.*
+                          from (select code
+                                  from zd_constant
+                                 where type = 'web_quxianfenlei'
+                                 order by order_number) t1
+                          left join (select Replace(fdq, ' ', '') fdq,
+                                           jh,
+                                           to_char(bsnzz * 100,
+                                                   'fm9999999990.00') || '%' bsnzz,
+                                           dyrk,
+                                           ljrk,
+                                           sntqlj,
+                                           to_char(gzmbzxjd * 100,
+                                                   'fm9999999990.00') || '%' gzmbzxjd,
+                                           to_char(bsnzzt * 100,
+                                                   'fm9999999990.00') || '%' bsnzzt
+                                      from zhzs_czj_mbxx
+                                     where k_year||k_month = #{k_year||k_month,jdbcType=VARCHAR}) t2 on t1.code = t2.fdq) t3
+                  left join (select Replace(zct1.code, ' ', '') code,
+                                   zct1.value fbm,
+                                   gzmb,
+                                   DYRKT,
+                                   LJRKT,
+                                   GZMBZXJDT,
+                                   bsnzzs
+                              from zd_constant zct1
+                              left join (select fbm,
+                                               gzmb,
+                                               DYRKT,
+                                               LJRKT,
+                                               to_char(GZMBZXJDT * 100,
+                                                       'fm9999999990.00') || '%' GZMBZXJDT,
+                                               to_char(bsnzzs * 100,
+                                                       'fm9999999990.00') || '%' bsnzzs
+                                          from zhzs_czj_mbxx
+                                         where k_del = '0'
+                                           and k_year||k_month = #{k_year||k_month,jdbcType=VARCHAR}) zcj on zct1.value =
+                                                                  zcj.fbm
+                             where zct1.type = 'web_quxian_bumen') t4 on t3.code =
+                                                                         t4.code) k
+          left join (select * from zd_constant where type = 'web_czj_fjfbm') k1 on k.code =
+                                                                                   k1.code) k2
+  left join (select dq, je
+               from zhzs_czj_sryb  unpivot(je for dq in (hj, sz, gc, st, qy, dz, jhs, kfq, jnjzq))
+              where k_year||k_month = #{k_year||k_month,jdbcType=VARCHAR}
+                and k_del = '0'
+                and KMBM = '103') k3 on k2.value = k3.dq
+  </select>
+  
+</mapper>  
+
+
+     

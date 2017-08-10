@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysDepartmentLeadMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysDepartmentLead" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="LEAD_ID" property="leadId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap2" type="com.ahcd.pojo.SysDepartmentLead" extends="BaseResultMap">
+  	<result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+  	<result column="area_name" jdbcType="VARCHAR" property="areaName"/>
+  	<result column="department_Id" jdbcType="VARCHAR" property="departmentId"/>
+  	<result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+  </resultMap>
+  
+  
+  
+  
+  <sql id="Base_Column_List" >
+    ID, USER_ID, LEAD_ID, STATUS,IS_DELETE
+  </sql>
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from SYS_DEPARTMENT_LEAD
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    <selectKey keyProperty="id" resultType="DECIMAL" order="BEFORE">
+		select sys_department_lead_seq.nextVal from dual
+	</selectKey>
+    insert into SYS_DEPARTMENT_LEAD (ID, USER_ID, LEAD_ID,STATUS,department_id)
+    values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=VARCHAR}, #{leadId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=DECIMAL},#{departmentId,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    update SYS_DEPARTMENT_LEAD
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="leadId != null" >
+        LEAD_ID = #{leadId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    update SYS_DEPARTMENT_LEAD
+    set DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR},
+      LEAD_ID = #{leadId,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL}
+    where LEAD_ID = #{leadId,jdbcType=DECIMAL}
+  </update>
+  
+ <select id="countSysDeparmentLeadPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	<!-- select count(1) from SYS_DEPARTMENT_LEAD t where 1=1 -->
+  	select count(*)
+      from (select sdl.id,sdl.lead_id,sdl.status,sdl.is_delete,sai.area_name,sdi.department_name ,sdl.department_id
+          from sys_department_lead sdl ,sys_department_info sdi ,sys_area_info sai where sdl.department_id = sdi.department_id and  sai.area_id = sdi.department_area_id and sdl.is_delete='0'
+          <if test="queryBean !=null">
+			<if test="queryBean.leadId !=null and queryBean.leadId !=''">  
+				AND lead_Id =#{queryBean.leadId}
+			</if>
+		 </if>
+      )
+ </select>
+ 	<select id="selectSysDeparmentLeadPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap2" >
+  	 select *
+ 	 from (select a.*, rownum rnum
+          from (select sdl.id,sdl.lead_id,sdl.status,sdl.is_delete,sai.area_name,sdi.department_name ,sdl.department_id
+          from sys_department_lead sdl ,sys_department_info sdi ,sys_area_info sai where sdl.department_id = sdi.department_id and  sai.area_id = sdi.department_area_id and sdl.is_delete='0'
+         <if test="queryBean !=null">
+			<if test="queryBean.leadId !=null and queryBean.leadId !=''">  
+				AND lead_Id =#{queryBean.leadId}
+			</if>
+		 </if>
+          ) a
+	<if  test="endRow !=null">
+		where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+		where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap2" parameterType="java.math.BigDecimal" >
+    select l.id,l.department_id,l.lead_id,l.status,l.is_delete ,d.department_name,d.department_id from sys_department_lead l,sys_department_info d ,sys_area_info a
+    where l.department_id = d.department_id and  a.area_id = d.department_area_id and ID = #{id,jdbcType=DECIMAL} and l.is_delete = '0'
+  </select>
+  
+   <!-- <select id="selectSysDeparmentLeadPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap2" >
+  	 select *
+ 	 from (select a.*, rownum rnum
+          from (select L.ID, U.USER_NAME, L.LEAD_ID, L.STATUS,L.IS_DELETE
+                  from SYS_DEPARTMENT_LEAD L,sys_report_user U
+                 where L.USER_ID=U.USER_ID AND L.IS_DELETE = '1'
+         <if test="queryBean !=null">
+			<if test="queryBean.leadId !=null and queryBean.leadId !=''">  
+				AND lead_Id =#{queryBean.leadId}
+			</if>
+		 </if>
+          ) a
+	<if  test="endRow !=null">
+		where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+		where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select> -->
+  
+ <!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap2" parameterType="java.math.BigDecimal" >
+    select l.id,u.user_name,l.lead_id,l.status,l.is_delete from sys_department_lead l,sys_report_user u 
+    where l.user_id=u.user_id and ID = #{id,jdbcType=DECIMAL} and l.is_delete = '1'
+  </select> -->
+  
+  
+  
+  
+  <update id="updateIsDelete" parameterType="java.math.BigDecimal" >
+    update SYS_DEPARTMENT_LEAD
+    set IS_DELETE = '1'
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="selectSysdepartmentLeadById" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+	select * from SYS_DEPARTMENT_LEAD  where LEAD_ID = #{leadId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selectSysdepartmentLeadInfo" resultMap="BaseResultMap"  >
+	select * from SYS_DEPARTMENT_LEAD 
+  </select>
+  
+  <!-- 查询消息发送页面需要的前置机ID -->
+  <select id="countSysDeparmentLeadList" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	SELECT count(1) 
+  	FROM SYS_DEPARTMENT_LEAD t,sys_department_info d,sys_area_info a 
+  	WHERE t.IS_DELETE ='0'
+  	     AND t.department_id = d.department_id and  a.area_id = d.department_area_id 
+        <if test="queryBean !=null">
+			<if test="queryBean.leadId !=null and queryBean.leadId !=''">  
+				AND t.lead_Id =#{queryBean.leadId}
+			</if>
+			<if test="queryBean.status !=null and queryBean.status !=''">  
+				AND t.status =#{queryBean.status}
+			</if>
+		</if>
+  </select>
+  <!-- 查询消息发送页面需要的前置机ID -->
+  <select id="selectSysDeparmentLeadList" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap2" >
+  	 SELECT *
+ 	 FROM (SELECT a.*, rownum rnum
+          FROM (SELECT t.id,t.lead_id,t.status,t.is_delete,a.area_name,d.department_name ,t.department_id
+          FROM SYS_DEPARTMENT_LEAD t,sys_department_info d,sys_area_info a 
+          WHERE t.IS_DELETE ='0'
+          AND t.department_id = d.department_id and  a.area_id = d.department_area_id
+         <if test="queryBean !=null">
+			<if test="queryBean.leadId !=null and queryBean.leadId !=''">  
+				AND t.lead_Id =#{queryBean.leadId}
+			</if>
+			<if test="queryBean.status !=null and queryBean.status !=''">  
+				AND t.status =#{queryBean.status}
+			</if>
+		 </if>
+          ) a
+	<if  test="endRow !=null">
+		WHERE rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+		WHERE rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+</mapper>

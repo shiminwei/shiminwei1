@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysReportLogMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysReportLog">
+		<id column="LOG_ID" property="logId" jdbcType="DECIMAL" />
+		<result column="TEMPLATE_NAME" property="templateName"
+			jdbcType="VARCHAR" />
+		<result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+		<result column="DEPARMENT_ID" property="deparmentId" jdbcType="VARCHAR" />
+		<result column="REPORT_TYPE" property="reportType" jdbcType="DECIMAL" />
+		<result column="REPORT_DATE" property="reportDate" jdbcType="TIMESTAMP" />
+		<result column="REPORT_ZQ" property="reportZq" jdbcType="DECIMAL" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+		<result column="DEPARMENT_NAME" property="deparmentName"
+			jdbcType="VARCHAR" />
+		<result column="REPORT_YEAR" property="reportYear" jdbcType="VARCHAR" />
+		<result column="REPORT_MONTH" property="reportMonth" jdbcType="VARCHAR" />
+		<result column="REPORT_DATA_NUM" property="reportDataNum"
+			jdbcType="DECIMAL" />
+		<result column="report_frequency" property="reportFrequency"
+			jdbcType="DECIMAL" />
+		<result column="IS_REPORT" property="isReport" jdbcType="DECIMAL" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		LOG_ID, TEMPLATE_NAME, TABLE_NAME, USER_ID, AREA_ID,
+		DEPARMENT_ID,
+		REPORT_TYPE, REPORT_DATE,
+		REPORT_ZQ, USER_NAME, AREA_NAME,
+		DEPARMENT_NAME, REPORT_YEAR, REPORT_MONTH,
+		REPORT_DATA_NUM,IS_REPORT
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_REPORT_LOG
+		where LOG_ID = #{logId,jdbcType=DECIMAL}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from
+		SYS_REPORT_LOG
+		where LOG_ID = #{logId,jdbcType=DECIMAL}
+	</delete>
+
+	<select id="selectByReportMonth" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_REPORT_LOG
+		where REPORT_MONTH =
+		#{reportMonth,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insert" parameterType="com.ahcd.pojo.SysReportLog">
+		<selectKey keyProperty="logId" resultType="DECIMAL" order="BEFORE">
+			select SYS_REPORT_LOG_SEQ.nextVal from dual
+		</selectKey>
+		insert into SYS_REPORT_LOG (LOG_ID, TEMPLATE_NAME, TABLE_NAME,
+		USER_ID, AREA_ID, DEPARMENT_ID,
+		REPORT_TYPE, REPORT_DATE, REPORT_ZQ,
+		USER_NAME, AREA_NAME, DEPARMENT_NAME,
+		REPORT_YEAR, REPORT_MONTH,
+		REPORT_DATA_NUM,IS_REPORT
+		)
+		values (#{logId,jdbcType=DECIMAL},
+		#{templateName,jdbcType=VARCHAR},
+		#{tableName,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},
+		#{deparmentId,jdbcType=VARCHAR},
+		#{reportType,jdbcType=DECIMAL},
+		#{reportDate,jdbcType=TIMESTAMP},
+		#{reportZq,jdbcType=DECIMAL},
+		#{userName,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR},
+		#{deparmentName,jdbcType=VARCHAR},
+		#{reportYear,jdbcType=VARCHAR},
+		#{reportMonth,jdbcType=VARCHAR},
+		#{reportDataNum,jdbcType=DECIMAL},
+		#{isReport,jdbcType=DECIMAL}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysReportLog">
+		update
+		SYS_REPORT_LOG
+		set TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR},
+		TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+		USER_ID =
+		#{userId,jdbcType=VARCHAR},
+		AREA_ID = #{areaId,jdbcType=VARCHAR},
+		DEPARMENT_ID = #{deparmentId,jdbcType=VARCHAR},
+		REPORT_TYPE =
+		#{reportType,jdbcType=DECIMAL},
+		REPORT_DATE =
+		#{reportDate,jdbcType=TIMESTAMP},
+		REPORT_ZQ =
+		#{reportZq,jdbcType=DECIMAL},
+		USER_NAME = #{userName,jdbcType=VARCHAR},
+		AREA_NAME = #{areaName,jdbcType=VARCHAR},
+		DEPARMENT_NAME =
+		#{deparmentName,jdbcType=VARCHAR},
+		REPORT_YEAR =
+		#{reportYear,jdbcType=VARCHAR},
+		REPORT_MONTH =
+		#{reportMonth,jdbcType=VARCHAR},
+		REPORT_DATA_NUM =
+		#{reportDataNum,jdbcType=DECIMAL},
+		IS_REPORT =
+		#{isReport,jdbcType=DECIMAL}
+		where LOG_ID =
+		#{logId,jdbcType=DECIMAL}
+	</update>
+
+	<select id="selectByBean" parameterType="com.ahcd.pojo.SysReportLog"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_report_log where 1=1
+
+		<if test="templateName != null">
+			and TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR}
+		</if>
+		<if test="reportYear != null">
+			and REPORT_YEAR = #{reportYear,jdbcType=VARCHAR}
+		</if>
+		<if test="reportMonth != null">
+			and REPORT_MONTH = #{reportMonth,jdbcType=VARCHAR}
+		</if>
+
+		<if test="isReport != null">
+			and IS_REPORT = #{isReport,jdbcType=DECIMAL}
+		</if>
+		
+		<if test="deparmentId != null">
+			and DEPARMENT_ID = #{deparmentId,jdbcType=VARCHAR}
+		</if>
+		
+		
+	</select>
+	
+	
+	
+	<select id="selectByBeanOrAdmin" parameterType="com.ahcd.pojo.SysReportLog"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_report_log where 1=1
+
+		<if test="templateName != null">
+			and TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR}
+		</if>
+		<if test="reportYear != null">
+			and REPORT_YEAR = #{reportYear,jdbcType=VARCHAR}
+		</if>
+		<if test="reportMonth != null">
+			and REPORT_MONTH = #{reportMonth,jdbcType=VARCHAR}
+		</if>
+
+		<if test="isReport != null">
+			and IS_REPORT = #{isReport,jdbcType=DECIMAL}
+		</if>
+		
+			and 
+			
+			(DEPARMENT_ID = #{deparmentId,jdbcType=VARCHAR} or user_id='1')
+		
+
+	
+	</select>
+
+	<select id="selectAllByDepartment" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap">
+
+	select * from (
+select t4.*,rownum rnum from (
+		<include refid="query_sql" />
+) t4  where 1=1
+		<if
+			test="queryBean.deparmentName != null and queryBean.deparmentName != ''">
+			and t4.DEPARMENT_NAME LIKE
+			CONCAT(CONCAT('%',#{queryBean.deparmentName,jdbcType=VARCHAR}), '%')
+
+		</if>
+		<if test="queryBean.templateName != null and queryBean.templateName != ''">
+			and  t4.TEMPLATE_NAME LIKE
+			CONCAT(CONCAT('%',#{queryBean.templateName,jdbcType=VARCHAR}), '%')
+		</if>
+
+) where 1=1
+		<if test="endRow !=null">
+			and rnum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		<if test="beginRow !=null">
+			and rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+
+	</select>
+
+	<sql id="query_sql">
+select t1.*, t2.report_data_num,
+                               t2.report_date,
+                               t2.report_frequency
+                          from (select sdi.department_id   as DEPARMENT_ID,
+                                       sdi.department_name as DEPARMENT_NAME,
+                                       sdt.template_name   as TEMPLATE_NAME,
+                                       sdt.report_period   as REPORT_ZQ
+                                  from sys_department_info sdi
+                                  left join sys_department_template sdt
+                                    on sdi.department_id = sdt.department_id
+                                 where sdi.is_delete = 0    and sdt.TEMPLATE_NAME is not null ) t1
+                          left join (select deparment_id,
+                                           template_name,
+                                           sum(report_data_num) as report_data_num,
+                                           max(report_date) report_date,
+                                           count(log_id) as report_frequency
+                                      from sys_report_log
+                                     where is_report = 1
+                                     group by deparment_id, template_name
+                                     order by report_date) t2
+                            on t1.DEPARMENT_ID = t2.deparment_id
+                         order by t1.DEPARMENT_NAME desc
+  
+	</sql>
+
+	<select id="countPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select count(1) from(
+		<include refid="query_sql" />
+) t4 where 1=1
+	<if
+			test="queryBean.deparmentName != null and queryBean.deparmentName != ''">
+			and t4.DEPARMENT_NAME LIKE
+
+			CONCAT(CONCAT('%',#{queryBean.deparmentName,jdbcType=VARCHAR}), '%')
+
+		</if>
+		<if test="queryBean.templateName != null and queryBean.templateName != ''">
+			and t4.TEMPLATE_NAME LIKE
+
+			CONCAT(CONCAT('%',#{queryBean.templateName,jdbcType=VARCHAR}), '%')
+		</if>
+	</select>
+
+
+
+	<update id="updateIsReport" parameterType="com.ahcd.pojo.SysReportLog">
+		update SYS_REPORT_LOG
+		set
+		IS_REPORT = #{isReport,jdbcType=DECIMAL}
+		where LOG_ID =
+		#{logId,jdbcType=DECIMAL}
+	</update>
+
+
+	<select id="selectByDepartmentId" parameterType="com.ahcd.pojo.SysReportLog"
+		resultMap="BaseResultMap">
+		select LOG_ID,
+		TEMPLATE_NAME,
+		TABLE_NAME,
+		USER_ID,
+		AREA_ID,
+		DEPARMENT_ID,
+		REPORT_TYPE,
+		REPORT_DATE,
+		REPORT_ZQ,
+		USER_NAME,
+		AREA_NAME,
+		REPORT_YEAR,
+		REPORT_MONTH,
+		REPORT_DATA_NUM,
+		IS_REPORT,t2.department_name from
+		sys_report_log t1 ,
+		(
+		select department_id
+		department_id_other,department_name from
+		sys_department_info where
+		is_delete='0'
+		and (department_id= #{deparmentId,jdbcType=VARCHAR} or
+		parent_department_id= #{deparmentId,jdbcType=VARCHAR}))t2
+		where 1=1
+		and t1.deparment_id in t2.department_id_other
+
+		<if test="reportYear != null">
+			and REPORT_YEAR = #{reportYear,jdbcType=VARCHAR}
+		</if>
+		<if test="reportMonth != null">
+			and REPORT_MONTH = #{reportMonth,jdbcType=VARCHAR}
+		</if>
+
+		<if test="isReport != null">
+			and IS_REPORT = #{isReport,jdbcType=DECIMAL}
+		</if>
+	</select>
+
+<!-- 
+select * from (
+select sdi.department_id   as DEPARMENT_ID,
+               sdi.department_name as DEPARMENT_NAME,
+               sdt.template_name   as TEMPLATE_NAME,
+               sdt.report_period   as REPORT_ZQ,
+               sdt.dangqiannian,
+                sdt.start_date,
+                 sdt.end_date
+          from sys_department_info sdi left join (
+select department_id,  template_name, report_period, to_char(sysdate, 'yyyy') dangqiannian, 
+(CASE WHEN report_period = '1' THEN (select to_char(sysdate, 'MM') from dual)
+ WHEN report_period = '2' THEN  (select to_char(trunc(sysdate, 'q'), 'mm') from dual)
+   WHEN report_period = '3' THEN (select case  when to_char(sysdate, 'mm') < 7 then '01'  else '07'  end from dual) ELSE '01' END) start_date, 
+       (CASE WHEN report_period = '1' THEN  (select to_char(sysdate, 'MM') from dual) WHEN report_period = '2' THEN
+       (select to_char(add_months(trunc(sysdate, 'q'), +3) - 1, 'mm') from dual)  WHEN report_period = '3' THEN
+       (select case  when to_char(sysdate, 'mm') < 7 then '06' else '12' end from dual) ELSE '12'  END) end_date
+ from sys_department_template) sdt
+   on sdi.department_id = sdt.department_id
+         where sdi.is_delete = 0) t1 left join (select deparment_id,
+                    template_name,
+                    sum(report_data_num) as report_data_num,
+                    max(report_date) report_date,
+                    count(log_id) as report_frequency
+               from sys_report_log
+              where is_report = 1
+              group by deparment_id, template_name
+              order by report_date) t2
+              
+             on t1.DEPARMENT_ID=t2.deparment_id -->
+</mapper>

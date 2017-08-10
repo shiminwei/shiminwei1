@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysMessageLeadMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysMessageLead" >
+    <result column="MESSAGE_ID" property="messageId" jdbcType="VARCHAR" />
+    <result column="LEAD_ID" property="leadId" jdbcType="VARCHAR" />
+    <result column="STATES" property="states" jdbcType="VARCHAR" />
+    <result column="SEND_TIME" property="sendTime" jdbcType="DATE" />
+  </resultMap>
+  <!-- 根据中间表查询前置机消息列表 -->
+  <resultMap id="BaseResultMap2" type="com.ahcd.pojo.SysMessageLead" extends="BaseResultMap" >
+  	<result column="AREA_NAME" jdbcType="VARCHAR" property="areaName"/>
+  	<result column="DEPARTMENT_NAME" jdbcType="VARCHAR" property="departmentName"/>
+  </resultMap>
+
+  <!-- 新增 -->
+  <insert id="insert" parameterType="com.ahcd.pojo.SysMessageLead" >
+    INSERT INTO SYS_MESSAGE_LEAD (
+    	MESSAGE_ID, LEAD_ID, STATES,SEND_TIME
+    )
+    VALUES (
+    	#{messageId,jdbcType=VARCHAR}, #{leadId,jdbcType=VARCHAR}, #{states,jdbcType=VARCHAR},#{sendTime,jdbcType=DATE}
+    )
+  </insert>
+  
+  <!-- 新增 -->
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.SysMessageLead" >
+    INSERT INTO SYS_MESSAGE_LEAD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        MESSAGE_ID,
+      </if>
+      <if test="leadId != null" >
+        LEAD_ID,
+      </if>
+      <if test="states != null" >
+        STATES,
+      </if>
+      <if test="sendTime != null" >
+        SEND_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        #{messageId,jdbcType=VARCHAR},
+      </if>
+      <if test="leadId != null" >
+        #{leadId,jdbcType=VARCHAR},
+      </if>
+      <if test="states != null" >
+        #{states,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 查询列表 备注:根据消息ID查询列表 -->
+  <select id="getPageByMessageId" parameterType="java.lang.String" resultMap="BaseResultMap" >	
+     SELECT MESSAGE_ID,LEAD_ID,STATES,SEND_TIME
+     FROM SYS_MESSAGE_LEAD
+	 WHERE 1=1
+	 <if test="_parameter !=null and _parameter !=''">
+		  AND MESSAGE_ID = #{_parameter}   
+	 </if>
+  </select>
+  
+  <!-- 根据中间表查询前置机消息条数 -->
+  <select id="countSysDepartmentLeadPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	SELECT count(1)
+	FROM SYS_MESSAGE_LEAD ml,SYS_DEPARTMENT_LEAD dl,SYS_DEPARTMENT_INFO d,SYS_AREA_INFO a
+		WHERE ml.LEAD_ID=dl.LEAD_ID
+		AND dl.DEPARTMENT_ID = d.DEPARTMENT_ID AND a.AREA_ID = d.DEPARTMENT_AREA_ID
+		<if test="queryBean !=null">
+		    <if test="queryBean.messageId !=null and queryBean.messageId !=''">
+		        AND ml.MESSAGE_ID =#{queryBean.messageId}   
+		    </if>
+		    <if test="queryBean.leadId !=null and queryBean.leadId !=''">
+		        AND ml.LEAD_ID =#{queryBean.leadId}   
+		    </if>
+		</if>
+  </select>
+  
+  <!-- 根据中间表查询前置机消息列表 -->
+  <select id="selectSysDepartmentLeadPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap2" >
+  	SELECT *
+    FROM  (SELECT a.*, rownum rnum
+     FROM ( 
+     	SELECT ml.MESSAGE_ID,ml.LEAD_ID,ml.STATES,ml.SEND_TIME,a.AREA_NAME,d.DEPARTMENT_NAME
+     	FROM SYS_MESSAGE_LEAD ml,SYS_DEPARTMENT_LEAD dl,SYS_DEPARTMENT_INFO d,SYS_AREA_INFO a
+		WHERE ml.LEAD_ID=dl.LEAD_ID
+		AND dl.DEPARTMENT_ID = d.DEPARTMENT_ID and a.AREA_ID = d.DEPARTMENT_AREA_ID
+		<if test="queryBean !=null">
+		    <if test="queryBean.messageId !=null and queryBean.messageId !=''">
+		        AND ml.MESSAGE_ID =#{queryBean.messageId}   
+		    </if>
+		    <if test="queryBean.leadId !=null and queryBean.leadId !=''">
+		        AND ml.LEAD_ID =#{queryBean.leadId}   
+		    </if>
+		</if>
+		) a
+	<if  test="endRow !=null">
+	WHERE rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+
+</mapper>

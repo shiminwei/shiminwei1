@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.CompanyAddressInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.CompanyAddressInfo" >
+    <id column="ADDRESS_ID" property="addressId" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="CHAR" />
+    <result column="ADDRESS_TYPE" property="addressType" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ADDRESS_ID, ID, ADDRESS, TYPE, ADDRESS_TYPE
+  </sql>
+  <!-- 查询实体 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM SYS_COMPANY_ADDRESS_INFO
+    WHERE ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+  </select>
+  <!-- 删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    DELETE FROM SYS_COMPANY_ADDRESS_INFO
+    WHERE ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+  </delete>
+  <!-- 删除 -->
+  <delete id="deleteById" parameterType="java.util.Map" >
+    DELETE FROM SYS_COMPANY_ADDRESS_INFO
+    WHERE 1=1
+    <if test="id !=null">
+	     AND ID = #{id,jdbcType=DECIMAL}   
+	</if>
+  </delete>
+  <!-- 查询条数 -->
+  <select id="countPageById" parameterType="java.util.Map" resultType="java.lang.Integer" >
+  	SELECT count(1)
+	FROM SYS_COMPANY_ADDRESS_INFO a
+	WHERE 1=1
+	<if test="id !=null">
+	       AND a.ID = #{id,jdbcType=DECIMAL}   
+	</if>
+  </select>
+  <!-- 新增 -->
+  <insert id="insert" parameterType="com.ahcd.pojo.CompanyAddressInfo" >
+  	<selectKey keyProperty="addressId" resultType="java.lang.String" order="BEFORE">
+			 select sys_guid() from dual  
+    </selectKey>
+    INSERT INTO SYS_COMPANY_ADDRESS_INFO (ADDRESS_ID, ID, ADDRESS, 
+      TYPE, ADDRESS_TYPE)
+    VALUES (#{addressId,jdbcType=VARCHAR}, #{id,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
+      #{type,jdbcType=CHAR}, #{addressType,jdbcType=CHAR})
+  </insert>
+  <!-- 新增 -->
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.CompanyAddressInfo" >
+  	<selectKey keyProperty="addressId" resultType="java.lang.String" order="BEFORE">
+			 select sys_guid() from dual  
+    </selectKey>
+    INSERT INTO SYS_COMPANY_ADDRESS_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        ADDRESS_ID,
+      </if>
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="addressType != null" >
+        ADDRESS_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        #{addressId,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="addressType != null" >
+        #{addressType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 更新 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.CompanyAddressInfo" >
+    UPDATE SYS_COMPANY_ADDRESS_INFO
+    <set >
+      <if test="id != null" >
+        ID = #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=CHAR},
+      </if>
+      <if test="addressType != null" >
+        ADDRESS_TYPE = #{addressType,jdbcType=CHAR},
+      </if>
+    </set>
+    WHERE ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+  </update>
+  <!-- 更新 -->
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.CompanyAddressInfo" >
+    UPDATE SYS_COMPANY_ADDRESS_INFO
+    SET 
+      ID = #{id,jdbcType=DECIMAL},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=CHAR},
+      ADDRESS_TYPE = #{addressType,jdbcType=CHAR}
+    WHERE ADDRESS_ID = #{addressId,jdbcType=VARCHAR}
+  </update>
+  <!-- 查询条数 -->
+  <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	SELECT count(1)
+	FROM SYS_COMPANY_ADDRESS_INFO a
+	WHERE 1=1
+	<if test="queryBean!=null">
+	    <if test="queryBean.id !=null">
+	        AND a.ID = #{queryBean.id,jdbcType=DECIMAL}   
+	    </if>
+	    <if test="queryBean.address !=null and queryBean.address !=''">
+	        AND a.ADDRESS LIKE '%'||#{queryBean.address,jdbcType=VARCHAR}||'%'    
+	    </if>
+	</if>
+  </select>  
+  <!-- 查询列表 -->
+  <select id="selectPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap" >
+  	SELECT *
+    FROM  (SELECT a.*, rownum rnum
+     FROM (
+     	SELECT ADDRESS_ID, ID, ADDRESS, TYPE, ADDRESS_TYPE  
+     	FROM SYS_COMPANY_ADDRESS_INFO
+		WHERE 1=1
+		<if test="queryBean !=null">
+		    <if test="queryBean.id !=null">
+		        AND ID = #{queryBean.id,jdbcType=DECIMAL}    
+		    </if>
+		    <if test="queryBean.address !=null and queryBean.address !=''">
+	        	AND ADDRESS LIKE '%'||#{queryBean.address,jdbcType=VARCHAR}||'%'   
+	    	</if>
+		</if>
+			ORDER BY ADDRESS_ID DESC
+		) a
+	<if  test="endRow !=null">
+	WHERE rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+</mapper>

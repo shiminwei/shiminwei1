@@ -1,0 +1,3151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.CompanyTaxMapper">
+		 <!-- 查询地税记录数 -->
+ <select id="countLocalPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+  select count(1) from (select sum(k.bn_wcs) wcs,
+       sum(k.bn_zje) zje,
+       sum(k.bn_zf) zf,
+       sum(k.bn_ds_grsds1) wcs1,
+       sum(k.qn_ds_grsds1),
+       sum(k.grsds_zje) zje1,
+       sum(k.grsds_zf) zf1,
+       sum(k.bn_ds_qysds) wcs2,
+       sum(k.qysds_zje) zje2,
+       sum(k.qysds_zf) zf2,
+       sum(k.bn_ds_qtsr) wcs3,
+       sum(k.qtsr_zje) zje3,
+       sum(k.qtsr_zf) zf3,
+       sum(k.bn_ds_yhs) wcs4,
+       sum(k.yhs_zje) zje4,
+       sum(k.yhs_zf) zf4,
+       sum(k.bn_ds_tdzzs) wcs5,
+       sum(k.tdzzs_zje) zje5,
+       sum(k.tdzzs_zf) zf5,
+       sum(k.bn_ds_dfjyf) wcs6,
+       sum(k.dfjyf_zje) zje6,
+       sum(k.dfjyf_zf) zf6,
+       sum(k.bn_ds_cjs) wcs7,
+       sum(k.cjs_zje) zje7,
+       sum(k.cjs_zf) zf7,
+       sum(k.bn_ds_cztdsys) wcs8,
+       sum(k.cztdsys_zje) zje8,
+       sum(k.cztdsys_zf) zf8,
+       
+       sum(k.bn_ds_qs) wcs9,
+       sum(k.qs_zje) zje9,
+       sum(k.qs_zf) zf9,
+       
+       sum(k.bn_ds_fcs) wcs10,
+       sum(k.fcs_zje) zje10,
+       sum(k.fcs_zf) zf10,
+       
+       sum(k.bn_ds_jyf) wcs11,
+       sum(k.jyf_zje) zje11,
+       sum(k.jyf_zf) zf11,
+       
+       sum(k.bn_ds_wfsy) wcs12,
+       sum(k.wfsy_zje) zje12,
+       sum(k.wfsy_zf) zf12,
+       
+       sum(k.bn_ds_cjrjy) wcs13,
+       sum(k.cjrjy_zje) zje13,
+       sum(k.cjrjy_zf) zf13,
+       
+       sum(k.bn_ds_sljsxz) wcs14,
+       sum(k.sljsxz_zje) zje14,
+       sum(k.sljsxz_zf) zf14,
+       
+       sum(k.bn_ds_yanys) wcs15,
+       sum(k.yanys_zje) zje15,
+       sum(k.yanys_zf) zf15,
+       
+       sum(k.bn_ds_swbmfmsr) wcs16,
+       sum(k.swbmfmsr_zje) zje16,
+       sum(k.swbmfmsr_zf) zf16,
+       
+       sum(k.bn_ds_gdzts) wcs17,
+       sum(k.gdzts_zje) zje17,
+       sum(k.gdzts_zf) zf17,
+       
+       sum(k.bn_ds_yys) wcs18,
+       sum(k.yys_zje) zje18,
+       sum(k.yys_zf) zf18,
+       
+       sum(k.bn_ds_zys) wcs19,
+       sum(k.zys_zje) zje19,
+       sum(k.zys_zf) zf19,
+       
+       sum(k.bn_ds_ccs) wcs20,
+       sum(k.ccs_zje) zje20,
+       sum(k.ccs_zf) zf20
+  FROM (select
+         t.company_id,
+         t1.name,
+         t1.company_type,
+         t1.area_name,
+         round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+               t.bn_ds_tdzzs + t.bn_ds_dfjyf + t.bn_ds_cjs +
+               t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs + bn_ds_jyf +
+               t.bn_ds_wfsy + t.bn_ds_cjrjy + t.bn_ds_sljsxz +
+               t.bn_ds_yanys + t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+               t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+               2) bn_wcs,
+         round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+               t.qn_ds_tdzzs + t.qn_ds_dfjyf + t.qn_ds_cjs +
+               t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs + qn_ds_jyf +
+               t.qn_ds_wfsy + t.qn_ds_cjrjy + t.qn_ds_sljsxz +
+               t.qn_ds_yanys + t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+               t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+               2) qn_wcs,
+         (round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+                t.bn_ds_tdzzs + t.bn_ds_dfjyf + t.bn_ds_cjs +
+                t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs + bn_ds_jyf +
+                t.bn_ds_wfsy + t.bn_ds_cjrjy + t.bn_ds_sljsxz +
+                t.bn_ds_yanys + t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+                t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+                2) -
+         round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+                t.qn_ds_tdzzs + t.qn_ds_dfjyf + t.qn_ds_cjs +
+                t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs + qn_ds_jyf +
+                t.qn_ds_wfsy + t.qn_ds_cjrjy + t.qn_ds_sljsxz +
+                t.qn_ds_yanys + t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+                t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                2)) bn_zje,
+         case
+           when round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                      t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                      t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                      t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                      t.qn_ds_sljsxz + t.qn_ds_yanys + t.qn_ds_swbmfmsr +
+                      t.qn_ds_gdzts + t.qn_ds_yys + t.qn_ds_zys +
+                      t.qn_ds_ccs) / 10000,
+                      2) <![CDATA[<>]]> '0' then
+            round((round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr +
+                         t.bn_ds_yhs + t.bn_ds_tdzzs + t.bn_ds_dfjyf +
+                         t.bn_ds_cjs + t.bn_ds_cztdsys + t.bn_ds_qs +
+                         t.bn_ds_fcs + bn_ds_jyf + t.bn_ds_wfsy +
+                         t.bn_ds_cjrjy + t.bn_ds_sljsxz + t.bn_ds_yanys +
+                         t.bn_ds_swbmfmsr + t.bn_ds_gdzts + t.bn_ds_yys +
+                         t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+                         2) -
+                  (round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                          t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                          t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                          t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy +
+                          t.qn_ds_cjrjy + t.qn_ds_sljsxz + t.qn_ds_yanys +
+                          t.qn_ds_swbmfmsr + t.qn_ds_gdzts + t.qn_ds_yys +
+                          t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                          2))) /
+                  (round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                         t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                         t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                         t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy +
+                         t.qn_ds_cjrjy + t.qn_ds_sljsxz + t.qn_ds_yanys +
+                         t.qn_ds_swbmfmsr + t.qn_ds_gdzts + t.qn_ds_yys +
+                         t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                         2)) * 100,
+                  2)
+         
+           else
+            0
+         end bn_zf,
+         round(t.bn_ds_grsds / 10000, 2) bn_ds_grsds1,
+         round(t.qn_ds_grsds / 10000, 2) qn_ds_grsds1,
+         round(t.bn_ds_grsds / 10000, 2) - round(t.qn_ds_grsds / 10000, 2) grsds_zje,
+         case
+           when round(t.qn_ds_grsds / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_grsds / 10000, 2) -
+                  round(t.qn_ds_grsds / 10000, 2)) /
+                  round(t.qn_ds_grsds / 10000, 2) * 100,
+                  2)
+         
+           else
+            0
+         end grsds_zf,
+         round(t.bn_ds_qysds / 10000, 2) bn_ds_qysds,
+         round(t.qn_ds_qysds / 10000, 2) qn_ds_qysds,
+         round(t.bn_ds_qysds / 10000, 2) - round(t.qn_ds_qysds / 10000, 2) qysds_zje,
+         case
+           when round(t.qn_ds_qysds / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_qysds / 10000, 2) -
+                  round(t.qn_ds_qysds / 10000, 2)) /
+                  round(t.qn_ds_qysds / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end qysds_zf,
+         round(t.bn_ds_qtsr / 10000, 2) bn_ds_qtsr,
+         round(t.qn_ds_qtsr / 10000, 2) qn_ds_qtsr,
+         round(t.bn_ds_qtsr / 10000, 2) - round(t.qn_ds_qtsr / 10000, 2) qtsr_zje,
+         case
+           when round(t.qn_ds_qtsr / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_qtsr / 10000, 2) -
+                  round(t.qn_ds_qtsr / 10000, 2)) /
+                  round(t.qn_ds_qtsr / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end qtsr_zf,
+         round(t.bn_ds_yhs / 10000, 2) bn_ds_yhs,
+         round(t.qn_ds_yhs / 10000, 2) qn_ds_yhs,
+         round(t.bn_ds_yhs / 10000, 2) - round(t.qn_ds_yhs / 10000, 2) yhs_zje,
+         case
+           when round(t.qn_ds_yhs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_yhs / 10000, 2) -
+                  round(t.qn_ds_yhs / 10000, 2)) /
+                  round(t.qn_ds_yhs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end yhs_zf,
+         round(t.bn_ds_tdzzs / 10000, 2) bn_ds_tdzzs,
+         round(t.qn_ds_tdzzs / 10000, 2) qn_ds_tdzzs,
+         round(t.bn_ds_tdzzs / 10000, 2) - round(t.qn_ds_tdzzs / 10000, 2) tdzzs_zje,
+         case
+           when round(t.qn_ds_tdzzs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_tdzzs / 10000, 2) -
+                  round(t.qn_ds_tdzzs / 10000, 2)) /
+                  round(t.qn_ds_tdzzs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end tdzzs_zf,
+         round(t.bn_ds_dfjyf / 10000, 2) bn_ds_dfjyf,
+         round(t.qn_ds_dfjyf / 10000, 2) qn_ds_dfjyf,
+         round(t.bn_ds_dfjyf / 10000, 2) - round(t.qn_ds_dfjyf / 10000, 2) dfjyf_zje,
+         case
+           when round(t.qn_ds_dfjyf / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_dfjyf / 10000, 2) -
+                  round(t.qn_ds_dfjyf / 10000, 2)) /
+                  round(t.qn_ds_dfjyf / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end dfjyf_zf,
+         round(t.bn_ds_cjs / 10000, 2) bn_ds_cjs,
+         round(t.qn_ds_cjs / 10000, 2) qn_ds_cjs,
+         round(t.bn_ds_cjs / 10000, 2) - round(t.qn_ds_cjs / 10000, 2) cjs_zje,
+         case
+           when round(t.qn_ds_cjs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_cjs / 10000, 2) -
+                  round(t.qn_ds_cjs / 10000, 2)) /
+                  round(t.qn_ds_cjs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end cjs_zf,
+         round(t.bn_ds_cztdsys / 10000, 2) bn_ds_cztdsys,
+         round(t.qn_ds_cztdsys / 10000, 2) qn_ds_cztdsys,
+         round(t.bn_ds_cztdsys / 10000, 2) -
+         round(t.qn_ds_cztdsys / 10000, 2) cztdsys_zje,
+         case
+           when round(t.qn_ds_cztdsys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_cztdsys / 10000, 2) -
+                  round(t.qn_ds_cztdsys / 10000, 2)) /
+                  round(t.qn_ds_cztdsys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end cztdsys_zf,
+         round(t.bn_ds_qs / 10000, 2) bn_ds_qs,
+         round(t.qn_ds_qs / 10000, 2) qn_ds_qs,
+         round(t.bn_ds_qs / 10000, 2) - round(t.qn_ds_qs / 10000, 2) qs_zje,
+         case
+           when round(t.qn_ds_qs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_qs / 10000, 2) -
+                  round(t.qn_ds_qs / 10000, 2)) /
+                  round(t.qn_ds_qs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end qs_zf,
+         round(t.bn_ds_fcs / 10000, 2) bn_ds_fcs,
+         round(t.qn_ds_fcs / 10000, 2) qn_ds_fcs,
+         round(t.bn_ds_fcs / 10000, 2) - round(t.qn_ds_fcs / 10000, 2) fcs_zje,
+         case
+           when round(t.qn_ds_fcs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_fcs / 10000, 2) -
+                  round(t.qn_ds_fcs / 10000, 2)) /
+                  round(t.qn_ds_fcs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end fcs_zf,
+         round(t.bn_ds_jyf / 10000, 2) bn_ds_jyf,
+         round(t.qn_ds_jyf / 10000, 2) qn_ds_jyf,
+         round(t.bn_ds_jyf / 10000, 2) - round(t.qn_ds_jyf / 10000, 2) jyf_zje,
+         case
+           when round(t.qn_ds_jyf / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_jyf / 10000, 2) -
+                  round(t.qn_ds_jyf / 10000, 2)) /
+                  round(t.qn_ds_jyf / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end jyf_zf,
+         round(t.bn_ds_wfsy / 10000, 2) bn_ds_wfsy,
+         round(t.qn_ds_wfsy / 10000, 2) qn_ds_wfsy,
+         round(t.bn_ds_wfsy / 10000, 2) - round(t.qn_ds_wfsy / 10000, 2) wfsy_zje,
+         case
+           when round(t.qn_ds_wfsy / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_wfsy / 10000, 2) -
+                  round(t.qn_ds_wfsy / 10000, 2)) /
+                  round(t.qn_ds_wfsy / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end wfsy_zf,
+         round(t.bn_ds_cjrjy / 10000, 2) bn_ds_cjrjy,
+         round(t.qn_ds_cjrjy / 10000, 2) qn_ds_cjrjy,
+         round(t.bn_ds_cjrjy / 10000, 2) - round(t.qn_ds_cjrjy / 10000, 2) cjrjy_zje,
+         case
+           when round(t.qn_ds_cjrjy / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_cjrjy / 10000, 2) -
+                  round(t.qn_ds_cjrjy / 10000, 2)) /
+                  round(t.qn_ds_cjrjy / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end cjrjy_zf,
+         round(t.bn_ds_sljsxz / 10000, 2) bn_ds_sljsxz,
+         round(t.qn_ds_sljsxz / 10000, 2) qn_ds_sljsxz,
+         round(t.bn_ds_sljsxz / 10000, 2) - round(t.qn_ds_sljsxz / 10000, 2) sljsxz_zje,
+         case
+           when round(t.qn_ds_sljsxz / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_sljsxz / 10000, 2) -
+                  round(t.qn_ds_sljsxz / 10000, 2)) /
+                  round(t.qn_ds_sljsxz / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end sljsxz_zf,
+         round(t.bn_ds_yanys / 10000, 2) bn_ds_yanys,
+         round(t.qn_ds_yanys / 10000, 2) qn_ds_yanys,
+         round(t.bn_ds_yanys / 10000, 2) - round(t.qn_ds_yanys / 10000, 2) yanys_zje,
+         case
+           when round(t.qn_ds_yanys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_yanys / 10000, 2) -
+                  round(t.qn_ds_yanys / 10000, 2)) /
+                  round(t.qn_ds_yanys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end yanys_zf,
+         round(t.bn_ds_swbmfmsr / 10000, 2) bn_ds_swbmfmsr,
+         round(t.qn_ds_swbmfmsr / 10000, 2) qn_ds_swbmfmsr,
+         round(t.bn_ds_swbmfmsr / 10000, 2) -
+         round(t.qn_ds_swbmfmsr / 10000, 2) swbmfmsr_zje,
+         case
+           when round(t.qn_ds_swbmfmsr / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_swbmfmsr / 10000, 2) -
+                  round(t.qn_ds_swbmfmsr / 10000, 2)) /
+                  round(t.qn_ds_swbmfmsr / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end swbmfmsr_zf,
+         round(t.bn_ds_gdzts / 10000, 2) bn_ds_gdzts,
+         round(t.qn_ds_gdzts / 10000, 2) qn_ds_gdzts,
+         round(t.bn_ds_gdzts / 10000, 2) - round(t.qn_ds_gdzts / 10000, 2) gdzts_zje,
+         case
+           when round(t.qn_ds_gdzts / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_gdzts / 10000, 2) -
+                  round(t.qn_ds_gdzts / 10000, 2)) /
+                  round(t.qn_ds_gdzts / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end gdzts_zf,
+         round(t.bn_ds_yys / 10000, 2) bn_ds_yys,
+         round(t.qn_ds_yys / 10000, 2) qn_ds_yys,
+         round(t.bn_ds_yys / 10000, 2) - round(t.qn_ds_yys / 10000, 2) yys_zje,
+         case
+           when round(t.qn_ds_yys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_yys / 10000, 2) -
+                  round(t.qn_ds_yys / 10000, 2)) /
+                  round(t.qn_ds_yys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end yys_zf,
+         round(t.bn_ds_zys / 10000, 2) bn_ds_zys,
+         round(t.qn_ds_zys / 10000, 2) qn_ds_zys,
+         round(t.bn_ds_zys / 10000, 2) - round(t.qn_ds_zys / 10000, 2) zys_zje,
+         case
+           when round(t.qn_ds_zys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_zys / 10000, 2) -
+                  round(t.qn_ds_zys / 10000, 2)) /
+                  round(t.qn_ds_zys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end zys_zf,
+         round(t.bn_ds_ccs / 10000, 2) bn_ds_ccs,
+         round(t.qn_ds_ccs / 10000, 2) qn_ds_ccs,
+         round(t.bn_ds_ccs / 10000, 2) - round(t.qn_ds_ccs / 10000, 2) ccs_zje,
+         case
+           when round(t.qn_ds_ccs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_ccs / 10000, 2) -
+                  round(t.qn_ds_ccs / 10000, 2)) /
+                  round(t.qn_ds_ccs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end ccs_zf
+          from (select company_id,
+                       sum(BN_DS_GRSDS) bn_ds_grsds,
+                       sum(BN_DS_QYSDS) bn_ds_qysds,
+                       sum(BN_DS_QTSR) bn_ds_qtsr,
+                       sum(BN_DS_YHS) bn_ds_yhs,
+                       sum(BN_DS_TDZZS) bn_ds_tdzzs,
+                       sum(BN_DS_DFJYF) bn_ds_dfjyf,
+                       sum(BN_DS__CJS) bn_ds_cjs,
+                       sum(BN_DS_CZTDSYS) bn_ds_cztdsys,
+                       sum(BN_DS_QS) bn_ds_qs,
+                       sum(BN_DS_FCS) bn_ds_fcs,
+                       sum(BN_DS_JYF) bn_ds_jyf,
+                       sum(BN_DS_WFSY) bn_ds_wfsy,
+                       sum(BN_DS_CJRJY) bn_ds_cjrjy,
+                       sum(BN_DS_SLJSZX) bn_ds_sljsxz,
+                       sum(BN_DS_YANYS) bn_ds_yanys,
+                       sum(BN_DS_SWBMFMSR) bn_ds_swbmfmsr,
+                       sum(BN_DS_GDZTS) bn_ds_gdzts,
+                       sum(BN_DS_YYS) bn_ds_yys,
+                       sum(BN_DS_ZYS) bn_ds_zys,
+                       sum(BN_DS_CCS) bn_ds_ccs,
+                       
+                       sum(QN_DS_GRSDS) qn_ds_grsds,
+                       sum(QN_DS_QYSDS) qn_ds_qysds,
+                       sum(QN_DS_QTSR) qn_ds_qtsr,
+                       sum(QN_DS_YHS) qn_ds_yhs,
+                       sum(QN_DS_TDZZS) qn_ds_tdzzs,
+                       sum(QN_DS_DFJYF) qn_ds_dfjyf,
+                       sum(QN_DS__CJS) qn_ds_cjs,
+                       sum(QN_DS_CZTDSYS) qn_ds_cztdsys,
+                       sum(QN_DS_QS) qn_ds_qs,
+                       sum(QN_DS_FCS) qn_ds_fcs,
+                       sum(QN_DS_JYF) qn_ds_jyf,
+                       sum(QN_DS_WFSY) qn_ds_wfsy,
+                       sum(QN_DS_CJRJY) qn_ds_cjrjy,
+                       sum(QN_DS_SLJSZX) qn_ds_sljsxz,
+                       sum(QN_DS_YANYS) qn_ds_yanys,
+                       sum(QN_DS_SWBMFMSR) qn_ds_swbmfmsr,
+                       sum(QN_DS_GDZTS) qn_ds_gdzts,
+                       sum(QN_DS_YYS) qn_ds_yys,
+                       sum(QN_DS_ZYS) qn_ds_zys,
+                       sum(QN_DS_CCS) qn_ds_ccs
+                
+                  from  sys_company_tax_info where 
+                  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+    k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  </if>
+  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+   and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  </if>
+                 group by company_id
+                 order by bn_ds_grsds desc) t
+          left join sys_company_info t1
+            on t.company_id = t1.id
+         order by bn_wcs desc) k
+
+  left join (select max(zclxdl_code) zclxdl_code,
+                    zclx_name,
+                    max(show_name) show_name
+               from sys_zd_zclx
+              group by zclx_name) k1
+    on k.company_type = k1.zclx_name
+ where k1.zclxdl_code not in ('4', '5')
+   <if test="queryBean!=null">
+ <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 and k.name LIKE '%'||#{queryBean.nsrmc}||'%'   
+  </if>
+</if>
+ 
+ )
+ 
+
+  </select> 
+  <!-- 查询地税列表 -->
+  <select id="selectLocalPage" parameterType="com.ahcd.pojo.Page" resultType="Map">
+  select f.*
+  from  (select a.*, rownum rnum
+  from (select k.company_id company_id,
+       k.name name,
+       k.area_name area_name,
+       k.bn_wcs WCS,
+       k.bn_zje ZJE,
+       k.bn_zf ZF,
+       k.bn_ds_grsds  wcs1,
+       k.grsds_zje    zje1,
+       k.grsds_zf     zf1,
+       k.bn_ds_qysds  wcs2,
+       k.qysds_zje    zje2,
+       k.qysds_zf     zf2,
+       k.bn_ds_qtsr   wcs3,
+       k.qtsr_zje     zje3,
+       k.qtsr_zf      zf3,
+       k.bn_ds_yhs    wcs4,
+       k.yhs_zje      zje4,
+       k.yhs_zf       zf4,
+       k.bn_ds_tdzzs  wcs5,
+       k.tdzzs_zje    zje5,
+       k.tdzzs_zf     zf5,
+       k.bn_ds_dfjyf  wcs6,
+       k.dfjyf_zje    zje6,
+       k.dfjyf_zf     zf6,
+       k.bn_ds_cjs    wcs7,
+       k.cjs_zje      zje7,
+       k.cjs_zf       zf7,
+       k.bn_ds_cztdsys wcs8,
+       k.cztdsys_zje  zje8,
+       k.cztdsys_zf   zf8,
+       
+       k.bn_ds_qs    wcs9,
+       k.qs_zje      zje9,
+       k.qs_zf        zf9,
+       
+       k.bn_ds_fcs   wcs10,
+       k.fcs_zje     zje10,
+       k.fcs_zf      zf10,
+       
+       k.bn_ds_jyf   wcs11,
+       k.jyf_zje     zje11,
+       k.jyf_zf      zf11,
+       
+       k.bn_ds_wfsy   wcs12,
+       k.wfsy_zje     zje12,
+       k.wfsy_zf      zf12,
+       
+       k.bn_ds_cjrjy  wcs13,
+       k.cjrjy_zje    zje13,
+       k.cjrjy_zf     zf13,
+       
+       k.bn_ds_sljsxz  wcs14,
+       k.sljsxz_zje    zje14,
+       k.sljsxz_zf     zf14,
+       
+       k.bn_ds_yanys   wcs15,
+       k.yanys_zje      zje15,
+       k.yanys_zf       zf15,
+       
+       k.bn_ds_swbmfmsr wcs16,
+       k.swbmfmsr_zje   zje16,
+       k.swbmfmsr_zf    zf16,
+       
+       k.bn_ds_gdzts    wcs17,
+       k.gdzts_zje      zje17,
+       k.gdzts_zf       zf17,
+       
+       k.bn_ds_yys      wcs18,
+       k.yys_zje        zje18,
+       k.yys_zf         zf18,
+       
+       k.bn_ds_zys      wcs19,
+       k.zys_zje        zje19,
+       k.zys_zf         zf19,
+       
+       k.bn_ds_ccs      wcs20,
+       k.ccs_zje        zje20,
+       k.ccs_zf         zf20
+  FROM (select
+         t.company_id,
+         t1.name,
+         t1.company_type,
+         t1.area_name,
+         round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+               t.bn_ds_tdzzs + t.bn_ds_dfjyf + t.bn_ds_cjs +
+               t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs + bn_ds_jyf +
+               t.bn_ds_wfsy + t.bn_ds_cjrjy + t.bn_ds_sljsxz +
+               t.bn_ds_yanys + t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+               t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+               2) bn_wcs,
+         round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+               t.qn_ds_tdzzs + t.qn_ds_dfjyf + t.qn_ds_cjs +
+               t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs + qn_ds_jyf +
+               t.qn_ds_wfsy + t.qn_ds_cjrjy + t.qn_ds_sljsxz +
+               t.qn_ds_yanys + t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+               t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+               2) qn_wcs,
+         (round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+                t.bn_ds_tdzzs + t.bn_ds_dfjyf + t.bn_ds_cjs +
+                t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs + bn_ds_jyf +
+                t.bn_ds_wfsy + t.bn_ds_cjrjy + t.bn_ds_sljsxz +
+                t.bn_ds_yanys + t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+                t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+                2) -
+         round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+                t.qn_ds_tdzzs + t.qn_ds_dfjyf + t.qn_ds_cjs +
+                t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs + qn_ds_jyf +
+                t.qn_ds_wfsy + t.qn_ds_cjrjy + t.qn_ds_sljsxz +
+                t.qn_ds_yanys + t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+                t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                2)) bn_zje,
+         case
+           when round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                      t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                      t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                      t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                      t.qn_ds_sljsxz + t.qn_ds_yanys + t.qn_ds_swbmfmsr +
+                      t.qn_ds_gdzts + t.qn_ds_yys + t.qn_ds_zys +
+                      t.qn_ds_ccs) / 10000,
+                      2) <![CDATA[<>]]> 0 then
+            to_char(round((round((t.bn_ds_grsds + t.bn_ds_qysds +
+                                 t.bn_ds_qtsr + t.bn_ds_yhs + t.bn_ds_tdzzs +
+                                 t.bn_ds_dfjyf + t.bn_ds_cjs +
+                                 t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs +
+                                 bn_ds_jyf + t.bn_ds_wfsy + t.bn_ds_cjrjy +
+                                 t.bn_ds_sljsxz + t.bn_ds_yanys +
+                                 t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+                                 t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) /
+                                 10000,
+                                 2) -
+                          (round((t.qn_ds_grsds + t.qn_ds_qysds +
+                                  t.qn_ds_qtsr + t.qn_ds_yhs + t.qn_ds_tdzzs +
+                                  t.qn_ds_dfjyf + t.qn_ds_cjs +
+                                  t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs +
+                                  qn_ds_jyf + t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                                  t.qn_ds_sljsxz + t.qn_ds_yanys +
+                                  t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+                                  t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) /
+                                  10000,
+                                  2))) /
+                          (round((t.qn_ds_grsds + t.qn_ds_qysds +
+                                 t.qn_ds_qtsr + t.qn_ds_yhs + t.qn_ds_tdzzs +
+                                 t.qn_ds_dfjyf + t.qn_ds_cjs +
+                                 t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs +
+                                 qn_ds_jyf + t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                                 t.qn_ds_sljsxz + t.qn_ds_yanys +
+                                 t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+                                 t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) /
+                                 10000,
+                                 2)) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end bn_zf,
+         round(t.bn_ds_grsds / 10000, 2) bn_ds_grsds,
+
+         round(t.qn_ds_grsds / 10000, 2) qn_ds_grsds,
+
+         round(t.bn_ds_grsds / 10000, 2) - round(t.qn_ds_grsds / 10000, 2) grsds_zje,
+        
+         case
+           when round(t.qn_ds_grsds / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_grsds / 10000, 2) -
+                          round(t.qn_ds_grsds / 10000, 2)) /
+                          round(t.qn_ds_grsds / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end grsds_zf,
+         round(t.bn_ds_qysds / 10000, 2) bn_ds_qysds,
+         round(t.qn_ds_qysds / 10000, 2) qn_ds_qysds,
+         round(t.bn_ds_qysds / 10000, 2) - round(t.qn_ds_qysds / 10000, 2) qysds_zje,
+         case
+           when round(t.qn_ds_qysds / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_qysds / 10000, 2) -
+                          round(t.qn_ds_qysds / 10000, 2)) /
+                          round(t.qn_ds_qysds / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end qysds_zf,
+         
+         round(t.bn_ds_qtsr / 10000, 2) bn_ds_qtsr,
+
+         round(t.qn_ds_qtsr / 10000, 2) qn_ds_qtsr,
+
+         round(t.bn_ds_qtsr / 10000, 2) - round(t.qn_ds_qtsr / 10000, 2) qtsr_zje,
+        
+         case
+           when round(t.qn_ds_qtsr / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_qtsr / 10000, 2) -
+                          round(t.qn_ds_qtsr / 10000, 2)) /
+                          round(t.qn_ds_qtsr / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end qtsr_zf,
+         round(t.bn_ds_yhs / 10000, 2) bn_ds_yhs,
+         round(t.qn_ds_yhs / 10000, 2) qn_ds_yhs,
+         round(t.bn_ds_yhs / 10000, 2) - round(t.qn_ds_yhs / 10000, 2) yhs_zje,
+         case
+           when round(t.qn_ds_yhs / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_yhs / 10000, 2) -
+                          round(t.qn_ds_yhs / 10000, 2)) /
+                          round(t.qn_ds_yhs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end yhs_zf,
+         round(t.bn_ds_tdzzs / 10000, 2) bn_ds_tdzzs,
+
+         round(t.qn_ds_tdzzs / 10000, 2) qn_ds_tdzzs,
+
+         round(t.bn_ds_tdzzs / 10000, 2) - round(t.qn_ds_tdzzs / 10000, 2) tdzzs_zje,
+        
+         case
+           when round(t.qn_ds_tdzzs / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_tdzzs / 10000, 2) -
+                          round(t.qn_ds_tdzzs / 10000, 2)) /
+                          round(t.qn_ds_tdzzs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end tdzzs_zf,
+         round(t.bn_ds_dfjyf / 10000, 2) bn_ds_dfjyf,
+         round(t.qn_ds_dfjyf / 10000, 2) qn_ds_dfjyf,
+         round(t.bn_ds_dfjyf / 10000, 2) - round(t.qn_ds_dfjyf / 10000, 2) dfjyf_zje,
+         case
+           when round(t.qn_ds_dfjyf / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_dfjyf / 10000, 2) -
+                          round(t.qn_ds_dfjyf / 10000, 2)) /
+                          round(t.qn_ds_dfjyf / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end dfjyf_zf,
+         round(t.bn_ds_cjs / 10000, 2) bn_ds_cjs,
+
+         round(t.qn_ds_cjs / 10000, 2) qn_ds_cjs,
+
+         round(t.bn_ds_cjs / 10000, 2) - round(t.qn_ds_cjs / 10000, 2) cjs_zje,
+        
+         case
+           when round(t.qn_ds_cjs / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_cjs / 10000, 2) -
+                          round(t.qn_ds_cjs / 10000, 2)) /
+                          round(t.qn_ds_cjs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end cjs_zf,
+         round(t.bn_ds_cztdsys / 10000, 2) bn_ds_cztdsys,
+         round(t.qn_ds_cztdsys / 10000, 2) qn_ds_cztdsys,
+         round(t.bn_ds_cztdsys / 10000, 2) -
+         round(t.qn_ds_cztdsys / 10000, 2) cztdsys_zje,
+         case
+           when round(t.qn_ds_cztdsys / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_cztdsys / 10000, 2) -
+                          round(t.qn_ds_cztdsys / 10000, 2)) /
+                          round(t.qn_ds_cztdsys / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end cztdsys_zf,
+         round(t.bn_ds_qs / 10000, 2) bn_ds_qs,
+
+         round(t.qn_ds_qs / 10000, 2) qn_ds_qs,
+
+         round(t.bn_ds_qs / 10000, 2) - round(t.qn_ds_qs / 10000, 2) qs_zje,
+        
+         case
+           when round(t.qn_ds_qs / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_qs / 10000, 2) -
+                          round(t.qn_ds_qs / 10000, 2)) /
+                          round(t.qn_ds_qs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end qs_zf,
+         round(t.bn_ds_fcs / 10000, 2) bn_ds_fcs,
+         round(t.qn_ds_fcs / 10000, 2) qn_ds_fcs,
+         round(t.bn_ds_fcs / 10000, 2) - round(t.qn_ds_fcs / 10000, 2) fcs_zje,
+         case
+           when round(t.qn_ds_fcs / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_fcs / 10000, 2) -
+                          round(t.qn_ds_fcs / 10000, 2)) /
+                          round(t.qn_ds_fcs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end fcs_zf,
+         round(t.bn_ds_jyf / 10000, 2) bn_ds_jyf,
+
+         round(t.qn_ds_jyf / 10000, 2) qn_ds_jyf,
+
+         round(t.bn_ds_jyf / 10000, 2) - round(t.qn_ds_jyf / 10000, 2) jyf_zje,
+        
+         case
+           when round(t.qn_ds_jyf / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_jyf / 10000, 2) -
+                          round(t.qn_ds_jyf / 10000, 2)) /
+                          round(t.qn_ds_jyf / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end jyf_zf,
+         round(t.bn_ds_wfsy / 10000, 2) bn_ds_wfsy,
+         round(t.qn_ds_wfsy / 10000, 2) qn_ds_wfsy,
+         round(t.bn_ds_wfsy / 10000, 2) - round(t.qn_ds_wfsy / 10000, 2) wfsy_zje,
+         case
+           when round(t.qn_ds_wfsy / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_wfsy / 10000, 2) -
+                          round(t.qn_ds_wfsy / 10000, 2)) /
+                          round(t.qn_ds_wfsy / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end wfsy_zf,
+         round(t.bn_ds_cjrjy / 10000, 2) bn_ds_cjrjy,
+         round(t.qn_ds_cjrjy / 10000, 2) qn_ds_cjrjy,
+
+         round(t.bn_ds_cjrjy / 10000, 2) - round(t.qn_ds_cjrjy / 10000, 2) cjrjy_zje,
+        
+         case
+           when round(t.qn_ds_cjrjy / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_cjrjy / 10000, 2) -
+                          round(t.qn_ds_cjrjy / 10000, 2)) /
+                          round(t.qn_ds_cjrjy / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end cjrjy_zf,
+         round(t.bn_ds_sljsxz / 10000, 2) bn_ds_sljsxz,
+         round(t.qn_ds_sljsxz / 10000, 2) qn_ds_sljsxz,
+         round(t.bn_ds_sljsxz / 10000, 2) - round(t.qn_ds_sljsxz / 10000, 2) sljsxz_zje,
+         case
+           when round(t.qn_ds_sljsxz / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_sljsxz / 10000, 2) -
+                          round(t.qn_ds_sljsxz / 10000, 2)) /
+                          round(t.qn_ds_sljsxz / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end sljsxz_zf,
+         round(t.bn_ds_yanys / 10000, 2) bn_ds_yanys,
+
+         round(t.qn_ds_yanys / 10000, 2) qn_ds_yanys,
+         round(t.bn_ds_yanys / 10000, 2) - round(t.qn_ds_yanys / 10000, 2) yanys_zje,
+        
+         case
+           when round(t.qn_ds_yanys / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_yanys / 10000, 2) -
+                          round(t.qn_ds_yanys / 10000, 2)) /
+                          round(t.qn_ds_yanys / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end yanys_zf,
+         round(t.bn_ds_swbmfmsr / 10000, 2) bn_ds_swbmfmsr,
+         round(t.qn_ds_swbmfmsr / 10000, 2) qn_ds_swbmfmsr,
+         round(t.bn_ds_swbmfmsr / 10000, 2) -
+         round(t.qn_ds_swbmfmsr / 10000, 2) swbmfmsr_zje,
+         case
+           when round(t.qn_ds_swbmfmsr / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_swbmfmsr / 10000, 2) -
+                          round(t.qn_ds_swbmfmsr / 10000, 2)) /
+                          round(t.qn_ds_swbmfmsr / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end swbmfmsr_zf,
+         round(t.bn_ds_gdzts / 10000, 2) bn_ds_gdzts,
+         round(t.qn_ds_gdzts / 10000, 2) qn_ds_gdzts,
+         round(t.bn_ds_gdzts / 10000, 2) - round(t.qn_ds_gdzts / 10000, 2) gdzts_zje,
+         case
+           when round(t.qn_ds_gdzts / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_gdzts / 10000, 2) -
+                          round(t.qn_ds_gdzts / 10000, 2)) /
+                          round(t.qn_ds_gdzts / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end gdzts_zf,
+         round(t.bn_ds_yys / 10000, 2) bn_ds_yys,
+         round(t.qn_ds_yys / 10000, 2) qn_ds_yys,
+         round(t.bn_ds_yys / 10000, 2) - round(t.qn_ds_yys / 10000, 2) yys_zje,
+         case
+           when round(t.qn_ds_yys / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_yys / 10000, 2) -
+                          round(t.qn_ds_yys / 10000, 2)) /
+                          round(t.qn_ds_yys / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end yys_zf,
+         round(t.bn_ds_zys / 10000, 2) bn_ds_zys,
+         round(t.qn_ds_zys / 10000, 2) qn_ds_zys,
+         round(t.bn_ds_zys / 10000, 2) - round(t.qn_ds_zys / 10000, 2) zys_zje,
+         case
+           when round(t.qn_ds_zys / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_zys / 10000, 2) -
+                          round(t.qn_ds_zys / 10000, 2)) /
+                          round(t.qn_ds_zys / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end zys_zf,
+         round(t.bn_ds_ccs / 10000, 2) bn_ds_ccs, 
+         round(t.qn_ds_ccs / 10000, 2) qn_ds_ccs,
+ 
+         round(t.bn_ds_ccs / 10000, 2) - round(t.qn_ds_ccs / 10000, 2) ccs_zje,
+         case
+           when round(t.qn_ds_ccs / 10000, 2) <![CDATA[<>]]> 0 then
+            to_char(round((round(t.bn_ds_ccs / 10000, 2) -
+                          round(t.qn_ds_ccs / 10000, 2)) /
+                          round(t.qn_ds_ccs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end ccs_zf
+          from (select company_id,
+                       sum(BN_DS_GRSDS) bn_ds_grsds,
+                       sum(BN_DS_QYSDS) bn_ds_qysds,
+                       sum(BN_DS_QTSR) bn_ds_qtsr,
+                       sum(BN_DS_YHS) bn_ds_yhs,
+                       sum(BN_DS_TDZZS) bn_ds_tdzzs,
+                       sum(BN_DS_DFJYF) bn_ds_dfjyf,
+                       sum(BN_DS__CJS) bn_ds_cjs,
+                       sum(BN_DS_CZTDSYS) bn_ds_cztdsys,
+                       sum(BN_DS_QS) bn_ds_qs,
+                       sum(BN_DS_FCS) bn_ds_fcs,
+                       sum(BN_DS_JYF) bn_ds_jyf,
+                       sum(BN_DS_WFSY) bn_ds_wfsy,
+                       sum(BN_DS_CJRJY) bn_ds_cjrjy,
+                       sum(BN_DS_SLJSZX) bn_ds_sljsxz,
+                       sum(BN_DS_YANYS) bn_ds_yanys,
+                       sum(BN_DS_SWBMFMSR) bn_ds_swbmfmsr,
+                       sum(BN_DS_GDZTS) bn_ds_gdzts,
+                       sum(BN_DS_YYS) bn_ds_yys,
+                       sum(BN_DS_ZYS) bn_ds_zys,
+                       sum(BN_DS_CCS) bn_ds_ccs,
+                       
+                       sum(QN_DS_GRSDS) qn_ds_grsds,
+                       sum(QN_DS_QYSDS) qn_ds_qysds,
+                       sum(QN_DS_QTSR) qn_ds_qtsr,
+                       sum(QN_DS_YHS) qn_ds_yhs,
+                       sum(QN_DS_TDZZS) qn_ds_tdzzs,
+                       sum(QN_DS_DFJYF) qn_ds_dfjyf,
+                       sum(QN_DS__CJS) qn_ds_cjs,
+                       sum(QN_DS_CZTDSYS) qn_ds_cztdsys,
+                       sum(QN_DS_QS) qn_ds_qs,
+                       sum(QN_DS_FCS) qn_ds_fcs,
+                       sum(QN_DS_JYF) qn_ds_jyf,
+                       sum(QN_DS_WFSY) qn_ds_wfsy,
+                       sum(QN_DS_CJRJY) qn_ds_cjrjy,
+                       sum(QN_DS_SLJSZX) qn_ds_sljsxz,
+                       sum(QN_DS_YANYS) qn_ds_yanys,
+                       sum(QN_DS_SWBMFMSR) qn_ds_swbmfmsr,
+                       sum(QN_DS_GDZTS) qn_ds_gdzts,
+                       sum(QN_DS_YYS) qn_ds_yys,
+                       sum(QN_DS_ZYS) qn_ds_zys,
+                       sum(QN_DS_CCS) qn_ds_ccs
+                
+                  from SYS_COMPANY_TAX_INFO
+                 where 
+  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	  k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  </if>
+  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  </if>
+ group by company_id) t
+          left join sys_company_info t1
+            on t.company_id = t1.id
+         order by bn_wcs desc) k
+
+  left join (select max(zclxdl_code) zclxdl_code,
+                    zclx_name,
+                    max(show_name) show_name
+               from sys_zd_zclx
+              group by zclx_name) k1
+    on k.company_type = k1.zclx_name
+ where k1.zclxdl_code not in ('4', '5') and <if test="endRow !=null">
+	 rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	order by k.company_id
+ 
+  <if test="queryBean!=null">
+ <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 and k.name LIKE '%'||#{queryBean.nsrmc}||'%'   
+  </if>
+ )a )f
+	
+	<if test="beginRow !=null">
+	where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+</if>
+  </select>
+  <!-- 查询地税总计 -->
+  <select id="selectLocalSum" parameterType="com.ahcd.pojo.Page" resultType="Map">
+  select sum(k.bn_wcs) wcs,
+       sum(k.bn_zje) zje,
+       sum(k.bn_zf) zf,
+       sum(k.bn_ds_grsds1) wcs1,
+       sum(k.qn_ds_grsds1),
+       sum(k.grsds_zje) zje1,
+       sum(k.grsds_zf) zf1,
+       sum(k.bn_ds_qysds) wcs2,
+       sum(k.qysds_zje) zje2,
+       sum(k.qysds_zf) zf2,
+       sum(k.bn_ds_qtsr) wcs3,
+       sum(k.qtsr_zje) zje3,
+       sum(k.qtsr_zf) zf3,
+       sum(k.bn_ds_yhs) wcs4,
+       sum(k.yhs_zje) zje4,
+       sum(k.yhs_zf) zf4,
+       sum(k.bn_ds_tdzzs) wcs5,
+       sum(k.tdzzs_zje) zje5,
+       sum(k.tdzzs_zf) zf5,
+       sum(k.bn_ds_dfjyf) wcs6,
+       sum(k.dfjyf_zje) zje6,
+       sum(k.dfjyf_zf) zf6,
+       sum(k.bn_ds_cjs) wcs7,
+       sum(k.cjs_zje) zje7,
+       sum(k.cjs_zf) zf7,
+       sum(k.bn_ds_cztdsys) wcs8,
+       sum(k.cztdsys_zje) zje8,
+       sum(k.cztdsys_zf) zf8,
+       
+       sum(k.bn_ds_qs) wcs9,
+       sum(k.qs_zje) zje9,
+       sum(k.qs_zf) zf9,
+       
+       sum(k.bn_ds_fcs) wcs10,
+       sum(k.fcs_zje) zje10,
+       sum(k.fcs_zf) zf10,
+       
+       sum(k.bn_ds_jyf) wcs11,
+       sum(k.jyf_zje) zje11,
+       sum(k.jyf_zf) zf11,
+       
+       sum(k.bn_ds_wfsy) wcs12,
+       sum(k.wfsy_zje) zje12,
+       sum(k.wfsy_zf) zf12,
+       
+       sum(k.bn_ds_cjrjy) wcs13,
+       sum(k.cjrjy_zje) zje13,
+       sum(k.cjrjy_zf) zf13,
+       
+       sum(k.bn_ds_sljsxz) wcs14,
+       sum(k.sljsxz_zje) zje14,
+       sum(k.sljsxz_zf) zf14,
+       
+       sum(k.bn_ds_yanys) wcs15,
+       sum(k.yanys_zje) zje15,
+       sum(k.yanys_zf) zf15,
+       
+       sum(k.bn_ds_swbmfmsr) wcs16,
+       sum(k.swbmfmsr_zje) zje16,
+       sum(k.swbmfmsr_zf) zf16,
+       
+       sum(k.bn_ds_gdzts) wcs17,
+       sum(k.gdzts_zje) zje17,
+       sum(k.gdzts_zf) zf17,
+       
+       sum(k.bn_ds_yys) wcs18,
+       sum(k.yys_zje) zje18,
+       sum(k.yys_zf) zf18,
+       
+       sum(k.bn_ds_zys) wcs19,
+       sum(k.zys_zje) zje19,
+       sum(k.zys_zf) zf19,
+       
+       sum(k.bn_ds_ccs) wcs20,
+       sum(k.ccs_zje) zje20,
+       sum(k.ccs_zf) zf20
+  FROM (select
+         t.company_id,
+         t1.name,
+         t1.company_type,
+         t1.area_name,
+         round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+               t.bn_ds_tdzzs + t.bn_ds_dfjyf + t.bn_ds_cjs +
+               t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs + bn_ds_jyf +
+               t.bn_ds_wfsy + t.bn_ds_cjrjy + t.bn_ds_sljsxz +
+               t.bn_ds_yanys + t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+               t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+               2) bn_wcs,
+         round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+               t.qn_ds_tdzzs + t.qn_ds_dfjyf + t.qn_ds_cjs +
+               t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs + qn_ds_jyf +
+               t.qn_ds_wfsy + t.qn_ds_cjrjy + t.qn_ds_sljsxz +
+               t.qn_ds_yanys + t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+               t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+               2) qn_wcs,
+         (round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+                t.bn_ds_tdzzs + t.bn_ds_dfjyf + t.bn_ds_cjs +
+                t.bn_ds_cztdsys + t.bn_ds_qs + t.bn_ds_fcs + bn_ds_jyf +
+                t.bn_ds_wfsy + t.bn_ds_cjrjy + t.bn_ds_sljsxz +
+                t.bn_ds_yanys + t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+                t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+                2) -
+         round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+                t.qn_ds_tdzzs + t.qn_ds_dfjyf + t.qn_ds_cjs +
+                t.qn_ds_cztdsys + t.qn_ds_qs + t.qn_ds_fcs + qn_ds_jyf +
+                t.qn_ds_wfsy + t.qn_ds_cjrjy + t.qn_ds_sljsxz +
+                t.qn_ds_yanys + t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+                t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                2)) bn_zje,
+         case
+           when round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                      t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                      t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                      t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                      t.qn_ds_sljsxz + t.qn_ds_yanys + t.qn_ds_swbmfmsr +
+                      t.qn_ds_gdzts + t.qn_ds_yys + t.qn_ds_zys +
+                      t.qn_ds_ccs) / 10000,
+                      2) <![CDATA[<>]]> '0' then
+            round((round((t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr +
+                         t.bn_ds_yhs + t.bn_ds_tdzzs + t.bn_ds_dfjyf +
+                         t.bn_ds_cjs + t.bn_ds_cztdsys + t.bn_ds_qs +
+                         t.bn_ds_fcs + bn_ds_jyf + t.bn_ds_wfsy +
+                         t.bn_ds_cjrjy + t.bn_ds_sljsxz + t.bn_ds_yanys +
+                         t.bn_ds_swbmfmsr + t.bn_ds_gdzts + t.bn_ds_yys +
+                         t.bn_ds_zys + t.bn_ds_ccs) / 10000,
+                         2) -
+                  (round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                          t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                          t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                          t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy +
+                          t.qn_ds_cjrjy + t.qn_ds_sljsxz + t.qn_ds_yanys +
+                          t.qn_ds_swbmfmsr + t.qn_ds_gdzts + t.qn_ds_yys +
+                          t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                          2))) /
+                  (round((t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                         t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                         t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                         t.qn_ds_fcs + qn_ds_jyf + t.qn_ds_wfsy +
+                         t.qn_ds_cjrjy + t.qn_ds_sljsxz + t.qn_ds_yanys +
+                         t.qn_ds_swbmfmsr + t.qn_ds_gdzts + t.qn_ds_yys +
+                         t.qn_ds_zys + t.qn_ds_ccs) / 10000,
+                         2)) * 100,
+                  2)
+         
+           else
+            0
+         end bn_zf,
+         round(t.bn_ds_grsds / 10000, 2) bn_ds_grsds1,
+         round(t.qn_ds_grsds / 10000, 2) qn_ds_grsds1,
+         round(t.bn_ds_grsds / 10000, 2) - round(t.qn_ds_grsds / 10000, 2) grsds_zje,
+         case
+           when round(t.qn_ds_grsds / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_grsds / 10000, 2) -
+                  round(t.qn_ds_grsds / 10000, 2)) /
+                  round(t.qn_ds_grsds / 10000, 2) * 100,
+                  2)
+         
+           else
+            0
+         end grsds_zf,
+         round(t.bn_ds_qysds / 10000, 2) bn_ds_qysds,
+         round(t.qn_ds_qysds / 10000, 2) qn_ds_qysds,
+         round(t.bn_ds_qysds / 10000, 2) - round(t.qn_ds_qysds / 10000, 2) qysds_zje,
+         case
+           when round(t.qn_ds_qysds / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_qysds / 10000, 2) -
+                  round(t.qn_ds_qysds / 10000, 2)) /
+                  round(t.qn_ds_qysds / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end qysds_zf,
+         round(t.bn_ds_qtsr / 10000, 2) bn_ds_qtsr,
+         round(t.qn_ds_qtsr / 10000, 2) qn_ds_qtsr,
+         round(t.bn_ds_qtsr / 10000, 2) - round(t.qn_ds_qtsr / 10000, 2) qtsr_zje,
+         case
+           when round(t.qn_ds_qtsr / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_qtsr / 10000, 2) -
+                  round(t.qn_ds_qtsr / 10000, 2)) /
+                  round(t.qn_ds_qtsr / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end qtsr_zf,
+         round(t.bn_ds_yhs / 10000, 2) bn_ds_yhs,
+         round(t.qn_ds_yhs / 10000, 2) qn_ds_yhs,
+         round(t.bn_ds_yhs / 10000, 2) - round(t.qn_ds_yhs / 10000, 2) yhs_zje,
+         case
+           when round(t.qn_ds_yhs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_yhs / 10000, 2) -
+                  round(t.qn_ds_yhs / 10000, 2)) /
+                  round(t.qn_ds_yhs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end yhs_zf,
+         round(t.bn_ds_tdzzs / 10000, 2) bn_ds_tdzzs,
+         round(t.qn_ds_tdzzs / 10000, 2) qn_ds_tdzzs,
+         round(t.bn_ds_tdzzs / 10000, 2) - round(t.qn_ds_tdzzs / 10000, 2) tdzzs_zje,
+         case
+           when round(t.qn_ds_tdzzs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_tdzzs / 10000, 2) -
+                  round(t.qn_ds_tdzzs / 10000, 2)) /
+                  round(t.qn_ds_tdzzs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end tdzzs_zf,
+         round(t.bn_ds_dfjyf / 10000, 2) bn_ds_dfjyf,
+         round(t.qn_ds_dfjyf / 10000, 2) qn_ds_dfjyf,
+         round(t.bn_ds_dfjyf / 10000, 2) - round(t.qn_ds_dfjyf / 10000, 2) dfjyf_zje,
+         case
+           when round(t.qn_ds_dfjyf / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_dfjyf / 10000, 2) -
+                  round(t.qn_ds_dfjyf / 10000, 2)) /
+                  round(t.qn_ds_dfjyf / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end dfjyf_zf,
+         round(t.bn_ds_cjs / 10000, 2) bn_ds_cjs,
+         round(t.qn_ds_cjs / 10000, 2) qn_ds_cjs,
+         round(t.bn_ds_cjs / 10000, 2) - round(t.qn_ds_cjs / 10000, 2) cjs_zje,
+         case
+           when round(t.qn_ds_cjs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_cjs / 10000, 2) -
+                  round(t.qn_ds_cjs / 10000, 2)) /
+                  round(t.qn_ds_cjs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end cjs_zf,
+         round(t.bn_ds_cztdsys / 10000, 2) bn_ds_cztdsys,
+         round(t.qn_ds_cztdsys / 10000, 2) qn_ds_cztdsys,
+         round(t.bn_ds_cztdsys / 10000, 2) -
+         round(t.qn_ds_cztdsys / 10000, 2) cztdsys_zje,
+         case
+           when round(t.qn_ds_cztdsys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_cztdsys / 10000, 2) -
+                  round(t.qn_ds_cztdsys / 10000, 2)) /
+                  round(t.qn_ds_cztdsys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end cztdsys_zf,
+         round(t.bn_ds_qs / 10000, 2) bn_ds_qs,
+         round(t.qn_ds_qs / 10000, 2) qn_ds_qs,
+         round(t.bn_ds_qs / 10000, 2) - round(t.qn_ds_qs / 10000, 2) qs_zje,
+         case
+           when round(t.qn_ds_qs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_qs / 10000, 2) -
+                  round(t.qn_ds_qs / 10000, 2)) /
+                  round(t.qn_ds_qs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end qs_zf,
+         round(t.bn_ds_fcs / 10000, 2) bn_ds_fcs,
+         round(t.qn_ds_fcs / 10000, 2) qn_ds_fcs,
+         round(t.bn_ds_fcs / 10000, 2) - round(t.qn_ds_fcs / 10000, 2) fcs_zje,
+         case
+           when round(t.qn_ds_fcs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_fcs / 10000, 2) -
+                  round(t.qn_ds_fcs / 10000, 2)) /
+                  round(t.qn_ds_fcs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end fcs_zf,
+         round(t.bn_ds_jyf / 10000, 2) bn_ds_jyf,
+         round(t.qn_ds_jyf / 10000, 2) qn_ds_jyf,
+         round(t.bn_ds_jyf / 10000, 2) - round(t.qn_ds_jyf / 10000, 2) jyf_zje,
+         case
+           when round(t.qn_ds_jyf / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_jyf / 10000, 2) -
+                  round(t.qn_ds_jyf / 10000, 2)) /
+                  round(t.qn_ds_jyf / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end jyf_zf,
+         round(t.bn_ds_wfsy / 10000, 2) bn_ds_wfsy,
+         round(t.qn_ds_wfsy / 10000, 2) qn_ds_wfsy,
+         round(t.bn_ds_wfsy / 10000, 2) - round(t.qn_ds_wfsy / 10000, 2) wfsy_zje,
+         case
+           when round(t.qn_ds_wfsy / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_wfsy / 10000, 2) -
+                  round(t.qn_ds_wfsy / 10000, 2)) /
+                  round(t.qn_ds_wfsy / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end wfsy_zf,
+         round(t.bn_ds_cjrjy / 10000, 2) bn_ds_cjrjy,
+         round(t.qn_ds_cjrjy / 10000, 2) qn_ds_cjrjy,
+         round(t.bn_ds_cjrjy / 10000, 2) - round(t.qn_ds_cjrjy / 10000, 2) cjrjy_zje,
+         case
+           when round(t.qn_ds_cjrjy / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_cjrjy / 10000, 2) -
+                  round(t.qn_ds_cjrjy / 10000, 2)) /
+                  round(t.qn_ds_cjrjy / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end cjrjy_zf,
+         round(t.bn_ds_sljsxz / 10000, 2) bn_ds_sljsxz,
+         round(t.qn_ds_sljsxz / 10000, 2) qn_ds_sljsxz,
+         round(t.bn_ds_sljsxz / 10000, 2) - round(t.qn_ds_sljsxz / 10000, 2) sljsxz_zje,
+         case
+           when round(t.qn_ds_sljsxz / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_sljsxz / 10000, 2) -
+                  round(t.qn_ds_sljsxz / 10000, 2)) /
+                  round(t.qn_ds_sljsxz / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end sljsxz_zf,
+         round(t.bn_ds_yanys / 10000, 2) bn_ds_yanys,
+         round(t.qn_ds_yanys / 10000, 2) qn_ds_yanys,
+         round(t.bn_ds_yanys / 10000, 2) - round(t.qn_ds_yanys / 10000, 2) yanys_zje,
+         case
+           when round(t.qn_ds_yanys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_yanys / 10000, 2) -
+                  round(t.qn_ds_yanys / 10000, 2)) /
+                  round(t.qn_ds_yanys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end yanys_zf,
+         round(t.bn_ds_swbmfmsr / 10000, 2) bn_ds_swbmfmsr,
+         round(t.qn_ds_swbmfmsr / 10000, 2) qn_ds_swbmfmsr,
+         round(t.bn_ds_swbmfmsr / 10000, 2) -
+         round(t.qn_ds_swbmfmsr / 10000, 2) swbmfmsr_zje,
+         case
+           when round(t.qn_ds_swbmfmsr / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_swbmfmsr / 10000, 2) -
+                  round(t.qn_ds_swbmfmsr / 10000, 2)) /
+                  round(t.qn_ds_swbmfmsr / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end swbmfmsr_zf,
+         round(t.bn_ds_gdzts / 10000, 2) bn_ds_gdzts,
+         round(t.qn_ds_gdzts / 10000, 2) qn_ds_gdzts,
+         round(t.bn_ds_gdzts / 10000, 2) - round(t.qn_ds_gdzts / 10000, 2) gdzts_zje,
+         case
+           when round(t.qn_ds_gdzts / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_gdzts / 10000, 2) -
+                  round(t.qn_ds_gdzts / 10000, 2)) /
+                  round(t.qn_ds_gdzts / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end gdzts_zf,
+         round(t.bn_ds_yys / 10000, 2) bn_ds_yys,
+         round(t.qn_ds_yys / 10000, 2) qn_ds_yys,
+         round(t.bn_ds_yys / 10000, 2) - round(t.qn_ds_yys / 10000, 2) yys_zje,
+         case
+           when round(t.qn_ds_yys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_yys / 10000, 2) -
+                  round(t.qn_ds_yys / 10000, 2)) /
+                  round(t.qn_ds_yys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end yys_zf,
+         round(t.bn_ds_zys / 10000, 2) bn_ds_zys,
+         round(t.qn_ds_zys / 10000, 2) qn_ds_zys,
+         round(t.bn_ds_zys / 10000, 2) - round(t.qn_ds_zys / 10000, 2) zys_zje,
+         case
+           when round(t.qn_ds_zys / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_zys / 10000, 2) -
+                  round(t.qn_ds_zys / 10000, 2)) /
+                  round(t.qn_ds_zys / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end zys_zf,
+         round(t.bn_ds_ccs / 10000, 2) bn_ds_ccs,
+         round(t.qn_ds_ccs / 10000, 2) qn_ds_ccs,
+         round(t.bn_ds_ccs / 10000, 2) - round(t.qn_ds_ccs / 10000, 2) ccs_zje,
+         case
+           when round(t.qn_ds_ccs / 10000, 2) <![CDATA[<>]]> '0' then
+            round((round(t.bn_ds_ccs / 10000, 2) -
+                  round(t.qn_ds_ccs / 10000, 2)) /
+                  round(t.qn_ds_ccs / 10000, 2) * 100,
+                  2)
+           else
+            0
+         end ccs_zf
+          from (select company_id,
+                       sum(BN_DS_GRSDS) bn_ds_grsds,
+                       sum(BN_DS_QYSDS) bn_ds_qysds,
+                       sum(BN_DS_QTSR) bn_ds_qtsr,
+                       sum(BN_DS_YHS) bn_ds_yhs,
+                       sum(BN_DS_TDZZS) bn_ds_tdzzs,
+                       sum(BN_DS_DFJYF) bn_ds_dfjyf,
+                       sum(BN_DS__CJS) bn_ds_cjs,
+                       sum(BN_DS_CZTDSYS) bn_ds_cztdsys,
+                       sum(BN_DS_QS) bn_ds_qs,
+                       sum(BN_DS_FCS) bn_ds_fcs,
+                       sum(BN_DS_JYF) bn_ds_jyf,
+                       sum(BN_DS_WFSY) bn_ds_wfsy,
+                       sum(BN_DS_CJRJY) bn_ds_cjrjy,
+                       sum(BN_DS_SLJSZX) bn_ds_sljsxz,
+                       sum(BN_DS_YANYS) bn_ds_yanys,
+                       sum(BN_DS_SWBMFMSR) bn_ds_swbmfmsr,
+                       sum(BN_DS_GDZTS) bn_ds_gdzts,
+                       sum(BN_DS_YYS) bn_ds_yys,
+                       sum(BN_DS_ZYS) bn_ds_zys,
+                       sum(BN_DS_CCS) bn_ds_ccs,
+                       
+                       sum(QN_DS_GRSDS) qn_ds_grsds,
+                       sum(QN_DS_QYSDS) qn_ds_qysds,
+                       sum(QN_DS_QTSR) qn_ds_qtsr,
+                       sum(QN_DS_YHS) qn_ds_yhs,
+                       sum(QN_DS_TDZZS) qn_ds_tdzzs,
+                       sum(QN_DS_DFJYF) qn_ds_dfjyf,
+                       sum(QN_DS__CJS) qn_ds_cjs,
+                       sum(QN_DS_CZTDSYS) qn_ds_cztdsys,
+                       sum(QN_DS_QS) qn_ds_qs,
+                       sum(QN_DS_FCS) qn_ds_fcs,
+                       sum(QN_DS_JYF) qn_ds_jyf,
+                       sum(QN_DS_WFSY) qn_ds_wfsy,
+                       sum(QN_DS_CJRJY) qn_ds_cjrjy,
+                       sum(QN_DS_SLJSZX) qn_ds_sljsxz,
+                       sum(QN_DS_YANYS) qn_ds_yanys,
+                       sum(QN_DS_SWBMFMSR) qn_ds_swbmfmsr,
+                       sum(QN_DS_GDZTS) qn_ds_gdzts,
+                       sum(QN_DS_YYS) qn_ds_yys,
+                       sum(QN_DS_ZYS) qn_ds_zys,
+                       sum(QN_DS_CCS) qn_ds_ccs
+                
+                  from  sys_company_tax_info where 
+                  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	  k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  </if>
+  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  </if>
+                 group by company_id
+                 order by bn_ds_grsds desc) t
+          left join sys_company_info t1
+            on t.company_id = t1.id
+         order by bn_wcs desc) k
+
+  left join (select max(zclxdl_code) zclxdl_code,
+                    zclx_name,
+                    max(show_name) show_name
+               from sys_zd_zclx
+              group by zclx_name) k1
+    on k.company_type = k1.zclx_name
+ where k1.zclxdl_code not in ('4', '5')
+
+ </select>
+<!-- 查询省直地税记录数 -->
+  <select id="countSZLocalPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+  select count(1) from(
+ 	select company_id company_id,nsrmc nsrmc,bn_wcs ljwcs,zje ljzje,szsds_zf ljzf,bn_wcs hlwcs,zje hlzje,szsds_zf hlzf from (select t.company_id company_id,
+       t1.name nsrmc,
+       t1.area_name area_name,
+       (t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs + t.bn_gs_cljjsr +
+       t.bn_gs_whsyf + t.bn_gs_xfs + t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+       t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+       t.bn_ds_tdzzs+t.bn_ds_dfjyf+t.bn_ds_cjs+t.bn_ds_cztdsys+t.bn_ds_qs+t.bn_ds_fcs
+       +t.bn_ds_jyf+t.bn_ds_wfsy+t.bn_ds_cjrjy+t.bn_ds_sljszx+t.bn_ds_yanys+t.bn_ds_swbmfmsr+
+       t.bn_ds_gdzts+t.bn_ds_yys+t.bn_ds_zys+t.bn_ds_ccs+t.bn_hg_jkgs+t.bn_hg_jkzzs) bn_wcs,
+         (t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs) qn_wcs,
+       round(((t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs + t.bn_gs_cljjsr +
+       t.bn_gs_whsyf + t.bn_gs_xfs + t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+       t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+       t.bn_ds_tdzzs+t.bn_ds_dfjyf+t.bn_ds_cjs+t.bn_ds_cztdsys+t.bn_ds_qs+t.bn_ds_fcs
+       +t.bn_ds_jyf+t.bn_ds_wfsy+t.bn_ds_cjrjy+t.bn_ds_sljszx+t.bn_ds_yanys+t.bn_ds_swbmfmsr+
+       t.bn_ds_gdzts+t.bn_ds_yys+t.bn_ds_zys+t.bn_ds_ccs+t.bn_hg_jkgs+t.bn_hg_jkzzs)-(t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs))/10000,2) zje,
+       
+       case
+           when round((t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs)/10000, 2)  <![CDATA[<>]]>  '0' then
+            to_char(round((((t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs + t.bn_gs_cljjsr +
+       t.bn_gs_whsyf + t.bn_gs_xfs + t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+       t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+       t.bn_ds_tdzzs+t.bn_ds_dfjyf+t.bn_ds_cjs+t.bn_ds_cztdsys+t.bn_ds_qs+t.bn_ds_fcs
+       +t.bn_ds_jyf+t.bn_ds_wfsy+t.bn_ds_cjrjy+t.bn_ds_sljszx+t.bn_ds_yanys+t.bn_ds_swbmfmsr+
+       t.bn_ds_gdzts+t.bn_ds_yys+t.bn_ds_zys+t.bn_ds_ccs+t.bn_hg_jkgs+t.bn_hg_jkzzs)-(t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs))/(t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs))/10000 * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end szsds_zf
+       
+       
+  from ((select COMPANY_ID company_id,
+                sum(BN_GS_GRSDS) bn_gs_grsds,
+                sum(BN_GS_QYSDS) bn_gs_qysds,
+                sum(BN_GS_ZZS) bn_gs_zzs,
+                sum(BN_GS_CLJJSR) bn_gs_cljjsr,
+                sum(BN_GS_WHSYF) bn_gs_whsyf,
+                sum(BN_GS_XFS) bn_gs_xfs,
+                sum(BN_GS_SWBMFMSR) bn_gs_swbmfmsr,
+                sum(BN_GS_CLGZS) bn_gs_clgzs,
+                sum(BN_DS_GRSDS) bn_ds_grsds,
+                sum(BN_DS_QYSDS) bn_ds_qysds,
+                sum(BN_DS_QTSR) bn_ds_qtsr,
+                sum(BN_DS_YHS) bn_ds_yhs,
+                sum(BN_DS_TDZZS) bn_ds_tdzzs,
+                sum(BN_DS_DFJYF) bn_ds_dfjyf,
+                sum(BN_DS__CJS) bn_ds_cjs,
+                sum(BN_DS_CZTDSYS) bn_ds_cztdsys,
+                sum(BN_DS_QS) bn_ds_qs,
+                sum(BN_DS_FCS) bn_ds_fcs,
+                sum(BN_DS_JYF) bn_ds_jyf,
+                sum(BN_DS_WFSY) bn_ds_wfsy,
+                sum(BN_DS_CJRJY) bn_ds_cjrjy,
+                sum(BN_DS_SLJSZX) bn_ds_sljszx,
+                sum(BN_DS_YANYS) bn_ds_yanys,
+                sum(BN_DS_SWBMFMSR) bn_ds_swbmfmsr,
+                sum(BN_DS_GDZTS) bn_ds_gdzts,
+                sum(BN_DS_YYS) bn_ds_yys,
+                sum(BN_DS_ZYS) bn_ds_zys,
+                sum(BN_DS_CCS) bn_ds_ccs,
+                sum(BN_HG_JKGS) bn_hg_jkgs,
+                sum(BN_HG_JKZZS) bn_hg_jkzzs,
+                
+                sum(QN_GS_GRSDS) qn_gs_grsds,
+                sum(QN_GS_QYSDS) qn_gs_qysds,
+                sum(QN_GS_ZZS) qn_gs_zzs,
+                sum(QN_GS_CLJJSR) qn_gs_cljjsr,
+                sum(QN_GS_WHSYF) qn_gs_whsyf,
+                sum(QN_GS_XFS) qn_gs_xfs,
+                sum(QN_GS_SWBMFMSR) qn_gs_swbmfmsr,
+                sum(QN_GS_CLGZS) qn_gs_clgzs,
+                sum(QN_DS_GRSDS) qn_ds_grsds,
+                sum(QN_DS_QYSDS) qn_ds_qysds,
+                sum(QN_DS_QTSR) qn_ds_qtsr,
+                sum(QN_DS_YHS) qn_ds_yhs,
+                sum(QN_DS_TDZZS) qn_ds_tdzzs,
+                sum(QN_DS_DFJYF) qn_ds_dfjyf,
+                sum(QN_DS__CJS) qn_ds_cjs,
+                sum(QN_DS_CZTDSYS) qn_ds_cztdsys,
+                sum(QN_DS_QS) qn_ds_qs,
+                sum(QN_DS_FCS) qn_ds_fcs,
+                sum(QN_DS_JYF) qn_ds_jyf,
+                sum(QN_DS_WFSY) qn_ds_wfsy,
+                sum(QN_DS_CJRJY) qn_ds_cjrjy,
+                sum(QN_DS_SLJSZX) qn_ds_sljszx,
+                sum(QN_DS_YANYS) qn_ds_yanys,
+                sum(QN_DS_SWBMFMSR) qn_ds_swbmfmsr,
+                sum(QN_DS_GDZTS) qn_ds_gdzts,
+                sum(QN_DS_YYS) qn_ds_yys,
+                sum(QN_DS_ZYS) qn_ds_zys,
+                sum(QN_DS_CCS) qn_ds_ccs,
+                sum(QN_HG_JKGS) qn_hg_jkgs,
+                sum(QN_HG_JKZZS) qn_hg_jkzzs
+           from sys_company_tax_info where  
+           	<if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	 	 k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  	</if>
+  	<if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 	and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  	</if>
+          group by company_id
+          order by bn_gs_grsds desc) t left join sys_company_info t1 on
+        t1.id = t.company_id)
+ where t1.name like '%海螺%')
+
+	<if test="queryBean!=null">
+  	<if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 	and nsrmc LIKE '%'||#{queryBean.nsrmc}||'%'   
+  	</if>
+  	</if>
+  	)
+  </select> 
+  <!-- 查询省直地税列表 -->
+  <select id="selectSZLocalPage" parameterType="com.ahcd.pojo.Page" resultType="Map">
+  
+  select *
+  from  (select a.*, rownum rnum
+  from (
+	select company_id company_id,nsrmc nsrmc,bn_wcs ljwcs,zje ljzje,szsds_zf ljzf,bn_wcs hlwcs,zje hlzje,szsds_zf hlzf from (select t.company_id company_id,
+       t1.name nsrmc,
+       t1.area_name area_name,
+       (t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs + t.bn_gs_cljjsr +
+       t.bn_gs_whsyf + t.bn_gs_xfs + t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+       t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+       t.bn_ds_tdzzs+t.bn_ds_dfjyf+t.bn_ds_cjs+t.bn_ds_cztdsys+t.bn_ds_qs+t.bn_ds_fcs
+       +t.bn_ds_jyf+t.bn_ds_wfsy+t.bn_ds_cjrjy+t.bn_ds_sljszx+t.bn_ds_yanys+t.bn_ds_swbmfmsr+
+       t.bn_ds_gdzts+t.bn_ds_yys+t.bn_ds_zys+t.bn_ds_ccs+t.bn_hg_jkgs+t.bn_hg_jkzzs) bn_wcs,
+         (t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs) qn_wcs,
+       round(((t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs + t.bn_gs_cljjsr +
+       t.bn_gs_whsyf + t.bn_gs_xfs + t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+       t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+       t.bn_ds_tdzzs+t.bn_ds_dfjyf+t.bn_ds_cjs+t.bn_ds_cztdsys+t.bn_ds_qs+t.bn_ds_fcs
+       +t.bn_ds_jyf+t.bn_ds_wfsy+t.bn_ds_cjrjy+t.bn_ds_sljszx+t.bn_ds_yanys+t.bn_ds_swbmfmsr+
+       t.bn_ds_gdzts+t.bn_ds_yys+t.bn_ds_zys+t.bn_ds_ccs+t.bn_hg_jkgs+t.bn_hg_jkzzs)-(t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs))/10000,2) zje,
+       
+       case
+           when round((t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs)/10000, 2)  <![CDATA[<>]]>  '0' then
+            to_char(round((((t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs + t.bn_gs_cljjsr +
+       t.bn_gs_whsyf + t.bn_gs_xfs + t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+       t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr + t.bn_ds_yhs +
+       t.bn_ds_tdzzs+t.bn_ds_dfjyf+t.bn_ds_cjs+t.bn_ds_cztdsys+t.bn_ds_qs+t.bn_ds_fcs
+       +t.bn_ds_jyf+t.bn_ds_wfsy+t.bn_ds_cjrjy+t.bn_ds_sljszx+t.bn_ds_yanys+t.bn_ds_swbmfmsr+
+       t.bn_ds_gdzts+t.bn_ds_yys+t.bn_ds_zys+t.bn_ds_ccs+t.bn_hg_jkgs+t.bn_hg_jkzzs)-(t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs))/(t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs + t.qn_gs_cljjsr +
+       t.qn_gs_whsyf + t.qn_gs_xfs + t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+       t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr + t.qn_ds_yhs +
+       t.qn_ds_tdzzs+t.qn_ds_dfjyf+t.qn_ds_cjs+t.qn_ds_cztdsys+t.qn_ds_qs+t.qn_ds_fcs
+       +t.qn_ds_jyf+t.qn_ds_wfsy+t.qn_ds_cjrjy+t.qn_ds_sljszx+t.qn_ds_yanys+t.qn_ds_swbmfmsr+
+       t.qn_ds_gdzts+t.qn_ds_yys+t.qn_ds_zys+t.qn_ds_ccs+t.qn_hg_jkgs+t.qn_hg_jkzzs))/10000 * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end szsds_zf
+       
+       
+  from ((select COMPANY_ID company_id,
+                sum(BN_GS_GRSDS) bn_gs_grsds,
+                sum(BN_GS_QYSDS) bn_gs_qysds,
+                sum(BN_GS_ZZS) bn_gs_zzs,
+                sum(BN_GS_CLJJSR) bn_gs_cljjsr,
+                sum(BN_GS_WHSYF) bn_gs_whsyf,
+                sum(BN_GS_XFS) bn_gs_xfs,
+                sum(BN_GS_SWBMFMSR) bn_gs_swbmfmsr,
+                sum(BN_GS_CLGZS) bn_gs_clgzs,
+                sum(BN_DS_GRSDS) bn_ds_grsds,
+                sum(BN_DS_QYSDS) bn_ds_qysds,
+                sum(BN_DS_QTSR) bn_ds_qtsr,
+                sum(BN_DS_YHS) bn_ds_yhs,
+                sum(BN_DS_TDZZS) bn_ds_tdzzs,
+                sum(BN_DS_DFJYF) bn_ds_dfjyf,
+                sum(BN_DS__CJS) bn_ds_cjs,
+                sum(BN_DS_CZTDSYS) bn_ds_cztdsys,
+                sum(BN_DS_QS) bn_ds_qs,
+                sum(BN_DS_FCS) bn_ds_fcs,
+                sum(BN_DS_JYF) bn_ds_jyf,
+                sum(BN_DS_WFSY) bn_ds_wfsy,
+                sum(BN_DS_CJRJY) bn_ds_cjrjy,
+                sum(BN_DS_SLJSZX) bn_ds_sljszx,
+                sum(BN_DS_YANYS) bn_ds_yanys,
+                sum(BN_DS_SWBMFMSR) bn_ds_swbmfmsr,
+                sum(BN_DS_GDZTS) bn_ds_gdzts,
+                sum(BN_DS_YYS) bn_ds_yys,
+                sum(BN_DS_ZYS) bn_ds_zys,
+                sum(BN_DS_CCS) bn_ds_ccs,
+                sum(BN_HG_JKGS) bn_hg_jkgs,
+                sum(BN_HG_JKZZS) bn_hg_jkzzs,
+                
+                sum(QN_GS_GRSDS) qn_gs_grsds,
+                sum(QN_GS_QYSDS) qn_gs_qysds,
+                sum(QN_GS_ZZS) qn_gs_zzs,
+                sum(QN_GS_CLJJSR) qn_gs_cljjsr,
+                sum(QN_GS_WHSYF) qn_gs_whsyf,
+                sum(QN_GS_XFS) qn_gs_xfs,
+                sum(QN_GS_SWBMFMSR) qn_gs_swbmfmsr,
+                sum(QN_GS_CLGZS) qn_gs_clgzs,
+                sum(QN_DS_GRSDS) qn_ds_grsds,
+                sum(QN_DS_QYSDS) qn_ds_qysds,
+                sum(QN_DS_QTSR) qn_ds_qtsr,
+                sum(QN_DS_YHS) qn_ds_yhs,
+                sum(QN_DS_TDZZS) qn_ds_tdzzs,
+                sum(QN_DS_DFJYF) qn_ds_dfjyf,
+                sum(QN_DS__CJS) qn_ds_cjs,
+                sum(QN_DS_CZTDSYS) qn_ds_cztdsys,
+                sum(QN_DS_QS) qn_ds_qs,
+                sum(QN_DS_FCS) qn_ds_fcs,
+                sum(QN_DS_JYF) qn_ds_jyf,
+                sum(QN_DS_WFSY) qn_ds_wfsy,
+                sum(QN_DS_CJRJY) qn_ds_cjrjy,
+                sum(QN_DS_SLJSZX) qn_ds_sljszx,
+                sum(QN_DS_YANYS) qn_ds_yanys,
+                sum(QN_DS_SWBMFMSR) qn_ds_swbmfmsr,
+                sum(QN_DS_GDZTS) qn_ds_gdzts,
+                sum(QN_DS_YYS) qn_ds_yys,
+                sum(QN_DS_ZYS) qn_ds_zys,
+                sum(QN_DS_CCS) qn_ds_ccs,
+                sum(QN_HG_JKGS) qn_hg_jkgs,
+                sum(QN_HG_JKZZS) qn_hg_jkzzs
+           from sys_company_tax_info where  
+           	<if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	 	 k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  	</if>
+  	<if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 	and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  	</if>
+          group by company_id
+          order by bn_gs_grsds desc) t left join sys_company_info t1 on
+        t1.id = t.company_id)
+ where t1.name like '%海螺%')
+
+	<if test="queryBean!=null">
+  	<if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 	and nsrmc LIKE '%'||#{queryBean.nsrmc}||'%'   
+  	</if>
+  	</if>
+  	)
+  	 a
+	<if test="endRow !=null">
+	where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+  )
+	<if test="beginRow !=null">
+	where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  <!-- 查询省直地税总计 -->
+  <select id="selectSZLocalSum" parameterType="com.ahcd.pojo.Page" resultType="Map">
+  select sum(ljwcs) ljwcs,sum(ljzje) ljzje,sum(ljzf) ljzf,sum(hlwcs) hlwcs,sum(hlzje) hlzje,sum(hlzf) hlzf from (select company_id company_id,
+                       nsrmc      nsrmc,
+                       bn_wcs     ljwcs,
+                       zje        ljzje,
+                       szsds_zf   ljzf,
+                       bn_wcs     hlwcs,
+                       zje        hlzje,
+                       szsds_zf   hlzf
+                  from (select t.company_id company_id,
+                               t1.name nsrmc,
+                               t1.area_name area_name,
+                               (t.bn_gs_grsds + t.bn_gs_qysds + t.bn_gs_zzs +
+                               t.bn_gs_cljjsr + t.bn_gs_whsyf + t.bn_gs_xfs +
+                               t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+                               t.bn_ds_grsds + t.bn_ds_qysds + t.bn_ds_qtsr +
+                               t.bn_ds_yhs + t.bn_ds_tdzzs + t.bn_ds_dfjyf +
+                               t.bn_ds_cjs + t.bn_ds_cztdsys + t.bn_ds_qs +
+                               t.bn_ds_fcs + t.bn_ds_jyf + t.bn_ds_wfsy +
+                               t.bn_ds_cjrjy + t.bn_ds_sljszx + t.bn_ds_yanys +
+                               t.bn_ds_swbmfmsr + t.bn_ds_gdzts + t.bn_ds_yys +
+                               t.bn_ds_zys + t.bn_ds_ccs + t.bn_hg_jkgs +
+                               t.bn_hg_jkzzs) bn_wcs,
+                               (t.qn_gs_grsds + t.qn_gs_qysds + t.qn_gs_zzs +
+                               t.qn_gs_cljjsr + t.qn_gs_whsyf + t.qn_gs_xfs +
+                               t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+                               t.qn_ds_grsds + t.qn_ds_qysds + t.qn_ds_qtsr +
+                               t.qn_ds_yhs + t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                               t.qn_ds_cjs + t.qn_ds_cztdsys + t.qn_ds_qs +
+                               t.qn_ds_fcs + t.qn_ds_jyf + t.qn_ds_wfsy +
+                               t.qn_ds_cjrjy + t.qn_ds_sljszx + t.qn_ds_yanys +
+                               t.qn_ds_swbmfmsr + t.qn_ds_gdzts + t.qn_ds_yys +
+                               t.qn_ds_zys + t.qn_ds_ccs + t.qn_hg_jkgs +
+                               t.qn_hg_jkzzs) qn_wcs,
+                               round(((t.bn_gs_grsds + t.bn_gs_qysds +
+                                     t.bn_gs_zzs + t.bn_gs_cljjsr +
+                                     t.bn_gs_whsyf + t.bn_gs_xfs +
+                                     t.bn_gs_swbmfmsr + t.bn_gs_clgzs +
+                                     t.bn_ds_grsds + t.bn_ds_qysds +
+                                     t.bn_ds_qtsr + t.bn_ds_yhs +
+                                     t.bn_ds_tdzzs + t.bn_ds_dfjyf +
+                                     t.bn_ds_cjs + t.bn_ds_cztdsys +
+                                     t.bn_ds_qs + t.bn_ds_fcs + t.bn_ds_jyf +
+                                     t.bn_ds_wfsy + t.bn_ds_cjrjy +
+                                     t.bn_ds_sljszx + t.bn_ds_yanys +
+                                     t.bn_ds_swbmfmsr + t.bn_ds_gdzts +
+                                     t.bn_ds_yys + t.bn_ds_zys + t.bn_ds_ccs +
+                                     t.bn_hg_jkgs + t.bn_hg_jkzzs) -
+                                     (t.qn_gs_grsds + t.qn_gs_qysds +
+                                     t.qn_gs_zzs + t.qn_gs_cljjsr +
+                                     t.qn_gs_whsyf + t.qn_gs_xfs +
+                                     t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+                                     t.qn_ds_grsds + t.qn_ds_qysds +
+                                     t.qn_ds_qtsr + t.qn_ds_yhs +
+                                     t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                                     t.qn_ds_cjs + t.qn_ds_cztdsys +
+                                     t.qn_ds_qs + t.qn_ds_fcs + t.qn_ds_jyf +
+                                     t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                                     t.qn_ds_sljszx + t.qn_ds_yanys +
+                                     t.qn_ds_swbmfmsr + t.qn_ds_gdzts +
+                                     t.qn_ds_yys + t.qn_ds_zys + t.qn_ds_ccs +
+                                     t.qn_hg_jkgs + t.qn_hg_jkzzs)) / 10000,
+                                     2) zje,
+                               case
+                                 when round((t.qn_gs_grsds + t.qn_gs_qysds +
+                                            t.qn_gs_zzs + t.qn_gs_cljjsr +
+                                            t.qn_gs_whsyf + t.qn_gs_xfs +
+                                            t.qn_gs_swbmfmsr + t.qn_gs_clgzs +
+                                            t.qn_ds_grsds + t.qn_ds_qysds +
+                                            t.qn_ds_qtsr + t.qn_ds_yhs +
+                                            t.qn_ds_tdzzs + t.qn_ds_dfjyf +
+                                            t.qn_ds_cjs + t.qn_ds_cztdsys +
+                                            t.qn_ds_qs + t.qn_ds_fcs +
+                                            t.qn_ds_jyf + t.qn_ds_wfsy +
+                                            t.qn_ds_cjrjy + t.qn_ds_sljszx +
+                                            t.qn_ds_yanys + t.qn_ds_swbmfmsr +
+                                            t.qn_ds_gdzts + t.qn_ds_yys +
+                                            t.qn_ds_zys + t.qn_ds_ccs +
+                                            t.qn_hg_jkgs + t.qn_hg_jkzzs) /
+                                            10000,
+                                            2) <![CDATA[<>]]> '0' then
+                                 round((((t.bn_gs_grsds +
+                                                t.bn_gs_qysds + t.bn_gs_zzs +
+                                                t.bn_gs_cljjsr +
+                                                t.bn_gs_whsyf + t.bn_gs_xfs +
+                                                t.bn_gs_swbmfmsr +
+                                                t.bn_gs_clgzs +
+                                                t.bn_ds_grsds +
+                                                t.bn_ds_qysds + t.bn_ds_qtsr +
+                                                t.bn_ds_yhs + t.bn_ds_tdzzs +
+                                                t.bn_ds_dfjyf + t.bn_ds_cjs +
+                                                t.bn_ds_cztdsys + t.bn_ds_qs +
+                                                t.bn_ds_fcs + t.bn_ds_jyf +
+                                                t.bn_ds_wfsy + t.bn_ds_cjrjy +
+                                                t.bn_ds_sljszx +
+                                                t.bn_ds_yanys +
+                                                t.bn_ds_swbmfmsr +
+                                                t.bn_ds_gdzts + t.bn_ds_yys +
+                                                t.bn_ds_zys + t.bn_ds_ccs +
+                                                t.bn_hg_jkgs + t.bn_hg_jkzzs) -
+                                                (t.qn_gs_grsds +
+                                                t.qn_gs_qysds + t.qn_gs_zzs +
+                                                t.qn_gs_cljjsr +
+                                                t.qn_gs_whsyf + t.qn_gs_xfs +
+                                                t.qn_gs_swbmfmsr +
+                                                t.qn_gs_clgzs +
+                                                t.qn_ds_grsds +
+                                                t.qn_ds_qysds + t.qn_ds_qtsr +
+                                                t.qn_ds_yhs + t.qn_ds_tdzzs +
+                                                t.qn_ds_dfjyf + t.qn_ds_cjs +
+                                                t.qn_ds_cztdsys + t.qn_ds_qs +
+                                                t.qn_ds_fcs + t.qn_ds_jyf +
+                                                t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                                                t.qn_ds_sljszx +
+                                                t.qn_ds_yanys +
+                                                t.qn_ds_swbmfmsr +
+                                                t.qn_ds_gdzts + t.qn_ds_yys +
+                                                t.qn_ds_zys + t.qn_ds_ccs +
+                                                t.qn_hg_jkgs + t.qn_hg_jkzzs)) /
+                                                (t.qn_gs_grsds + t.qn_gs_qysds +
+                                                t.qn_gs_zzs + t.qn_gs_cljjsr +
+                                                t.qn_gs_whsyf + t.qn_gs_xfs +
+                                                t.qn_gs_swbmfmsr +
+                                                t.qn_gs_clgzs + t.qn_ds_grsds +
+                                                t.qn_ds_qysds + t.qn_ds_qtsr +
+                                                t.qn_ds_yhs + t.qn_ds_tdzzs +
+                                                t.qn_ds_dfjyf + t.qn_ds_cjs +
+                                                t.qn_ds_cztdsys + t.qn_ds_qs +
+                                                t.qn_ds_fcs + t.qn_ds_jyf +
+                                                t.qn_ds_wfsy + t.qn_ds_cjrjy +
+                                                t.qn_ds_sljszx +
+                                                t.qn_ds_yanys +
+                                                t.qn_ds_swbmfmsr +
+                                                t.qn_ds_gdzts + t.qn_ds_yys +
+                                                t.qn_ds_zys + t.qn_ds_ccs +
+                                                t.qn_hg_jkgs + t.qn_hg_jkzzs)) /
+                                                10000 * 100,
+                                                2)
+                                         
+                                 else
+                                  0
+                               end szsds_zf
+                          from ((select COMPANY_ID company_id,
+                                        sum(BN_GS_GRSDS) bn_gs_grsds,
+                                        sum(BN_GS_QYSDS) bn_gs_qysds,
+                                        sum(BN_GS_ZZS) bn_gs_zzs,
+                                        sum(BN_GS_CLJJSR) bn_gs_cljjsr,
+                                        sum(BN_GS_WHSYF) bn_gs_whsyf,
+                                        sum(BN_GS_XFS) bn_gs_xfs,
+                                        sum(BN_GS_SWBMFMSR) bn_gs_swbmfmsr,
+                                        sum(BN_GS_CLGZS) bn_gs_clgzs,
+                                        sum(BN_DS_GRSDS) bn_ds_grsds,
+                                        sum(BN_DS_QYSDS) bn_ds_qysds,
+                                        sum(BN_DS_QTSR) bn_ds_qtsr,
+                                        sum(BN_DS_YHS) bn_ds_yhs,
+                                        sum(BN_DS_TDZZS) bn_ds_tdzzs,
+                                        sum(BN_DS_DFJYF) bn_ds_dfjyf,
+                                        sum(BN_DS__CJS) bn_ds_cjs,
+                                        sum(BN_DS_CZTDSYS) bn_ds_cztdsys,
+                                        sum(BN_DS_QS) bn_ds_qs,
+                                        sum(BN_DS_FCS) bn_ds_fcs,
+                                        sum(BN_DS_JYF) bn_ds_jyf,
+                                        sum(BN_DS_WFSY) bn_ds_wfsy,
+                                        sum(BN_DS_CJRJY) bn_ds_cjrjy,
+                                        sum(BN_DS_SLJSZX) bn_ds_sljszx,
+                                        sum(BN_DS_YANYS) bn_ds_yanys,
+                                        sum(BN_DS_SWBMFMSR) bn_ds_swbmfmsr,
+                                        sum(BN_DS_GDZTS) bn_ds_gdzts,
+                                        sum(BN_DS_YYS) bn_ds_yys,
+                                        sum(BN_DS_ZYS) bn_ds_zys,
+                                        sum(BN_DS_CCS) bn_ds_ccs,
+                                        sum(BN_HG_JKGS) bn_hg_jkgs,
+                                        sum(BN_HG_JKZZS) bn_hg_jkzzs,
+                                        sum(QN_GS_GRSDS) qn_gs_grsds,
+                                        sum(QN_GS_QYSDS) qn_gs_qysds,
+                                        sum(QN_GS_ZZS) qn_gs_zzs,
+                                        sum(QN_GS_CLJJSR) qn_gs_cljjsr,
+                                        sum(QN_GS_WHSYF) qn_gs_whsyf,
+                                        sum(QN_GS_XFS) qn_gs_xfs,
+                                        sum(QN_GS_SWBMFMSR) qn_gs_swbmfmsr,
+                                        sum(QN_GS_CLGZS) qn_gs_clgzs,
+                                        sum(QN_DS_GRSDS) qn_ds_grsds,
+                                        sum(QN_DS_QYSDS) qn_ds_qysds,
+                                        sum(QN_DS_QTSR) qn_ds_qtsr,
+                                        sum(QN_DS_YHS) qn_ds_yhs,
+                                        sum(QN_DS_TDZZS) qn_ds_tdzzs,
+                                        sum(QN_DS_DFJYF) qn_ds_dfjyf,
+                                        sum(QN_DS__CJS) qn_ds_cjs,
+                                        sum(QN_DS_CZTDSYS) qn_ds_cztdsys,
+                                        sum(QN_DS_QS) qn_ds_qs,
+                                        sum(QN_DS_FCS) qn_ds_fcs,
+                                        sum(QN_DS_JYF) qn_ds_jyf,
+                                        sum(QN_DS_WFSY) qn_ds_wfsy,
+                                        sum(QN_DS_CJRJY) qn_ds_cjrjy,
+                                        sum(QN_DS_SLJSZX) qn_ds_sljszx,
+                                        sum(QN_DS_YANYS) qn_ds_yanys,
+                                        sum(QN_DS_SWBMFMSR) qn_ds_swbmfmsr,
+                                        sum(QN_DS_GDZTS) qn_ds_gdzts,
+                                        sum(QN_DS_YYS) qn_ds_yys,
+                                        sum(QN_DS_ZYS) qn_ds_zys,
+                                        sum(QN_DS_CCS) qn_ds_ccs,
+                                        sum(QN_HG_JKGS) qn_hg_jkgs,
+                                        sum(QN_HG_JKZZS) qn_hg_jkzzs
+                                   from sys_company_tax_info
+                                  where 1=1  <if test="queryBean!=null">
+						  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+						     and k_date <![CDATA[>=]]> #{queryBean.startdate} 
+						  </if>
+						  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+							 and k_date <![CDATA[<=]]> #{queryBean.enddate}
+						  </if>
+					 </if>
+                   
+                                  group by company_id
+                                  order by bn_gs_grsds desc) t left join
+                                sys_company_info t1 on t1.id = t.company_id)
+                         where t1.name like '%海螺%'))
+
+
+ 	<if test="queryBean!=null">
+ 	<if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 	and nsrmc LIKE '%'||#{queryBean.nsrmc}||'%'   
+  	</if>
+  	</if>
+ </select>
+<!-- 查询国税列表-->
+<select id="selectTaxInGSJ" parameterType="com.ahcd.pojo.Page" resultType="Map">
+select * from (select * from (
+select a.*, rownum rnum from (
+select k.company_id,
+       k.name NSRMC,
+       k.area_name SSQY,
+       k.bn_wcs ljwc,
+       bn_zje zje,
+       bn_zf zf,
+    
+       bn_zzs zzs,
+       zzs_zje,
+       zzs_zf,
+     
+       bn_xfs xfs,
+       xfs_zje,
+       xfs_zf,
+      
+       bn_qysds qysds,
+       qysds_zje,
+       qysds_zf,
+     
+       bn_grsds grsds,
+       grsds_zje,
+       grsds_zf,
+     
+       bn_clgzs clgzs,
+       clgzs_zje,
+       clgzs_zf,
+       
+     
+       bn_cljjsr cljjsr,
+       cljjsr_zje,
+       cljjsr_zf,
+     
+       bn_whsyjsf whsyjsf,
+       whsyjsf_zje,
+       whsyjsf_zf,
+       
+      
+       bn_swbmfmsr swbmfmsr,
+       swbmfmsr_zje,
+       swbmfmsr_zf
+
+  FROM (select
+        
+         t.company_id,
+         t1.name,
+         t1.company_type,
+         t1.area_name,
+         
+         
+         round(t.bn_grsds / 10000, 2) + round(t.bn_qysds / 10000, 2) +
+         round(t.bn_zzs / 10000, 2) + round(t.bn_cljjsr / 10000, 2) +
+         round(t.bn_whsyjsf / 10000, 2) + round(t.bn_xfs / 10000, 2) +
+         round(t.bn_swbmfmsr / 10000, 2) + round(t.bn_clgzs / 10000, 2) bn_wcs,
+         
+         
+         round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+         round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+         round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+         round(t.qn_swbmfmsr / 10000, 2) + round(t.qn_clgzs / 10000, 2) qn_wcs,
+      
+         (round(t.bn_grsds / 10000, 2) + round(t.bn_qysds / 10000, 2) +
+         round(t.bn_zzs / 10000, 2) + round(t.bn_cljjsr / 10000, 2) +
+         round(t.bn_whsyjsf / 10000, 2) + round(t.bn_xfs / 10000, 2) +
+         round(t.bn_swbmfmsr / 10000, 2) + round(t.bn_clgzs / 10000, 2)) -
+         (round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+         round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+         round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+         round(t.qn_swbmfmsr / 10000, 2) + round(t.qn_clgzs / 10000, 2)) bn_zje,
+     
+         case
+           when round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+                round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+                round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+                round(t.qn_swbmfmsr / 10000, 2) +
+                round(t.qn_clgzs / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round(((round(t.bn_grsds / 10000, 2) +
+                          round(t.bn_qysds / 10000, 2) +
+                          round(t.bn_zzs / 10000, 2) +
+                          round(t.bn_cljjsr / 10000, 2) +
+                          round(t.bn_whsyjsf / 10000, 2) +
+                          round(t.bn_xfs / 10000, 2) +
+                          round(t.bn_swbmfmsr / 10000, 2) +
+                          round(t.bn_clgzs / 10000, 2)) -
+                          (round(t.qn_grsds / 10000, 2) +
+                          round(t.qn_qysds / 10000, 2) +
+                          round(t.qn_zzs / 10000, 2) +
+                          round(t.qn_cljjsr / 10000, 2) +
+                          round(t.qn_whsyjsf / 10000, 2) +
+                          round(t.qn_xfs / 10000, 2) +
+                          round(t.qn_swbmfmsr / 10000, 2) +
+                          round(t.qn_clgzs / 10000, 2))) /
+                          (round(t.qn_grsds / 10000, 2) +
+                          round(t.qn_qysds / 10000, 2) +
+                          round(t.qn_zzs / 10000, 2) +
+                          round(t.qn_cljjsr / 10000, 2) +
+                          round(t.qn_whsyjsf / 10000, 2) +
+                          round(t.qn_xfs / 10000, 2) +
+                          round(t.qn_swbmfmsr / 10000, 2) +
+                          round(t.qn_clgzs / 10000, 2)) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end bn_zf,
+         
+      
+         round(t.bn_grsds / 10000, 2) bn_grsds,
+      
+         round(t.qn_grsds / 10000, 2) qn_grsds,
+       
+         round(t.bn_grsds / 10000, 2) - round(t.qn_grsds / 10000, 2) grsds_zje,
+       
+         case
+           when round(t.qn_grsds / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round((round(t.bn_grsds / 10000, 2) -
+                          round(t.qn_grsds / 10000, 2)) /
+                          round(t.qn_grsds / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end grsds_zf,
+         
+       
+         round(t.bn_qysds / 10000, 2) bn_qysds,
+       
+         round(t.qn_qysds / 10000, 2) qn_qysds,
+        
+         round(t.bn_qysds / 10000, 2) - round(t.qn_qysds / 10000, 2) qysds_zje,
+         
+         case
+           when round(t.qn_qysds / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round((round(t.bn_qysds / 10000, 2) -
+                          round(t.qn_qysds / 10000, 2)) /
+                          round(t.qn_qysds / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end qysds_zf,
+         
+        
+         round(t.bn_zzs / 10000, 2) bn_zzs,
+       
+         round(t.qn_zzs / 10000, 2) qn_zzs,
+        
+         round(t.bn_zzs / 10000, 2) - round(t.qn_zzs / 10000, 2) zzs_zje,
+       
+         case
+           when round(t.qn_zzs / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_zzs / 10000, 2) -
+                          round(t.qn_zzs / 10000, 2)) /
+                          round(t.qn_zzs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end zzs_zf,
+         
+         
+         round(t.bn_cljjsr / 10000, 2) bn_cljjsr,
+       
+         round(t.qn_cljjsr / 10000, 2) qn_cljjsr,
+      
+         round(t.bn_cljjsr / 10000, 2) - round(t.qn_cljjsr / 10000, 2) cljjsr_zje,
+      
+         case
+           when round(t.qn_cljjsr / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_cljjsr / 10000, 2) -
+                          round(t.qn_cljjsr / 10000, 2)) /
+                          round(t.qn_cljjsr / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end cljjsr_zf,
+         
+      
+         round(t.bn_whsyjsf / 10000, 2) bn_whsyjsf,
+      
+         round(t.qn_whsyjsf / 10000, 2) qn_whsyjsf,
+       
+         round(t.bn_whsyjsf / 10000, 2) - round(t.qn_whsyjsf / 10000, 2) whsyjsf_zje,
+      
+         case
+           when round(t.qn_whsyjsf / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_whsyjsf / 10000, 2) -
+                          round(t.qn_whsyjsf / 10000, 2)) /
+                          round(t.qn_whsyjsf / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end whsyjsf_zf,
+         
+      
+         round(t.bn_xfs / 10000, 2) bn_xfs,
+       
+         round(t.qn_xfs / 10000, 2) qn_xfs,
+       
+         round(t.bn_xfs / 10000, 2) - round(t.qn_xfs / 10000, 2) xfs_zje,
+      
+         case
+           when round(t.qn_xfs / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_xfs / 10000, 2) -
+                          round(t.qn_xfs / 10000, 2)) /
+                          round(t.qn_xfs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end xfs_zf,
+         
+      
+         round(t.bn_swbmfmsr / 10000, 2) bn_swbmfmsr,
+       
+         round(t.qn_swbmfmsr / 10000, 2) qn_swbmfmsr,
+       
+         round(t.bn_swbmfmsr / 10000, 2) - round(t.qn_swbmfmsr / 10000, 2) swbmfmsr_zje,
+      
+         case
+           when round(t.qn_swbmfmsr / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_swbmfmsr / 10000, 2) -
+                          round(t.qn_swbmfmsr / 10000, 2)) /
+                          round(t.qn_swbmfmsr / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end swbmfmsr_zf,
+         
+     
+         round(t.bn_clgzs / 10000, 2) bn_clgzs,
+      
+         round(t.qn_clgzs / 10000, 2) qn_clgzs,
+      
+         round(t.bn_clgzs / 10000, 2) - round(t.qn_clgzs / 10000, 2) clgzs_zje,
+     
+         case
+           when round(t.qn_clgzs / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round((round(t.bn_clgzs / 10000, 2) -
+                          round(t.qn_clgzs / 10000, 2)) /
+                          round(t.qn_clgzs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end clgzs_zf
+        
+          from (select company_id,
+                       
+                   
+                       sum(BN_GS_GRSDS) bn_grsds,
+                       sum(QN_GS_GRSDS) qn_grsds,
+                   
+                       sum(BN_GS_QYSDS) bn_qysds,
+                       sum(QN_GS_QYSDS) qn_qysds,
+                   
+                       sum(BN_GS_ZZS) bn_zzs,
+                       sum(QN_GS_ZZS) qn_zzs,
+                     
+                       sum(BN_GS_CLJJSR) bn_cljjsr,
+                       sum(QN_GS_CLJJSR) qn_cljjsr,
+                     
+                       sum(BN_GS_WHSYF) bn_whsyjsf,
+                       sum(QN_GS_WHSYF) qn_whsyjsf,
+               
+                       sum(BN_GS_XFS) bn_xfs,
+                       sum(QN_GS_XFS) qn_xfs,
+                      
+                       sum(BN_GS_SWBMFMSR) bn_swbmfmsr,
+                       sum(QN_GS_SWBMFMSR) qn_swbmfmsr,
+                   
+                       sum(BN_GS_CLGZS) bn_clgzs,
+                       sum(QN_GS_CLGZS) qn_clgzs
+                
+                  from SYS_COMPANY_TAX_INFO
+                 where 1=1
+                   
+                   <if test="queryBean!=null">
+						  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+						     and k_date <![CDATA[>=]]> #{queryBean.startdate} 
+						  </if>
+						  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+							 and k_date <![CDATA[<=]]> #{queryBean.enddate}
+						  </if>
+					 </if>
+                   
+                   
+                   
+                   
+                   
+                 group by company_id) t
+          left join sys_company_info t1
+            on t.company_id = id
+         order by bn_wcs desc) K
+  left join (select max(zclxdl_code) zclxdl_code,
+                    zclx_name,
+                    max(show_name) show_name
+               from sys_zd_zclx
+              group by zclx_name) k1
+    on k.company_type = k1.zclx_name
+ where k1.zclxdl_code not in ('4', '5')
+   
+
+								 <if test="queryBean!=null">
+									 <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+										 and k.name LIKE '%'||#{queryBean.nsrmc}||'%' 
+									  </if>
+								 </if>
+								 
+		) a)
+		                <if  test="endRow !=null">
+			WHERE rownum <![CDATA[<=]]>  #{endRow} 
+		</if>)
+<if  test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+</if>						 
+								 
+								 
+								 
+</select>
+
+<!-- 查询国税总计-->
+<select id="selectTaxInGSJSum" parameterType="com.ahcd.pojo.Page"
+	resultType="Map">
+	select sum(bn_wcs) ljwc,
+       sum(bn_zje) zje,
+       case
+         when sum(qn_wcs) <![CDATA[ <> ]]> 0 then
+          round((sum(bn_zje)) / sum(qn_wcs) * 100, 2)
+         else
+          round((sum(bn_zje)) / 10000, 4) * 100
+       end zf,
+
+       sum(bn_zzs) zzs,
+       sum(zzs_zje) zzs_zje,
+       case
+         when sum(qn_zzs) <![CDATA[ <> ]]> 0 then
+          round((sum(zzs_zje)) / sum(qn_zzs) * 100, 2)
+         else
+          round((sum(zzs_zje)) / 10000, 4) * 100
+       end zzs_zf,
+       
+
+       sum(bn_xfs) xfs,
+       sum(xfs_zje) xfs_zje,
+       case
+         when sum(qn_xfs) <![CDATA[ <> ]]> 0 then
+          round((sum(xfs_zje)) / sum(qn_xfs) * 100, 2)
+         else
+          round((sum(xfs_zje)) / 10000, 4) * 100
+       end xfs_zf,
+
+       sum(bn_qysds) qysds,
+       sum(qysds_zje) qysds_zje,
+       case
+         when sum(qn_qysds) <![CDATA[ <> ]]> 0 then
+          round((sum(qysds_zje)) / sum(qn_qysds) * 100, 2)
+         else
+          round((sum(qysds_zje)) / 10000, 4) * 100
+       end qysds_zf,
+       
+
+       sum(bn_grsds) grsds,
+       sum(grsds_zje) grsds_zje,
+       case
+         when sum(qn_grsds) <![CDATA[ <> ]]> 0 then
+          round((sum(grsds_zje)) / sum(qn_grsds) * 100, 2)
+         else
+          round((sum(grsds_zje)) / 10000, 4) * 100
+       end grsds_zf,
+       
+
+       sum(bn_clgzs) clgzs,
+       sum(clgzs_zje) clgzs_zje,
+       case
+         when sum(qn_clgzs) <![CDATA[ <> ]]> 0 then
+          round((sum(clgzs_zje)) / sum(qn_clgzs) * 100, 2)
+         else
+          round((sum(clgzs_zje)) / 10000, 4) * 100
+       end clgzs_zf,
+       
+
+       sum(bn_cljjsr) cljjsr,
+       sum(cljjsr_zje) cljjsr_zje,
+       case
+         when sum(qn_cljjsr) <![CDATA[ <> ]]> 0 then
+          round((sum(cljjsr_zje)) / sum(qn_cljjsr) * 100, 2)
+         else
+          round((sum(cljjsr_zje)) / 10000, 4) * 100
+       end cljjsr_zf,
+
+       sum(bn_whsyjsf) whsyjsf,
+       sum(whsyjsf_zje) whsyjsf_zje,
+       case
+         when sum(qn_whsyjsf) <![CDATA[ <> ]]> 0 then
+          round((sum(whsyjsf_zje)) / sum(qn_whsyjsf) * 100, 2)
+         else
+          round((sum(whsyjsf_zje)) / 10000, 4) * 100
+       end whsyjsf_zf,
+       
+   
+       sum(bn_swbmfmsr) swbmfmsr,
+       sum(swbmfmsr_zje) swbmfmsr_zje,
+       case
+         when sum(qn_swbmfmsr) <![CDATA[ <> ]]> 0 then
+          round((sum(swbmfmsr_zje)) / sum(qn_swbmfmsr) * 100, 2)
+         else
+          round((sum(swbmfmsr_zje)) / 10000, 4) * 100
+       end swbmfmsr_zf
+
+  from (select
+        
+         bn_wcs,
+         qn_wcs,
+         bn_zje,
+     
+         bn_zzs,
+         qn_zzs,
+         zzs_zje,
+      
+         bn_xfs,
+         qn_xfs,
+         xfs_zje,
+        
+         bn_qysds,
+         qn_qysds,
+         qysds_zje,
+       
+         bn_grsds,
+         qn_grsds,
+         grsds_zje,
+        
+         bn_clgzs,
+         qn_clgzs,
+         clgzs_zje,
+        
+         bn_cljjsr,
+         qn_cljjsr,
+         cljjsr_zje,
+       
+         bn_whsyjsf,
+         qn_whsyjsf,
+         whsyjsf_zje,
+         
+         bn_swbmfmsr,
+         qn_swbmfmsr,
+         swbmfmsr_zje
+        
+          FROM (select
+                
+                 t.company_id,
+                 t1.name,
+                 t1.company_type,
+                 t1.area_name,
+                
+                 round(t.bn_grsds / 10000, 2) + round(t.bn_qysds / 10000, 2) +
+                 round(t.bn_zzs / 10000, 2) + round(t.bn_cljjsr / 10000, 2) +
+                 round(t.bn_whsyjsf / 10000, 2) + round(t.bn_xfs / 10000, 2) +
+                 round(t.bn_swbmfmsr / 10000, 2) +
+                 round(t.bn_clgzs / 10000, 2) bn_wcs,
+                 
+                 
+                 round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+                 round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+                 round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+                 round(t.qn_swbmfmsr / 10000, 2) +
+                 round(t.qn_clgzs / 10000, 2) qn_wcs,
+                 
+                 (round(t.bn_grsds / 10000, 2) + round(t.bn_qysds / 10000, 2) +
+                 round(t.bn_zzs / 10000, 2) + round(t.bn_cljjsr / 10000, 2) +
+                 round(t.bn_whsyjsf / 10000, 2) + round(t.bn_xfs / 10000, 2) +
+                 round(t.bn_swbmfmsr / 10000, 2) +
+                 round(t.bn_clgzs / 10000, 2)) -
+                 (round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+                 round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+                 round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+                 round(t.qn_swbmfmsr / 10000, 2) +
+                 round(t.qn_clgzs / 10000, 2)) bn_zje,
+                 
+               
+                 round(t.bn_grsds / 10000, 2) bn_grsds,
+                
+                 round(t.qn_grsds / 10000, 2) qn_grsds,
+               
+                 round(t.bn_grsds / 10000, 2) - round(t.qn_grsds / 10000, 2) grsds_zje,
+                 
+                
+                 round(t.bn_qysds / 10000, 2) bn_qysds,
+                
+                 round(t.qn_qysds / 10000, 2) qn_qysds,
+                
+                 round(t.bn_qysds / 10000, 2) - round(t.qn_qysds / 10000, 2) qysds_zje,
+                 
+                 
+                 round(t.bn_zzs / 10000, 2) bn_zzs,
+                     
+                 round(t.qn_zzs / 10000, 2) qn_zzs,
+                 
+                 round(t.bn_zzs / 10000, 2) - round(t.qn_zzs / 10000, 2) zzs_zje,
+                 
+                 
+                 round(t.bn_cljjsr / 10000, 2) bn_cljjsr,
+                  
+                 round(t.qn_cljjsr / 10000, 2) qn_cljjsr,
+                 
+                 round(t.bn_cljjsr / 10000, 2) -
+                 round(t.qn_cljjsr / 10000, 2) cljjsr_zje,
+                 
+                   
+                 round(t.bn_whsyjsf / 10000, 2) bn_whsyjsf,
+                  
+                 round(t.qn_whsyjsf / 10000, 2) qn_whsyjsf,
+                  
+                 round(t.bn_whsyjsf / 10000, 2) -
+                 round(t.qn_whsyjsf / 10000, 2) whsyjsf_zje,
+                 
+                  
+                 round(t.bn_xfs / 10000, 2) bn_xfs,
+                    
+                 round(t.qn_xfs / 10000, 2) qn_xfs,
+                
+                 round(t.bn_xfs / 10000, 2) - round(t.qn_xfs / 10000, 2) xfs_zje,
+                 
+                  
+                 round(t.bn_swbmfmsr / 10000, 2) bn_swbmfmsr,
+                  
+                 round(t.qn_swbmfmsr / 10000, 2) qn_swbmfmsr,
+                   
+                 round(t.bn_swbmfmsr / 10000, 2) -
+                 round(t.qn_swbmfmsr / 10000, 2) swbmfmsr_zje,
+                 
+                   
+                 round(t.bn_clgzs / 10000, 2) bn_clgzs,
+                      
+                 round(t.qn_clgzs / 10000, 2) qn_clgzs,
+                  
+                 round(t.bn_clgzs / 10000, 2) - round(t.qn_clgzs / 10000, 2) clgzs_zje
+                
+                  from (select company_id,
+                               
+                               sum(BN_GS_GRSDS) bn_grsds,
+                               sum(QN_GS_GRSDS) qn_grsds,
+                                
+                               sum(BN_GS_QYSDS) bn_qysds,
+                               sum(QN_GS_QYSDS) qn_qysds,
+                                
+                               sum(BN_GS_ZZS) bn_zzs,
+                               sum(QN_GS_ZZS) qn_zzs,
+                               
+                               sum(BN_GS_CLJJSR) bn_cljjsr,
+                               sum(QN_GS_CLJJSR) qn_cljjsr,
+                               
+                               sum(BN_GS_WHSYF) bn_whsyjsf,
+                               sum(QN_GS_WHSYF) qn_whsyjsf,
+                                
+                               sum(BN_GS_XFS) bn_xfs,
+                               sum(QN_GS_XFS) qn_xfs,
+                                
+                               sum(BN_GS_SWBMFMSR) bn_swbmfmsr,
+                               sum(QN_GS_SWBMFMSR) qn_swbmfmsr,
+                               
+                               sum(BN_GS_CLGZS) bn_clgzs,
+                               sum(QN_GS_CLGZS) qn_clgzs
+                        
+                          from SYS_COMPANY_TAX_INFO
+                         where 1=1
+                           
+                           
+                           <if test="queryBean!=null">
+						  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+						     and k_date <![CDATA[>=]]> #{queryBean.startdate} 
+						  </if>
+						  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+							 and k_date <![CDATA[<=]]> #{queryBean.enddate}
+						  </if>
+					 </if>
+					 
+                         group by company_id) t
+                  left join sys_company_info t1
+                    on t.company_id = id
+                 order by bn_wcs desc) K
+          left join (select max(zclxdl_code) zclxdl_code,
+                           zclx_name,
+                           max(show_name) show_name
+                      from sys_zd_zclx
+                     group by zclx_name) k1
+            on k.company_type = k1.zclx_name
+         where k1.zclxdl_code not in ('4', '5')
+          <if test="queryBean!=null">
+									 <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+										 and k.name LIKE '%'||#{queryBean.nsrmc}||'%' 
+									  </if>
+								 </if>
+        )
+</select>
+
+<!-- 查询国税记录数 -->
+  <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+  	select count(1) from (
+
+select k.company_id,
+       k.name,
+       k.area_name,
+       k.bn_wcs ljwc,
+       bn_zje zje,
+       bn_zf zf,
+    
+       bn_zzs,
+       zzs_zje,
+       zzs_zf,
+     
+       bn_xfs,
+       xfs_zje,
+       xfs_zf,
+      
+       bn_qysds,
+       qysds_zje,
+       qysds_zf,
+     
+       bn_grsds,
+       grsds_zje,
+       grsds_zf,
+     
+       bn_clgzs,
+       clgzs_zje,
+       clgzs_zf,
+       
+     
+       bn_cljjsr,
+       cljjsr_zje,
+       cljjsr_zf,
+     
+       bn_whsyjsf,
+       whsyjsf_zje,
+       whsyjsf_zf,
+       
+      
+       bn_swbmfmsr,
+       swbmfmsr_zje,
+       swbmfmsr_zf
+
+  FROM (select
+        
+         t.company_id,
+         t1.name,
+         t1.company_type,
+         t1.area_name,
+         
+         
+         round(t.bn_grsds / 10000, 2) + round(t.bn_qysds / 10000, 2) +
+         round(t.bn_zzs / 10000, 2) + round(t.bn_cljjsr / 10000, 2) +
+         round(t.bn_whsyjsf / 10000, 2) + round(t.bn_xfs / 10000, 2) +
+         round(t.bn_swbmfmsr / 10000, 2) + round(t.bn_clgzs / 10000, 2) bn_wcs,
+         
+         
+         round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+         round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+         round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+         round(t.qn_swbmfmsr / 10000, 2) + round(t.qn_clgzs / 10000, 2) qn_wcs,
+      
+         (round(t.bn_grsds / 10000, 2) + round(t.bn_qysds / 10000, 2) +
+         round(t.bn_zzs / 10000, 2) + round(t.bn_cljjsr / 10000, 2) +
+         round(t.bn_whsyjsf / 10000, 2) + round(t.bn_xfs / 10000, 2) +
+         round(t.bn_swbmfmsr / 10000, 2) + round(t.bn_clgzs / 10000, 2)) -
+         (round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+         round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+         round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+         round(t.qn_swbmfmsr / 10000, 2) + round(t.qn_clgzs / 10000, 2)) bn_zje,
+     
+         case
+           when round(t.qn_grsds / 10000, 2) + round(t.qn_qysds / 10000, 2) +
+                round(t.qn_zzs / 10000, 2) + round(t.qn_cljjsr / 10000, 2) +
+                round(t.qn_whsyjsf / 10000, 2) + round(t.qn_xfs / 10000, 2) +
+                round(t.qn_swbmfmsr / 10000, 2) +
+                round(t.qn_clgzs / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round(((round(t.bn_grsds / 10000, 2) +
+                          round(t.bn_qysds / 10000, 2) +
+                          round(t.bn_zzs / 10000, 2) +
+                          round(t.bn_cljjsr / 10000, 2) +
+                          round(t.bn_whsyjsf / 10000, 2) +
+                          round(t.bn_xfs / 10000, 2) +
+                          round(t.bn_swbmfmsr / 10000, 2) +
+                          round(t.bn_clgzs / 10000, 2)) -
+                          (round(t.qn_grsds / 10000, 2) +
+                          round(t.qn_qysds / 10000, 2) +
+                          round(t.qn_zzs / 10000, 2) +
+                          round(t.qn_cljjsr / 10000, 2) +
+                          round(t.qn_whsyjsf / 10000, 2) +
+                          round(t.qn_xfs / 10000, 2) +
+                          round(t.qn_swbmfmsr / 10000, 2) +
+                          round(t.qn_clgzs / 10000, 2))) /
+                          (round(t.qn_grsds / 10000, 2) +
+                          round(t.qn_qysds / 10000, 2) +
+                          round(t.qn_zzs / 10000, 2) +
+                          round(t.qn_cljjsr / 10000, 2) +
+                          round(t.qn_whsyjsf / 10000, 2) +
+                          round(t.qn_xfs / 10000, 2) +
+                          round(t.qn_swbmfmsr / 10000, 2) +
+                          round(t.qn_clgzs / 10000, 2)) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end bn_zf,
+         
+      
+         round(t.bn_grsds / 10000, 2) bn_grsds,
+      
+         round(t.qn_grsds / 10000, 2) qn_grsds,
+       
+         round(t.bn_grsds / 10000, 2) - round(t.qn_grsds / 10000, 2) grsds_zje,
+       
+         case
+           when round(t.qn_grsds / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round((round(t.bn_grsds / 10000, 2) -
+                          round(t.qn_grsds / 10000, 2)) /
+                          round(t.qn_grsds / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end grsds_zf,
+         
+       
+         round(t.bn_qysds / 10000, 2) bn_qysds,
+       
+         round(t.qn_qysds / 10000, 2) qn_qysds,
+        
+         round(t.bn_qysds / 10000, 2) - round(t.qn_qysds / 10000, 2) qysds_zje,
+         
+         case
+           when round(t.qn_qysds / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round((round(t.bn_qysds / 10000, 2) -
+                          round(t.qn_qysds / 10000, 2)) /
+                          round(t.qn_qysds / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end qysds_zf,
+         
+        
+         round(t.bn_zzs / 10000, 2) bn_zzs,
+       
+         round(t.qn_zzs / 10000, 2) qn_zzs,
+        
+         round(t.bn_zzs / 10000, 2) - round(t.qn_zzs / 10000, 2) zzs_zje,
+       
+         case
+           when round(t.qn_zzs / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_zzs / 10000, 2) -
+                          round(t.qn_zzs / 10000, 2)) /
+                          round(t.qn_zzs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end zzs_zf,
+         
+         
+         round(t.bn_cljjsr / 10000, 2) bn_cljjsr,
+       
+         round(t.qn_cljjsr / 10000, 2) qn_cljjsr,
+      
+         round(t.bn_cljjsr / 10000, 2) - round(t.qn_cljjsr / 10000, 2) cljjsr_zje,
+      
+         case
+           when round(t.qn_cljjsr / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_cljjsr / 10000, 2) -
+                          round(t.qn_cljjsr / 10000, 2)) /
+                          round(t.qn_cljjsr / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end cljjsr_zf,
+         
+      
+         round(t.bn_whsyjsf / 10000, 2) bn_whsyjsf,
+      
+         round(t.qn_whsyjsf / 10000, 2) qn_whsyjsf,
+       
+         round(t.bn_whsyjsf / 10000, 2) - round(t.qn_whsyjsf / 10000, 2) whsyjsf_zje,
+      
+         case
+           when round(t.qn_whsyjsf / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_whsyjsf / 10000, 2) -
+                          round(t.qn_whsyjsf / 10000, 2)) /
+                          round(t.qn_whsyjsf / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end whsyjsf_zf,
+         
+      
+         round(t.bn_xfs / 10000, 2) bn_xfs,
+       
+         round(t.qn_xfs / 10000, 2) qn_xfs,
+       
+         round(t.bn_xfs / 10000, 2) - round(t.qn_xfs / 10000, 2) xfs_zje,
+      
+         case
+           when round(t.qn_xfs / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_xfs / 10000, 2) -
+                          round(t.qn_xfs / 10000, 2)) /
+                          round(t.qn_xfs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end xfs_zf,
+         
+      
+         round(t.bn_swbmfmsr / 10000, 2) bn_swbmfmsr,
+       
+         round(t.qn_swbmfmsr / 10000, 2) qn_swbmfmsr,
+       
+         round(t.bn_swbmfmsr / 10000, 2) - round(t.qn_swbmfmsr / 10000, 2) swbmfmsr_zje,
+      
+         case
+           when round(t.qn_swbmfmsr / 10000, 2) <![CDATA[ <> ]]>  '0' then
+            to_char(round((round(t.bn_swbmfmsr / 10000, 2) -
+                          round(t.qn_swbmfmsr / 10000, 2)) /
+                          round(t.qn_swbmfmsr / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end swbmfmsr_zf,
+         
+     
+         round(t.bn_clgzs / 10000, 2) bn_clgzs,
+      
+         round(t.qn_clgzs / 10000, 2) qn_clgzs,
+      
+         round(t.bn_clgzs / 10000, 2) - round(t.qn_clgzs / 10000, 2) clgzs_zje,
+     
+         case
+           when round(t.qn_clgzs / 10000, 2) <![CDATA[ <> ]]> '0' then
+            to_char(round((round(t.bn_clgzs / 10000, 2) -
+                          round(t.qn_clgzs / 10000, 2)) /
+                          round(t.qn_clgzs / 10000, 2) * 100,
+                          2),
+                    'fm9999999990.00') || '%'
+           else
+            '-'
+         end clgzs_zf
+        
+          from (select company_id,
+                       
+                   
+                       sum(BN_GS_GRSDS) bn_grsds,
+                       sum(QN_GS_GRSDS) qn_grsds,
+                   
+                       sum(BN_GS_QYSDS) bn_qysds,
+                       sum(QN_GS_QYSDS) qn_qysds,
+                   
+                       sum(BN_GS_ZZS) bn_zzs,
+                       sum(QN_GS_ZZS) qn_zzs,
+                     
+                       sum(BN_GS_CLJJSR) bn_cljjsr,
+                       sum(QN_GS_CLJJSR) qn_cljjsr,
+                     
+                       sum(BN_GS_WHSYF) bn_whsyjsf,
+                       sum(QN_GS_WHSYF) qn_whsyjsf,
+               
+                       sum(BN_GS_XFS) bn_xfs,
+                       sum(QN_GS_XFS) qn_xfs,
+                      
+                       sum(BN_GS_SWBMFMSR) bn_swbmfmsr,
+                       sum(QN_GS_SWBMFMSR) qn_swbmfmsr,
+                   
+                       sum(BN_GS_CLGZS) bn_clgzs,
+                       sum(QN_GS_CLGZS) qn_clgzs
+                
+                  from SYS_COMPANY_TAX_INFO
+                 where 1=1
+                   
+                   <if test="queryBean!=null">
+              <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+                 and k_date <![CDATA[>=]]> #{queryBean.startdate} 
+              </if>
+              <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+               and k_date <![CDATA[<=]]> #{queryBean.enddate}
+              </if>
+           </if>
+                   
+                   
+                   
+                   
+                   
+                 group by company_id) t
+          left join sys_company_info t1
+            on t.company_id = id
+         order by bn_wcs desc) K
+  left join (select max(zclxdl_code) zclxdl_code,
+                    zclx_name,
+                    max(show_name) show_name
+               from sys_zd_zclx
+              group by zclx_name) k1
+    on k.company_type = k1.zclx_name
+ where k1.zclxdl_code not in ('4', '5')
+   
+
+                 <if test="queryBean!=null">
+                   <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+                     and k.name LIKE '%'||#{queryBean.nsrmc}||'%' 
+                    </if>
+                 </if>
+                 )  
+  </select> 
+  
+  <!-- 查询海关记录数-->
+  <select id="countHGPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+select count(1) from(
+  	select company_id,
+            nsrmc,
+            ssqy,
+            sum(jkgs) jkgs,
+            sum(jkgs_tq) jkgs_tq,
+            sum(jkzzs) jkzzs,
+            sum(jkzzs_tq) jkzzs_tq
+       from (
+			select company_id,
+				     nsrmc,
+				     ssqy,
+				     jkgs,
+				     jkgs_tq,
+				     jkzzs,
+				     jkzzs_tq,
+				     sssj
+			  from bd_fsz_sj)
+			  where length(NSRMC)>3 and  instr(NSRMC,' ')<![CDATA[<=]]>0 and (jkgs!=0 or jkgs_tq!=0 or jkzzs!=0 or jkzzs_tq!=0)
+			<if test="queryBean!=null">
+			 	<if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+			 	and nsrmc LIKE '%'||#{queryBean.nsrmc}||'%'   
+			 	</if>
+			 	<if test="queryBean.startdate !=null and queryBean.startdate !=''">
+			 	and SSSJ <![CDATA[>=]]> #{queryBean.startdate}   
+			</if>
+			<if test="queryBean.enddate !=null and queryBean.enddate !=''">
+			and SSSJ <![CDATA[<=]]> #{queryBean.enddate}  
+			  	</if>
+			</if>
+group by company_id, nsrmc, ssqy
+		) 
+  </select> 
+  
+  <!-- 查询海关列表-->
+<select id="selectTaxInHG" parameterType="com.ahcd.pojo.Page" resultType="Map">
+select * from (
+select company_id,
+       nsrmc,
+       ssqy,
+       round(ljwc/10000,2) ljwc,
+       round((ljwc - ljwq_tq)/10000,2) zje,
+       case
+         when ljwq_tq = '0' then
+          round((ljwc - ljwq_tq) / 10000 * 100, 2)
+         else
+          round((ljwc - ljwq_tq) / ljwq_tq * 100, 2)
+       end zf,
+       round(jkgs/10000,2) jkgs,
+       round((jkgs - jkgs_tq)/10000,2) jkgs_zje,
+       case
+         when jkgs_tq = '0' then
+          round((jkgs - jkgs_tq) / 10000 * 100, 2)
+         else
+          round((jkgs - jkgs_tq) / jkgs_tq * 100, 2)
+       end jkgs_zf,
+       round(jkzzs/10000,2) jkzzs,
+       round((jkzzs - jkzzs_tq)/10000,2) jkzzs_zje,
+       case
+         when jkzzs_tq = '0' then
+          round((jkzzs - jkzzs_tq) / 10000 * 100, 2)
+         else
+          round((jkzzs - jkzzs_tq) / jkzzs_tq * 100, 2)
+       end jkzzs_zf,
+       rownum rnum
+  from (
+        
+        select company_id,
+                nsrmc,
+                ssqy,
+                (jkgs + jkzzs) ljwc,
+                (jkgs_tq + jkzzs_tq) ljwq_tq,
+                jkgs,
+                jkgs_tq,
+                jkzzs,
+                jkzzs_tq
+          from (select company_id,
+                        nsrmc,
+                        ssqy,
+                        sum(jkgs) jkgs,
+                        sum(jkgs_tq) jkgs_tq,
+                        sum(jkzzs) jkzzs,
+                        sum(jkzzs_tq) jkzzs_tq
+                   from (select company_id,
+                                nsrmc,
+                                ssqy,
+                                jkgs,
+                                jkgs_tq,
+                                jkzzs,
+                                jkzzs_tq,
+                                sssj
+                           from bd_fsz_sj
+                           )
+                   where length(NSRMC)>3 and  instr(NSRMC,' ') <![CDATA[<=]]> 0 and (jkgs!=0 or jkgs_tq!=0 or jkzzs!=0 or jkzzs_tq!=0)
+				 <if test="queryBean!=null">
+					 <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+						 and nsrmc LIKE '%'||#{queryBean.nsrmc}||'%'   
+					  </if>
+					  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+						 and SSSJ <![CDATA[>=]]> #{queryBean.startdate}   
+					  </if>
+					  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+						 and SSSJ <![CDATA[<=]]> #{queryBean.enddate}  
+					  </if>
+				 </if>
+                  group by company_id, nsrmc, ssqy
+                  order by (jkgs + jkzzs) desc
+                  ))
+                  <if  test="endRow !=null">
+			WHERE rownum <![CDATA[<=]]>  #{endRow} 
+		</if>)
+<if  test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+</if>
+</select>
+
+<!-- 查询海关总计-->
+<select id="selectTaxInHGSum" parameterType="com.ahcd.pojo.Page" resultType="Map">
+	select round(sum(ljwc)/10000,2) ljwc,round((sum(ljwc)-sum(ljwq_tq))/10000,2) zje ,case when
+	sum(ljwq_tq) <![CDATA[<>]]>
+	0 then round((sum(ljwc)-sum(ljwq_tq))/sum(ljwq_tq)*100,2)
+	else round((sum(ljwc)-sum(ljwq_tq))/10000,4)*100 end zf,
+
+	round(sum(jkgs)/10000,2) jkgs,round((sum(jkgs)-sum(jkgs_tq))/10000,2) jkgs_zje ,case when sum(jkgs_tq) <![CDATA[<>]]>
+	0 then round((sum(jkgs)-sum(jkgs_tq))/sum(jkgs_tq)*100,2)
+	else round((sum(jkgs)-sum(jkgs_tq))/10000,4)*100 end jkgs_zf,
+
+	round(sum(jkzzs)/10000,2) jkzzs,round((sum(jkzzs)-sum(jkzzs_tq))/10000,2) jkzzs_zje ,case when sum(jkzzs_tq) <![CDATA[<>]]>
+	0 then round((sum(jkzzs)-sum(jkzzs_tq))/sum(jkzzs_tq)*100,2)
+	else round((sum(jkzzs)-sum(jkzzs_tq))/10000,4)*100 end jkzzs_zf
+	from(
+	select
+	sum(jkgs) + sum(jkzzs) ljwc,
+	sum(jkgs_tq) + sum(jkzzs_tq) ljwq_tq,
+	sum(jkgs) jkgs,
+	sum(jkgs_tq) jkgs_tq,
+	sum(jkzzs) jkzzs,
+	sum(jkzzs_tq) jkzzs_tq
+	from bd_fsz_sj
+	where length(NSRMC)>3 and instr(NSRMC,' ') <![CDATA[<=]]>
+	0 and (jkgs!=0 or jkgs_tq!=0 or jkzzs!=0 or jkzzs_tq!=0)
+	<if test="queryBean!=null">
+		<if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+			and nsrmc LIKE '%'||#{queryBean.nsrmc}||'%'
+		</if>
+		<if test="queryBean.startdate !=null and queryBean.startdate !=''">
+			and SSSJ <![CDATA[>=]]>
+			#{queryBean.startdate}
+		</if>
+		<if test="queryBean.enddate !=null and queryBean.enddate !=''">
+			and SSSJ <![CDATA[<=]]>
+			#{queryBean.enddate}
+		</if>
+	</if>
+	)
+</select>
+
+<!-- 查询详情页面记录数 -->
+  <select id="countDetailPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+  select count(1) from(
+ 	select nsrmc,nsrsbh,
+         case when skgk = '国家金库池州市中心支库' then '市直'
+         when skgk = '国家金库青阳县支库' then'青阳县'
+         when skgk = '国家金库池州市经济技术开发区支库' then'开发区'
+         when skgk = '国家金库石台县支库' then'石台县'
+         when skgk = '国家金库九华山代理支库' then'九华山风景区'
+         when skgk = '国家金库东至县支库' then'东至县'
+         when skgk = '国家金库贵池区支库' then'贵池区'
+         when skgk = '国家金库池州市江南产业集中区支库' then'江南集中区'
+         else skgk end skgk,
+         ssgds ,zsxm,round(to_number(sjje),2)sjje,to_char(to_date(k_date,'yyyyMM'),'yyyy"年"MM"月"') k_date 
+	from bd_qy_sjxx 	
+	where length(nsrmc)>3 and  instr(nsrmc,' ') <![CDATA[<=]]> 0
+ <if test="queryBean!=null">
+  <if test="queryBean.ssgds !=null and queryBean.ssgds !=''">
+	 and ssgds = #{queryBean.ssgds}
+  </if>
+  <if test="queryBean.zsxm !=null and queryBean.zsxm !=''">
+	 and zsxm = #{queryBean.zsxm}
+  </if>
+  <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 and nsrmc = #{queryBean.nsrmc}   
+  </if>
+  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	 and k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  </if>
+  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  </if>
+ </if>
+  )
+  </select> 
+  
+  <!-- 查询详情页面列表 -->
+  <select id="selectDetailPage" parameterType="com.ahcd.pojo.Page" resultType="Map"> 
+  select *
+  from  (select a.*, rownum rnum
+  from (
+  	select nsrmc,nsrsbh,
+         case when skgk = '国家金库池州市中心支库' then '市直'
+         when skgk = '国家金库青阳县支库' then'青阳县'
+         when skgk = '国家金库池州市经济技术开发区支库' then'开发区'
+         when skgk = '国家金库石台县支库' then'石台县'
+         when skgk = '国家金库九华山代理支库' then'九华山风景区'
+         when skgk = '国家金库东至县支库' then'东至县'
+         when skgk = '国家金库贵池区支库' then'贵池区'
+         when skgk = '国家金库池州市江南产业集中区支库' then'江南集中区'
+         else skgk end skgk,
+         ssgds ,zsxm,round(to_number(sjje)/10000,2)sjje,to_char(to_date(k_date,'yyyyMM'),'yyyy"年"MM"月"') k_date 
+	from bd_qy_sjxx 
+	where length(nsrmc)>3 and  instr(nsrmc,' ') <![CDATA[<=]]> 0
+ <if test="queryBean!=null">
+  <if test="queryBean.ssgds !=null and queryBean.ssgds !=''">
+	 and ssgds = #{queryBean.ssgds}
+  </if>
+  <if test="queryBean.zsxm !=null and queryBean.zsxm !=''">
+	 and zsxm = #{queryBean.zsxm}
+  </if>
+  <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 and nsrmc = #{queryBean.nsrmc}   
+  </if>
+  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	 and k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  </if>
+  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  </if>
+ </if>
+  ) a
+	<if test="endRow !=null">
+	where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if test="beginRow !=null">
+	where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+  <!-- 查询详情页面总计 -->
+  <select id="selectDetailSum" parameterType="com.ahcd.pojo.Page" resultType="java.lang.String"> 
+  	select round(to_number(sum(nvl(sjje,0)))/10000,2)sjje 
+	from bd_qy_sjxx 
+	where length(nsrmc)>3 and  instr(nsrmc,' ') <![CDATA[<=]]> 0
+ <if test="queryBean!=null">
+  <if test="queryBean.ssgds !=null and queryBean.ssgds !=''">
+	 and ssgds = #{queryBean.ssgds}
+  </if>
+  <if test="queryBean.zsxm !=null and queryBean.zsxm !=''">
+	 and zsxm = #{queryBean.zsxm}
+  </if>
+  <if test="queryBean.nsrmc !=null and queryBean.nsrmc !=''">
+	 and nsrmc = #{queryBean.nsrmc}   
+  </if>
+  <if test="queryBean.startdate !=null and queryBean.startdate !=''">
+	 and k_date <![CDATA[>=]]> #{queryBean.startdate}   
+  </if>
+  <if test="queryBean.enddate !=null and queryBean.enddate !=''">
+	 and k_date <![CDATA[<=]]> #{queryBean.enddate}  
+  </if>
+ </if>
+  </select>
+  
+</mapper>

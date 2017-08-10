@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.ZdConstantMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.ZdConstant">
+		<id column="CONSTANT_ID" property="constantId" jdbcType="DECIMAL" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="VALUE" property="value" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="DECIMAL" />
+		<result column="CONSTANT_DESC" property="constantDesc"
+			jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		CONSTANT_ID, CODE, VALUE, STATE, CONSTANT_DESC, TYPE, NAME
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from ZD_CONSTANT
+		where CONSTANT_ID = #{constantId,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from
+		ZD_CONSTANT
+		where CONSTANT_ID = #{constantId,jdbcType=DECIMAL}
+	</delete>
+	
+	<select id="selectShouRuYuQi" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+		select value from  ZD_CONSTANT where constant_id = '59'
+	</select>
+	
+	<insert id="insert" parameterType="com.ahcd.pojo.ZdConstant">
+	     <selectKey keyProperty="constantId" resultType="DECIMAL" order="BEFORE">
+			select zd_constant_seq.nextVal from dual
+		</selectKey>
+		
+	    
+		insert into ZD_CONSTANT
+		(CONSTANT_ID, CODE, VALUE,
+		STATE, CONSTANT_DESC, TYPE,
+		NAME)
+		values
+		(#{constantId,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR},
+		#{value,jdbcType=VARCHAR},
+		#{state,jdbcType=DECIMAL},
+		#{constantDesc,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ahcd.pojo.ZdConstant">
+		
+		insert into ZD_CONSTANT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="code != null">
+				CODE,
+			</if>
+			<if test="value != null">
+				VALUE,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="constantDesc != null">
+				CONSTANT_DESC,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="constantId != null">
+				#{constantId,jdbcType=DECIMAL},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				#{value,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=DECIMAL},
+			</if>
+			<if test="constantDesc != null">
+				#{constantDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.ZdConstant">
+		update ZD_CONSTANT
+		<set>
+			<if test="code != null">
+				CODE = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				VALUE = #{value,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=DECIMAL},
+			</if>
+			<if test="constantDesc != null">
+				CONSTANT_DESC = #{constantDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where CONSTANT_ID = #{constantId,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.ZdConstant">
+		update ZD_CONSTANT
+		set CODE = #{code,jdbcType=VARCHAR},
+		VALUE = #{value,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=DECIMAL},
+		CONSTANT_DESC =
+		#{constantDesc,jdbcType=VARCHAR},
+		TYPE = #{type,jdbcType=VARCHAR},
+		NAME
+		= #{name,jdbcType=VARCHAR}
+		where CONSTANT_ID =
+		#{constantId,jdbcType=DECIMAL}
+	</update>
+
+
+	<select id="selectPage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap">
+		select * from (
+		select
+		<include refid="Base_Column_List" />
+		,rownum as rnum
+		from ZD_CONSTANT
+		where 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.constantId !=null and queryBean.constantId !=''">
+				AND constant_id =#{queryBean.constantId,jdbcType=DECIMAL}
+			</if>
+			<if test="queryBean.code !=null and queryBean.code !=''">
+				AND code =#{queryBean.code,jdbcType=VARCHAR}
+			</if>
+			<if test="queryBean.value !=null and queryBean.value !=''">
+				AND value like '%'||#
+
+				{queryBean.value,jdbcType=VARCHAR}||'%'
+			</if>
+
+			<if test="queryBean.state !=null and queryBean.state !='' ">
+				AND state =#{queryBean.state,jdbcType=DECIMAL}
+			</if>
+			<if test="queryBean.type !=null and queryBean.type !='' ">
+				AND type =#{queryBean.type,jdbcType=VARCHAR}
+			</if>
+		</if>
+		)a where 1=1
+		<if test="endRow !=null">
+			and rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+
+		<if test="beginRow !=null">
+			and rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+
+
+	<select id="selectCountPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select count(1) from (
+		select
+		<include refid="Base_Column_List" />
+		from ZD_CONSTANT
+		where 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.constantId !=null and queryBean.constantId !=''">
+				AND constant_id =#{queryBean.constantId}
+			</if>
+			<if test="queryBean.code !=null and queryBean.code !='' ">
+				AND code =#{queryBean.code}
+			</if>
+			<if test="queryBean.value !=null and queryBean.value !=''">
+				AND value like '%'||#{queryBean.value}||'%'
+			</if>
+
+			<if test="queryBean.state !=null and queryBean.state !='' ">
+				AND state =#{queryBean.state}
+			</if>
+			<if test="queryBean.type !=null and queryBean.type !='' ">
+				AND type =#{queryBean.type}
+			</if>
+		</if>
+		)
+	</select>
+
+
+
+
+
+	<select id="selectTypePage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap">
+		select * from (
+		select a.*,rownum as rnum from (
+		select type,max(name)
+		as name ,max(constant_desc)as constant_desc from
+		ZD_CONSTANT
+		group by
+		type
+		) a where 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND name like '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+		</if>
+		) where 1=1
+		<if test="endRow !=null">
+			and rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+
+		<if test="beginRow !=null">
+			and rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+
+
+	
+	<select id="selectCountTypePage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select count(1) from (
+		select a.*  from (
+		select type,max(name)
+		as name ,max(constant_desc)as constant_desc from
+		ZD_CONSTANT
+		group by
+		type
+		) a where 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND name like '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+		</if>
+		)
+	</select>
+	
+	
+	
+	<delete id="deleteByType" parameterType="java.lang.String">
+		delete from
+		ZD_CONSTANT
+		where type = #{type,jdbcType=VARCHAR}
+	</delete>
+	
+	
+	
+	<select id="selectByType" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"></include>
+		from ZD_CONSTANT where state=1 and type =#{queryBean.type,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/context   
+          http://www.springframework.org/schema/context/spring-context-3.1.xsd   
+          http://www.springframework.org/schema/data/mongo   
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd   
+          http://www.springframework.org/schema/beans   
+          http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- 加载mongodb的属性配置文件
+	<context:property-placeholder location="classpath:mongodb.properties" ignore-unresolvable="true"/> -->
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:mongodb.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" /> 
+	</bean>
+
+
+	<!-- 定义mongo对象，对应的是mongodb官方jar包中的Mongo，replica-set设置集群副本的ip地址和端口 -->
+	 <mongo:mongo id="mongo"  host="${mongo.db.host}" port="${mongo.db.port}"  />
+	 <!-- 权限配置 -->
+    <bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+        <constructor-arg name="username"  value="${mongo.db.username}"/>
+        <constructor-arg name="password"  value="${mongo.db.pwd}"/>
+    </bean>
+	 <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+	 	<constructor-arg ref="mongo" />
+	 	<!-- 数据库名称 -->
+	 	<constructor-arg value="${mongo.db.databasename}" />
+	 	<!-- 权限  -->
+        <constructor-arg ref="userCredentials" />
+	 </bean>
+</beans>
+	

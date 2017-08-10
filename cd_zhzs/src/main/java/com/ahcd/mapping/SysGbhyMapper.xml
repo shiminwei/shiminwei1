@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysGbhyMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysGbhy" >
+    <result column="ID_GBHY" property="idGbhy" jdbcType="VARCHAR" />
+    <result column="CODE_CY" property="codeCy" jdbcType="VARCHAR" />
+    <result column="NAME_CY" property="nameCy" jdbcType="VARCHAR" />
+    <result column="CODE_ML" property="codeMl" jdbcType="VARCHAR" />
+    <result column="NAME_ML" property="nameMl" jdbcType="VARCHAR" />
+    <result column="CODE_DL" property="codeDl" jdbcType="VARCHAR" />
+    <result column="NAME_DL" property="nameDl" jdbcType="VARCHAR" />
+    <result column="CODE_ZL" property="codeZl" jdbcType="VARCHAR" />
+    <result column="NAME_ZL" property="nameZl" jdbcType="VARCHAR" />
+    <result column="CODE_GBHY" property="codeGbhy" jdbcType="VARCHAR" />
+    <result column="NAME_GBHY" property="nameGbhy" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ahcd.pojo.SysGbhy" >
+    insert into SYS_GBHY (ID_GBHY, CODE_CY, NAME_CY, 
+      CODE_ML, NAME_ML, CODE_DL, 
+      NAME_DL, CODE_ZL, NAME_ZL, 
+      CODE_GBHY, NAME_GBHY)
+    values (#{idGbhy,jdbcType=VARCHAR}, #{codeCy,jdbcType=VARCHAR}, #{nameCy,jdbcType=VARCHAR}, 
+      #{codeMl,jdbcType=VARCHAR}, #{nameMl,jdbcType=VARCHAR}, #{codeDl,jdbcType=VARCHAR}, 
+      #{nameDl,jdbcType=VARCHAR}, #{codeZl,jdbcType=VARCHAR}, #{nameZl,jdbcType=VARCHAR}, 
+      #{codeGbhy,jdbcType=VARCHAR}, #{nameGbhy,jdbcType=VARCHAR})
+  </insert>
+  
+   <select id="selectPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap" >
+ 	 select *
+ 	 from (select a.*, rownum rnum
+          from (select ID_GBHY, NAME_CY, NAME_ML,
+     	  NAME_DL, NAME_ZL, 
+      	  NAME_GBHY
+          from sys_gbhy
+          where 1=1
+          <if test="queryBean !=null">
+            <if test="queryBean.name_ml !=null and queryBean.name_ml !=''">
+          		and name_ml like '%'||#{queryBean.name_ml}||'%'
+            </if>
+		    <if test="queryBean.name_cy !=null and queryBean.name_cy !=''">
+          		and name_cy like '%'||#{queryBean.name_cy}||'%'  
+            </if>
+             <if test="queryBean.name_dl !=null and queryBean.name_dl!=''">
+          		and name_dl like '%'||#{queryBean.name_dl}||'%'  
+            </if>
+		</if>  
+          ) a
+	<if  test="endRow !=null">
+		where rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+		where rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+  <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	select count(1)
+	from sys_gbhy sn
+	where 1=1
+	<if test="queryBean !=null">
+            <if test="queryBean.name_ml !=null and queryBean.name_ml !=''">
+          		and name_ml like '%'||#{queryBean.name_ml}||'%'
+            </if>
+		    <if test="queryBean.name_cy !=null and queryBean.name_cy !=''">
+          		and name_cy like '%'||#{queryBean.name_cy}||'%'  
+            </if>
+             <if test="queryBean.name_dl !=null and queryBean.name_dl!=''">
+          		and name_dl like '%'||#{queryBean.name_dl}||'%'  
+            </if>
+		</if>  
+	
+  </select>
+  
+</mapper>

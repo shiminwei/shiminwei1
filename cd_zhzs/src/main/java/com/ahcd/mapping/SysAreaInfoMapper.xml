@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.SysAreaInfoMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysAreaInfo">
+		<id column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+		<result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+		<result column="AREA_CODE" jdbcType="VARCHAR" property="areaCode" />
+		<result column="PARENT_AREA_ID" jdbcType="VARCHAR" property="parentAreaId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		AREA_ID, AREA_NAME, AREA_CODE, PARENT_AREA_ID
+	</sql>
+	<select id="countAreaPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		select count(1)
+		from sys_Area_info a1 where a1.is_delete='0'
+		<if test="queryBean !=null">
+			<if test="queryBean.areaName!=null and queryBean.areaName !=''">
+				AND a1.AREA_NAME like '%'||#{queryBean.areaName}||'%'
+			</if>
+			<if test="queryBean.areaCode !=null and queryBean.areaCode !=''">
+				AND a1.AREA_CODE =#{queryBean.areaCode}
+			</if>
+		</if>
+	</select>
+
+	<select id="selectAreasByPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap">
+		select * from (
+		select a.* ,rownum rn from
+		(select * from sys_area_info a1 where a1.is_Delete='0'
+		<if test="queryBean !=null ">
+		    <if test="queryBean.areaName !=null and queryBean.areaName !=''">
+		        AND a1.AREA_NAME like '%'||#{queryBean.areaName}||'%'
+		    </if>
+		    <if test="queryBean.areaCode !=null  and queryBean.areaCode !=''">
+		        AND a1.AREA_CODE =#{queryBean.areaCode}
+		    </if>
+		</if>)a
+		<if  test="endRow !=null">
+			where rownum <![CDATA[<=]]>  #{endRow} 
+		</if>
+		)
+		<if  test="endRow !=null">
+		where rn <![CDATA[>]]>  #{beginRow} 
+		</if>
+	</select>
+
+	<select id="selectAreaCodeByAreaId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_AREA_INFO
+		where AREA_ID = #{areaId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectAreaNameByAreaCode" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_AREA_INFO
+		where AREA_CODE = #{areaCode,jdbcType=VARCHAR}
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from SYS_AREA_INFO
+		where AREA_ID = #{areaId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.ahcd.pojo.SysAreaInfo">
+		insert into SYS_AREA_INFO ( AREA_NAME, AREA_CODE,
+		PARENT_AREA_ID)
+		values ( #{areaName,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR},
+		#{parentAreaId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ahcd.pojo.SysAreaInfo">
+		insert into SYS_AREA_INFO
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="areaId != null">
+				AREA_ID,
+			</if>
+			<if test="areaName != null">
+				AREA_NAME,
+			</if>
+			<if test="areaCode != null">
+				AREA_CODE,
+			</if>
+			<if test="parentAreaId != null">
+				PARENT_AREA_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="areaId != null">
+				#{areaId,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				#{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="areaCode != null">
+				#{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="parentAreaId != null">
+				#{parentAreaId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysAreaInfo">
+		update SYS_AREA_INFO
+		<set>
+			<if test="areaName != null">
+				AREA_NAME = #{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="areaCode != null">
+				AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="parentAreaId != null">
+				PARENT_AREA_ID = #{parentAreaId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where AREA_ID = #{areaId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysAreaInfo">
+		update SYS_AREA_INFO
+		set AREA_NAME = #{areaName,jdbcType=VARCHAR},
+		AREA_CODE = #{areaCode,jdbcType=VARCHAR},
+		PARENT_AREA_ID = #{parentAreaId,jdbcType=VARCHAR}
+		where AREA_ID = #{areaId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectAreaName" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_AREA_INFO where IS_DELETE = 0
+	</select>
+
+
+
+	<update id="isdelete" parameterType="java.lang.String">
+		update SYS_AREA_INFO
+		set
+		IS_DELETE = 1
+		where AREA_ID = #{areaId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

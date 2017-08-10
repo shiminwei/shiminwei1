@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.CompanyNumberInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.CompanyNumberInfo" >
+    <id column="NUMBER_ID" property="numberId" jdbcType="VARCHAR" />
+    <result column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="IDENTIFY_NUMBER" property="identifyNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    NUMBER_ID, ID, IDENTIFY_NUMBER
+  </sql>
+  <!-- 查询实体 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM SYS_COMPANY_NUMBER_INFO
+    WHERE NUMBER_ID = #{numberId,jdbcType=VARCHAR}
+  </select>
+  <!-- 删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    DELETE FROM SYS_COMPANY_NUMBER_INFO
+    WHERE NUMBER_ID = #{numberId,jdbcType=VARCHAR}
+  </delete> 
+  <!-- 删除 -->
+  <delete id="deleteById" parameterType="java.util.Map" >
+    DELETE FROM SYS_COMPANY_NUMBER_INFO
+    WHERE 1=1
+    <if test="id !=null">
+	       AND ID = #{id,jdbcType=DECIMAL}   
+	</if>
+  </delete>
+  <!-- 查询条数 -->
+  <select id="countPageById" parameterType="java.util.Map" resultType="java.lang.Integer" >
+  	SELECT count(1)
+	FROM SYS_COMPANY_NUMBER_INFO a
+	WHERE 1=1
+	<if test="id !=null">
+	       AND a.ID = #{id,jdbcType=DECIMAL}   
+	</if>
+  </select>  
+  <!-- 新增 -->
+  <insert id="insert" parameterType="com.ahcd.pojo.CompanyNumberInfo" >
+    <selectKey keyProperty="numberId" resultType="java.lang.String" order="BEFORE">
+			 select sys_guid() from dual  
+    </selectKey>
+    INSERT INTO SYS_COMPANY_NUMBER_INFO (NUMBER_ID, ID, IDENTIFY_NUMBER)
+    VALUES (#{numberId,jdbcType=VARCHAR}, #{id,jdbcType=DECIMAL}, #{identifyNumber,jdbcType=VARCHAR})
+  </insert>
+  <!-- 新增 -->
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.CompanyNumberInfo" >
+    <selectKey keyProperty="numberId" resultType="java.lang.String" order="BEFORE">
+			 select sys_guid() from dual  
+    </selectKey>
+    INSERT INTO SYS_COMPANY_NUMBER_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="numberId != null" >
+        NUMBER_ID,
+      </if>
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="identifyNumber != null" >
+        IDENTIFY_NUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="numberId != null" >
+        #{numberId,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="identifyNumber != null" >
+        #{identifyNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 更新 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.CompanyNumberInfo" >
+    UPDATE SYS_COMPANY_NUMBER_INFO
+    <set >
+      <if test="id != null" >
+        ID = #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="identifyNumber != null" >
+        IDENTIFY_NUMBER = #{identifyNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE NUMBER_ID = #{numberId,jdbcType=VARCHAR}
+  </update>
+  <!-- 更新 -->
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.CompanyNumberInfo" >
+    UPDATE SYS_COMPANY_NUMBER_INFO
+    SET 
+      ID = #{id,jdbcType=DECIMAL},
+      IDENTIFY_NUMBER = #{identifyNumber,jdbcType=VARCHAR}
+    WHERE NUMBER_ID = #{numberId,jdbcType=VARCHAR}
+  </update>
+   <!-- 查询条数 -->
+  <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	SELECT count(1)
+	FROM SYS_COMPANY_NUMBER_INFO
+	WHERE 1=1
+	<if test="queryBean!=null">
+	    <if test="queryBean.id !=null">
+		     AND ID = #{queryBean.id,jdbcType=DECIMAL}     
+		</if>
+		<if test="queryBean.identifyNumber !=null and queryBean.identifyNumber !=''">
+		     AND IDENTIFY_NUMBER LIKE '%'||#{queryBean.identifyNumber,jdbcType=VARCHAR}||'%'     
+		</if>
+	</if>
+  </select>  
+  <!-- 查询列表 -->
+  <select id="selectPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap" >
+  	SELECT *
+    FROM  (SELECT a.*, rownum rnum
+     FROM (
+     	SELECT NUMBER_ID, ID, IDENTIFY_NUMBER  
+     	FROM SYS_COMPANY_NUMBER_INFO
+		WHERE 1=1
+		<if test="queryBean !=null">
+		    <if test="queryBean.id !=null">
+		        AND ID = #{queryBean.id,jdbcType=DECIMAL}     
+		    </if>
+		    <if test="queryBean.identifyNumber !=null and queryBean.identifyNumber !=''">
+		        AND IDENTIFY_NUMBER LIKE '%'||#{queryBean.identifyNumber,jdbcType=VARCHAR}||'%'     
+		    </if>
+		</if>
+			ORDER BY NUMBER_ID DESC
+		) a
+	<if  test="endRow !=null">
+	WHERE rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+</mapper>

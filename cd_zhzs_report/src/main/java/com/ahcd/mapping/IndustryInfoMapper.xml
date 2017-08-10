@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 行业信息表-->
+<mapper namespace="com.ahcd.dao.IndustryInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.IndustryInfo" >
+    <result column="INDUSTRY_ID" property="industryId" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 新增实体 -->
+  <insert id="insert" parameterType="com.ahcd.pojo.IndustryInfo" >
+  	<selectKey keyProperty="industryId" resultType="DECIMAL" order="BEFORE">
+		SELECT INDUSTRY_INFO_SEQ.nextVal FROM dual
+	</selectKey>
+    INSERT INTO INDUSTRY_INFO 
+    (INDUSTRY_ID, REMARK, NAME)
+     values
+    (#{industryId,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.IndustryInfo" >
+    insert into ZHZS.INDUSTRY_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="industryId != null" >
+        INDUSTRY_ID,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="industryId != null" >
+        #{industryId,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 查询列表(分页) -->
+  <select id="selectIndustryInfoPage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap">
+		SELECT * FROM (
+		SELECT a.*,rownum AS rnum FROM (
+		SELECT industry_id,remark,name
+		FROM INDUSTRY_INFO
+		WHERE 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND name LIKE '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="queryBean.industryId !=null and queryBean.industryId !=''">
+				AND industry_id = #{queryBean.industryId,jdbcType=DECIMAL}
+			</if>
+		</if>
+		ORDER BY industry_id desc
+		)a
+		<if test="endRow !=null">
+			WHERE rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="beginRow !=null">
+			WHERE rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+	<!-- 查询条数 -->
+	<select id="selectCountIndustryInfoPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM (
+		SELECT industry_id,remark,name
+		FROM INDUSTRY_INFO
+		WHERE 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND name LIKE '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="queryBean.industryId !=null and queryBean.industryId !=''">
+				AND industry_id = #{queryBean.industryId,jdbcType=DECIMAL}
+			</if>
+		</if>
+		)
+	</select>
+	
+	<!-- 查询列表(不分页) -->
+  	<select id="selectIndustryInfoList" parameterType="com.ahcd.pojo.IndustryInfo"
+		resultMap="BaseResultMap">
+		SELECT industry_id,remark,name
+		FROM INDUSTRY_INFO
+		WHERE 1=1
+		<if test="name !=null and name !=''">
+			AND name LIKE '%'||#{name,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="industryId !=null and industryId !=''">
+			AND industry_id = #{industryId,jdbcType=DECIMAL}
+		</if>	
+		ORDER BY industry_id desc
+	</select>
+	
+	<!-- 查询实体 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		SELECT industry_id,remark,name
+		FROM INDUSTRY_INFO
+		WHERE industry_id = #{industryId,jdbcType=DECIMAL}
+	</select>
+	<!-- 更新实体 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.IndustryInfo">
+		UPDATE INDUSTRY_INFO
+		<set>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE industry_id = #{industryId,jdbcType=DECIMAL}
+	</update>
+	<!-- 删除 -->
+  	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		DELETE FROM
+		INDUSTRY_INFO
+		WHERE industry_id = #{industryId,jdbcType=DECIMAL}
+	</delete>
+
+</mapper>

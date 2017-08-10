@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysNoticeDepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysNoticeDepartment" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT_ID" property="departmentId" jdbcType="VARCHAR" />
+    <result column="NOTICE_ID" property="noticeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DEPARTMENT_ID, NOTICE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_NOTICE_DEPARTMENT
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+<delete id="deleteByNoticeId" parameterType="java.lang.String" >
+    delete from SYS_NOTICE_DEPARTMENT
+    where NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+</delete>
+ 
+  
+  <insert id="insertSysNoticeDepartment" parameterType="com.ahcd.pojo.SysNoticeDepartment" >
+    insert into SYS_NOTICE_DEPARTMENT (DEPARTMENT_ID, NOTICE_ID)
+    values (#{departmentId,jdbcType=VARCHAR}, #{noticeId,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="selectByNoticeId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_NOTICE_DEPARTMENT
+    where NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateSysNoticeDepartment" parameterType="com.ahcd.pojo.SysNoticeDepartment" >
+    update SYS_NOTICE_DEPARTMENT
+    SET DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR},
+    NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+    where NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.SysNoticeDepartment" >
+    insert into SYS_NOTICE_DEPARTMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="departmentId != null" >
+        DEPARTMENT_ID,
+      </if>
+      <if test="noticeId != null" >
+        NOTICE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeId != null" >
+        #{noticeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysNoticeDepartment" >
+    update SYS_NOTICE_DEPARTMENT
+    <set >
+      <if test="departmentId != null" >
+        DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeId != null" >
+        NOTICE_ID = #{noticeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysNoticeDepartment" >
+    update SYS_NOTICE_DEPARTMENT
+    set DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR},
+      NOTICE_ID = #{noticeId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

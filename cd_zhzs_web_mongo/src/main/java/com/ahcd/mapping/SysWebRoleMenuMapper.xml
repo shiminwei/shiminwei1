@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysWebRoleMenuMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysWebRoleMenu">
+		<result column="ROLE_ID" property="roleId" jdbcType="DECIMAL" />
+		<result column="MENU_ID" property="menuId" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ROLE_ID, MENU_ID
+	</sql>
+	<insert id="insert" parameterType="com.ahcd.pojo.SysWebRoleMenu">
+		insert into SYS_WEB_MENU_ROLE (ROLE_ID, MENU_ID)
+		values (#{roleId,jdbcType=DECIMAL}, #{menuId,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ahcd.pojo.SysWebRoleMenu">
+		insert into SYS_WEB_MENU_ROLE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				ROLE_ID,
+			</if>
+			<if test="menuId != null">
+				MENU_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=DECIMAL},
+			</if>
+			<if test="menuId != null">
+				#{menuId,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from
+		SYS_WEB_MENU_ROLE
+		where ROLE_ID = #{roleId,jdbcType=DECIMAL}
+	</delete>
+	
+	
+	<select id="getRoleList" resultMap="BaseResultMap"
+		parameterType="com.ahcd.pojo.SysWebRoleMenu">
+
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU_ROLE where 1=1
+
+		<if test="roleId != null">
+			AND ROLE_ID = #{roleId,jdbcType=DECIMAL}
+		</if>
+
+	</select>
+
+</mapper>

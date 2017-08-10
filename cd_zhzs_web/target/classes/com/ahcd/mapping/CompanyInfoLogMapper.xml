@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.CompanyInfoLogMapper">
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.CompanyInfoLog">
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="LEGAL_PERSON" jdbcType="VARCHAR" property="legalPerson" />
+    <result column="ID_GBHY" jdbcType="VARCHAR" property="idGbhy" />
+    <result column="NAME_GBHY" jdbcType="VARCHAR" property="nameGbhy" />
+    <result column="IS_ABOVE_SCALE" jdbcType="CHAR" property="isAboveScale" />
+    <result column="IS_CANVASS_BUISINESS" jdbcType="CHAR" property="isCanvassBuisiness" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="COMPANY_ATTR" jdbcType="VARCHAR" property="companyAttr" />
+    <result column="REGISTER_CAPITAL" jdbcType="VARCHAR" property="registerCapital" />
+    <result column="COMPANY_TYPE" jdbcType="VARCHAR" property="companyType" />
+    <result column="DEAL_AREA" jdbcType="VARCHAR" property="dealArea" />
+    <result column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+    <result column="IS_DELETE" jdbcType="CHAR" property="isDelete" />
+    <result column="REGISTER_DATE" jdbcType="VARCHAR" property="registerDate" />
+    <result column="INDUSTRY_TYPE" jdbcType="VARCHAR" property="industryType" />
+    <result column="LINKMAN" jdbcType="VARCHAR" property="linkman" />
+    <result column="LINKMAN_MOBILE" jdbcType="VARCHAR" property="linkmanMobile" />
+    <result column="POLITICAL_OUTLOOK" jdbcType="VARCHAR" property="politicalOutlook" />
+    <result column="CURRENCY" jdbcType="VARCHAR" property="currency" />
+    <result column="MANAGEMENT_CATEGORY" jdbcType="VARCHAR" property="managementCategory" />
+    <result column="JURISDICTION_UNIT" jdbcType="VARCHAR" property="jurisdictionUnit" />
+    <result column="MAIN_JURISDICTION_UNIT" jdbcType="VARCHAR" property="mainJurisdictionUnit" />
+    <result column="REGISTRATION_UINT" jdbcType="VARCHAR" property="registrationUint" />
+    <result column="MAIN_REGISTRATION_UINT" jdbcType="VARCHAR" property="mainRegistrationUint" />
+    <result column="APPROVAL_DATE" jdbcType="VARCHAR" property="approvalDate" />
+    <result column="CONTACT_MOBILE" jdbcType="VARCHAR" property="contactMobile" />
+    <result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+    <result column="GSZJ_K_ID" jdbcType="VARCHAR" property="gszjKId" />
+    <result column="DSJ_K_ID" jdbcType="VARCHAR" property="dsjKId" />
+    <result column="GSJ_K_ID" jdbcType="VARCHAR" property="gsjKId" />
+    <result column="CYRS" jdbcType="VARCHAR" property="cyrs" />
+    <result column="K_DATE" jdbcType="VARCHAR" property="k_date" />
+    <result column="JYDZ" jdbcType="VARCHAR" property="jydz" />
+    <result column="NSRMC" jdbcType="VARCHAR" property="nsrmc" />
+    <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ahcd.pojo.CompanyInfoLog">
+    INSERT INTO SYS_COMPANY_INFO_LOG (ID, NAME, LEGAL_PERSON, 
+      ID_GBHY, NAME_GBHY, IS_ABOVE_SCALE, 
+      IS_CANVASS_BUISINESS, STATUS, COMPANY_ATTR, 
+      REGISTER_CAPITAL, COMPANY_TYPE, DEAL_AREA, 
+      AREA_ID, IS_DELETE, REGISTER_DATE, 
+      INDUSTRY_TYPE, LINKMAN, LINKMAN_MOBILE, 
+      POLITICAL_OUTLOOK, CURRENCY, MANAGEMENT_CATEGORY, 
+      JURISDICTION_UNIT, MAIN_JURISDICTION_UNIT, 
+      REGISTRATION_UINT, MAIN_REGISTRATION_UINT, 
+      APPROVAL_DATE, CONTACT_MOBILE, AREA_NAME, 
+      GSZJ_K_ID, DSJ_K_ID, GSJ_K_ID, 
+      UPDATE_TIME, REMARK,CYRS,K_DATE,JYDZ,NSRMC)
+    VALUES (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{legalPerson,jdbcType=VARCHAR}, 
+      #{idGbhy,jdbcType=VARCHAR}, #{nameGbhy,jdbcType=VARCHAR}, #{isAboveScale,jdbcType=CHAR}, 
+      #{isCanvassBuisiness,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}, #{companyAttr,jdbcType=VARCHAR}, 
+      #{registerCapital,jdbcType=VARCHAR}, #{companyType,jdbcType=VARCHAR}, #{dealArea,jdbcType=VARCHAR}, 
+      #{areaId,jdbcType=VARCHAR}, #{isDelete,jdbcType=CHAR}, #{registerDate,jdbcType=VARCHAR}, 
+      #{industryType,jdbcType=VARCHAR}, #{linkman,jdbcType=VARCHAR}, #{linkmanMobile,jdbcType=VARCHAR}, 
+      #{politicalOutlook,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{managementCategory,jdbcType=VARCHAR}, 
+      #{jurisdictionUnit,jdbcType=VARCHAR}, #{mainJurisdictionUnit,jdbcType=VARCHAR}, 
+      #{registrationUint,jdbcType=VARCHAR}, #{mainRegistrationUint,jdbcType=VARCHAR}, 
+      #{approvalDate,jdbcType=VARCHAR}, #{contactMobile,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
+      #{gszjKId,jdbcType=VARCHAR}, #{dsjKId,jdbcType=VARCHAR}, #{gsjKId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}
+      , #{cyrs,jdbcType=VARCHAR}, #{k_date,jdbcType=VARCHAR}, #{jydz,jdbcType=VARCHAR}, #{nsrmc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.CompanyInfoLog">
+    INSERT INTO SYS_COMPANY_INFO_LOG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="legalPerson != null">
+        LEGAL_PERSON,
+      </if>
+      <if test="idGbhy != null">
+        ID_GBHY,
+      </if>
+      <if test="nameGbhy != null">
+        NAME_GBHY,
+      </if>
+      <if test="isAboveScale != null">
+        IS_ABOVE_SCALE,
+      </if>
+      <if test="isCanvassBuisiness != null">
+        IS_CANVASS_BUISINESS,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="companyAttr != null">
+        COMPANY_ATTR,
+      </if>
+      <if test="registerCapital != null">
+        REGISTER_CAPITAL,
+      </if>
+      <if test="companyType != null">
+        COMPANY_TYPE,
+      </if>
+      <if test="dealArea != null">
+        DEAL_AREA,
+      </if>
+      <if test="areaId != null">
+        AREA_ID,
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE,
+      </if>
+      <if test="registerDate != null">
+        REGISTER_DATE,
+      </if>
+      <if test="industryType != null">
+        INDUSTRY_TYPE,
+      </if>
+      <if test="linkman != null">
+        LINKMAN,
+      </if>
+      <if test="linkmanMobile != null">
+        LINKMAN_MOBILE,
+      </if>
+      <if test="politicalOutlook != null">
+        POLITICAL_OUTLOOK,
+      </if>
+      <if test="currency != null">
+        CURRENCY,
+      </if>
+      <if test="managementCategory != null">
+        MANAGEMENT_CATEGORY,
+      </if>
+      <if test="jurisdictionUnit != null">
+        JURISDICTION_UNIT,
+      </if>
+      <if test="mainJurisdictionUnit != null">
+        MAIN_JURISDICTION_UNIT,
+      </if>
+      <if test="registrationUint != null">
+        REGISTRATION_UINT,
+      </if>
+      <if test="mainRegistrationUint != null">
+        MAIN_REGISTRATION_UINT,
+      </if>
+      <if test="approvalDate != null">
+        APPROVAL_DATE,
+      </if>
+      <if test="contactMobile != null">
+        CONTACT_MOBILE,
+      </if>
+      <if test="areaName != null">
+        AREA_NAME,
+      </if>
+      <if test="gszjKId != null">
+        GSZJ_K_ID,
+      </if>
+      <if test="dsjKId != null">
+        DSJ_K_ID,
+      </if>
+      <if test="gsjKId != null">
+        GSJ_K_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="remark != null">
+        CYRS,
+      </if>
+      <if test="remark != null">
+        K_DATE,
+      </if>
+      <if test="remark != null">
+        JYDZ,
+      </if>
+      <if test="remark != null">
+        NSRMC,
+      </if>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="idGbhy != null">
+        #{idGbhy,jdbcType=VARCHAR},
+      </if>
+      <if test="nameGbhy != null">
+        #{nameGbhy,jdbcType=VARCHAR},
+      </if>
+      <if test="isAboveScale != null">
+        #{isAboveScale,jdbcType=CHAR},
+      </if>
+      <if test="isCanvassBuisiness != null">
+        #{isCanvassBuisiness,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAttr != null">
+        #{companyAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="registerCapital != null">
+        #{registerCapital,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null">
+        #{companyType,jdbcType=VARCHAR},
+      </if>
+      <if test="dealArea != null">
+        #{dealArea,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=CHAR},
+      </if>
+      <if test="registerDate != null">
+        #{registerDate,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null">
+        #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null">
+        #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanMobile != null">
+        #{linkmanMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null">
+        #{politicalOutlook,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="managementCategory != null">
+        #{managementCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="jurisdictionUnit != null">
+        #{jurisdictionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="mainJurisdictionUnit != null">
+        #{mainJurisdictionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationUint != null">
+        #{registrationUint,jdbcType=VARCHAR},
+      </if>
+      <if test="mainRegistrationUint != null">
+        #{mainRegistrationUint,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalDate != null">
+        #{approvalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null">
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="gszjKId != null">
+        #{gszjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="dsjKId != null">
+        #{dsjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="gsjKId != null">
+        #{gsjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>      
+      <if test="cyrs != null">
+        #{cyrs,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{k_date,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{jydz,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{nsrmc,jdbcType=VARCHAR},
+      </if>     
+    </trim>
+  </insert>
+</mapper>

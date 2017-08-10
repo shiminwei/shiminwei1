@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysMessage" >
+    <id column="MESSAGE_ID" property="messageId" jdbcType="VARCHAR" />
+    <result column="MESSAGE_TITLE" property="messageTitle" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ahcd.pojo.SysMessage" extends="BaseResultMap" >
+    <result column="MESSAGE_CONTENT" property="messageContent" jdbcType="CLOB" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    MESSAGE_ID, MESSAGE_TITLE, CREATE_TIME, USER_ID
+  </sql>
+  <sql id="Blob_Column_List" >
+    MESSAGE_CONTENT
+  </sql>
+  
+  <!-- 查询实体 -->
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    SELECT 
+    m.MESSAGE_ID, m.MESSAGE_TITLE, m.CREATE_TIME, m.USER_ID
+    ,m.MESSAGE_CONTENT,r.USER_NAME
+    FROM SYS_MESSAGE m,SYS_REPORT_USER r
+    WHERE m.USER_ID = r.USER_ID AND m.MESSAGE_ID = #{messageId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 删除实体 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    DELETE FROM SYS_MESSAGE
+    WHERE MESSAGE_ID = #{messageId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 新增实体 -->
+  <insert id="insert" parameterType="com.ahcd.pojo.SysMessage" >
+    <selectKey keyProperty="messageId" resultType="java.lang.String" order="BEFORE">
+			 select sys_guid() from dual  
+   </selectKey>
+    INSERT INTO SYS_MESSAGE (
+      MESSAGE_ID, MESSAGE_TITLE, CREATE_TIME,USER_ID, MESSAGE_CONTENT
+    )VALUES(
+      #{messageId,jdbcType=VARCHAR}, #{messageTitle,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
+      #{userId,jdbcType=DECIMAL}, #{messageContent,jdbcType=CLOB}
+    )
+  </insert>
+  
+  <!-- 新增实体 -->
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.SysMessage" >
+  	<selectKey keyProperty="messageId" resultType="java.lang.String" order="BEFORE">
+			 select sys_guid() from dual  
+   	</selectKey>
+    INSERT INTO SYS_MESSAGE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        MESSAGE_ID,
+      </if>
+      <if test="messageTitle != null" >
+        MESSAGE_TITLE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="messageContent != null" >
+        MESSAGE_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageId != null" >
+        #{messageId,jdbcType=VARCHAR},
+      </if>
+      <if test="messageTitle != null" >
+        #{messageTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="messageContent != null" >
+        #{messageContent,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新实体 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysMessage" >
+    UPDATE SYS_MESSAGE
+    <set >
+      <if test="messageTitle != null" >
+        MESSAGE_TITLE = #{messageTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="messageContent != null" >
+        MESSAGE_CONTENT = #{messageContent,jdbcType=CLOB},
+      </if>
+    </set>
+    WHERE MESSAGE_ID = #{messageId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 更新实体 -->
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ahcd.pojo.SysMessage" >
+    UPDATE SYS_MESSAGE
+    SET 
+      MESSAGE_TITLE = #{messageTitle,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      USER_ID = #{userId,jdbcType=DECIMAL},
+      MESSAGE_CONTENT = #{messageContent,jdbcType=CLOB}
+    WHERE MESSAGE_ID = #{messageId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 更新实体 -->
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysMessage" >
+    UPDATE SYS_MESSAGE
+    SET 
+      MESSAGE_TITLE = #{messageTitle,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=DATE},
+      USER_ID = #{userId,jdbcType=DECIMAL}
+    WHERE MESSAGE_ID = #{messageId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询条数 -->
+  <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer" >
+  	SELECT count(1)
+	FROM SYS_MESSAGE m,SYS_REPORT_USER r
+	WHERE m.USER_ID=r.USER_ID
+	<if test="queryBean!=null">
+	    <if test="queryBean.messageTitle !=null and queryBean.messageTitle !=''">
+	        AND m.MESSAGE_TITLE LIKE '%'||#{queryBean.messageTitle}||'%'   
+	    </if>
+	</if>
+  </select>
+  
+  <!-- 查询列表 -->
+  <select id="selectPage" parameterType="com.ahcd.pojo.Page" resultMap="ResultMapWithBLOBs" >
+  	SELECT *
+    FROM  (SELECT a.*, rownum rnum
+     FROM (
+     	SELECT m.MESSAGE_ID, m.MESSAGE_TITLE, m.CREATE_TIME, m.USER_ID,m.MESSAGE_CONTENT,r.USER_NAME  
+     	FROM SYS_MESSAGE m,SYS_REPORT_USER r
+		WHERE m.USER_ID=r.USER_ID
+		<if test="queryBean !=null">
+		    <if test="queryBean.messageTitle !=null and queryBean.messageTitle !=''">
+		        AND m.MESSAGE_TITLE LIKE '%'||#{queryBean.messageTitle}||'%'   
+		    </if>
+		</if>
+			ORDER BY CREATE_TIME DESC,MESSAGE_TITLE DESC
+		) a
+	<if  test="endRow !=null">
+	WHERE rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if  test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+
+</mapper>

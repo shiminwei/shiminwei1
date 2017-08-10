@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 税种信息表-->
+<mapper namespace="com.ahcd.dao.TaxInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.TaxInfo" >
+    <result column="TAX_ID" property="taxId" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 新增实体-->
+  <insert id="insert" parameterType="com.ahcd.pojo.TaxInfo" >
+    <selectKey keyProperty="taxId" resultType="DECIMAL" order="BEFORE">
+		SELECT TAX_INFO_SEQ.nextVal FROM dual
+	</selectKey>
+    insert into TAX_INFO 
+    (TAX_ID,NAME,REMARK)
+     values 
+    (#{taxId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.TaxInfo" >
+    
+    insert into ZHZS.TAX_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taxId != null" >
+        TAX_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taxId != null" >
+        #{taxId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <!-- 查询列表(分页) -->
+  <select id="selectTaxInfoPage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap">
+		SELECT * FROM (
+		SELECT a.*,rownum AS rnum FROM (
+		SELECT tax_id,name,remark
+		FROM TAX_INFO
+		WHERE 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND name LIKE '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="queryBean.taxId !=null and queryBean.taxId !=''">
+				AND tax_Id = #{queryBean.taxId,jdbcType=DECIMAL}
+			</if>
+		</if>
+		ORDER BY tax_Id desc
+		)a
+		<if test="endRow !=null">
+			WHERE rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="beginRow !=null">
+			WHERE rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+	<!-- 查询条数 -->
+	<select id="selectCountTaxInfoPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM (
+		SELECT tax_id,name,remark
+		FROM TAX_INFO
+		WHERE 1=1
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND name LIKE '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="queryBean.taxId !=null and queryBean.taxId !=''">
+				AND tax_Id = #{queryBean.taxId,jdbcType=DECIMAL}
+			</if>
+		</if>
+		)
+	</select>
+	
+	<!-- 查询列表(不分页) -->
+  	<select id="selectTaxInfoList" parameterType="com.ahcd.pojo.TaxInfo"
+		resultMap="BaseResultMap">
+		SELECT tax_id,name,remark
+		FROM TAX_INFO
+		WHERE 1=1
+		<if test="name !=null and name !=''">
+			AND name LIKE '%'||#{name,jdbcType=VARCHAR}||'%'
+		</if>
+		<if test="taxId !=null and taxId !=''">
+			AND tax_Id = #{taxId,jdbcType=DECIMAL}
+		</if>
+		ORDER BY tax_Id desc
+	</select>
+	
+	<!-- 查询实体 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		SELECT tax_id,name,remark
+		FROM TAX_INFO
+		WHERE tax_id = #{taxId,jdbcType=DECIMAL}
+	</select>
+	<!-- 更新实体 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.TaxInfo">
+		UPDATE TAX_INFO
+		<set>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE tax_id = #{taxId,jdbcType=DECIMAL}
+	</update>
+	<!-- 删除 -->
+  	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		DELETE FROM
+		TAX_INFO
+		WHERE tax_id = #{taxId,jdbcType=DECIMAL}
+	</delete>
+	
+</mapper>

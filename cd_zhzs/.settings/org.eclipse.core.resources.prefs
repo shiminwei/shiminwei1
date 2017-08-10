@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/ahcd/common/Constant.java=UTF-8
+encoding//src/main/java/com/ahcd/common/FileUtil.java=UTF-8
+encoding//src/main/java/com/ahcd/common/PasswordUtil.java=UTF-8
+encoding//src/main/java/com/ahcd/common/StringUtil.java=UTF-8
+encoding//src/main/java/com/ahcd/controller/admin=UTF-8
+encoding//src/main/java/com/ahcd/controller/admin/AdminIndexController.java=UTF-8
+encoding//src/main/java/com/ahcd/controller/admin/AreaIndustryTaxInfoController.java=UTF-8
+encoding//src/main/java/com/ahcd/controller/admin/UserManageController.java=UTF-8
+encoding//src/main/java/com/ahcd/controller/web=UTF-8
+encoding//src/main/java/com/ahcd/service/impl/JsonConfigServiceImpl.java=UTF-8
+encoding//src/main/webapp/common/base.jsp=UTF-8
+encoding//src/main/webapp/common/page.jsp=UTF-8
+encoding//src/main/webapp/login.jsp=UTF-8
+encoding/<project>=UTF-8

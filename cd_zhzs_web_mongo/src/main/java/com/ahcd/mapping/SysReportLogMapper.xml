@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysReportLogMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysReportLog">
+		<id column="LOG_ID" property="logId" jdbcType="DECIMAL" />
+		<result column="TEMPLATE_NAME" property="templateName"
+			jdbcType="VARCHAR" />
+		<result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+		<result column="DEPARMENT_ID" property="deparmentId" jdbcType="VARCHAR" />
+		<result column="REPORT_TYPE" property="reportType" jdbcType="DECIMAL" />
+		<result column="REPORT_DATE" property="reportDate" jdbcType="TIMESTAMP" />
+		<result column="REPORT_ZQ" property="reportZq" jdbcType="DECIMAL" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="AREA_NAME" property="areaName" jdbcType="VARCHAR" />
+		<result column="DEPARMENT_NAME" property="deparmentName"
+			jdbcType="VARCHAR" />
+		<result column="REPORT_YEAR" property="reportYear" jdbcType="VARCHAR" />
+		<result column="REPORT_MONTH" property="reportMonth" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		LOG_ID, TEMPLATE_NAME, TABLE_NAME, USER_ID, AREA_ID,
+		DEPARMENT_ID,
+		REPORT_TYPE, REPORT_DATE,
+		REPORT_ZQ, USER_NAME, AREA_NAME,
+		DEPARMENT_NAME, REPORT_YEAR, REPORT_MONTH
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.math.BigDecimal">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_REPORT_LOG
+		where LOG_ID = #{logId,jdbcType=DECIMAL}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+		delete from
+		SYS_REPORT_LOG
+		where LOG_ID = #{logId,jdbcType=DECIMAL}
+	</delete>
+	<insert id="insert" parameterType="com.ahcd.pojo.SysReportLog">
+		<selectKey keyProperty="logId" resultType="DECIMAL" order="BEFORE">
+			select SYS_REPORT_LOG_SEQ.nextVal from dual
+		</selectKey>
+		insert into SYS_REPORT_LOG (LOG_ID, TEMPLATE_NAME, TABLE_NAME,
+		USER_ID, AREA_ID, DEPARMENT_ID,
+		REPORT_TYPE, REPORT_DATE, REPORT_ZQ,
+		USER_NAME, AREA_NAME, DEPARMENT_NAME,
+		REPORT_YEAR, REPORT_MONTH)
+		values
+		(#{logId,jdbcType=DECIMAL}, #{templateName,jdbcType=VARCHAR},
+		#{tableName,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR},
+		#{areaId,jdbcType=VARCHAR}, #{deparmentId,jdbcType=VARCHAR},
+		#{reportType,jdbcType=DECIMAL}, #{reportDate,jdbcType=TIMESTAMP},
+		#{reportZq,jdbcType=DECIMAL},
+		#{userName,jdbcType=VARCHAR},
+		#{areaName,jdbcType=VARCHAR}, #{deparmentName,jdbcType=VARCHAR},
+		#{reportYear,jdbcType=VARCHAR}, #{reportMonth,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ahcd.pojo.SysReportLog">
+		insert into SYS_REPORT_LOG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logId != null">
+				LOG_ID,
+			</if>
+			<if test="templateName != null">
+				TEMPLATE_NAME,
+			</if>
+			<if test="tableName != null">
+				TABLE_NAME,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="areaId != null">
+				AREA_ID,
+			</if>
+			<if test="deparmentId != null">
+				DEPARMENT_ID,
+			</if>
+			<if test="reportType != null">
+				REPORT_TYPE,
+			</if>
+			<if test="reportDate != null">
+				REPORT_DATE,
+			</if>
+			<if test="reportZq != null">
+				REPORT_ZQ,
+			</if>
+			<if test="userName != null">
+				USER_NAME,
+			</if>
+			<if test="areaName != null">
+				AREA_NAME,
+			</if>
+			<if test="deparmentName != null">
+				DEPARMENT_NAME,
+			</if>
+			<if test="reportYear != null">
+				REPORT_YEAR,
+			</if>
+			<if test="reportMonth != null">
+				REPORT_MONTH,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logId != null">
+				#{logId,jdbcType=DECIMAL},
+			</if>
+			<if test="templateName != null">
+				#{templateName,jdbcType=VARCHAR},
+			</if>
+			<if test="tableName != null">
+				#{tableName,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="areaId != null">
+				#{areaId,jdbcType=VARCHAR},
+			</if>
+			<if test="deparmentId != null">
+				#{deparmentId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportType != null">
+				#{reportType,jdbcType=DECIMAL},
+			</if>
+			<if test="reportDate != null">
+				#{reportDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reportZq != null">
+				#{reportZq,jdbcType=DECIMAL},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				#{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="deparmentName != null">
+				#{deparmentName,jdbcType=VARCHAR},
+			</if>
+			<if test="reportYear != null">
+				#{reportYear,jdbcType=VARCHAR},
+			</if>
+			<if test="reportMonth != null">
+				#{reportMonth,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysReportLog">
+		update SYS_REPORT_LOG
+		<set>
+			<if test="templateName != null">
+				TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR},
+			</if>
+			<if test="tableName != null">
+				TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="areaId != null">
+				AREA_ID = #{areaId,jdbcType=VARCHAR},
+			</if>
+			<if test="deparmentId != null">
+				DEPARMENT_ID = #{deparmentId,jdbcType=VARCHAR},
+			</if>
+			<if test="reportType != null">
+				REPORT_TYPE = #{reportType,jdbcType=DECIMAL},
+			</if>
+			<if test="reportDate != null">
+				REPORT_DATE = #{reportDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reportZq != null">
+				REPORT_ZQ = #{reportZq,jdbcType=DECIMAL},
+			</if>
+			<if test="userName != null">
+				USER_NAME = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				AREA_NAME = #{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="deparmentName != null">
+				DEPARMENT_NAME = #{deparmentName,jdbcType=VARCHAR},
+			</if>
+			<if test="reportYear != null">
+				REPORT_YEAR = #{reportYear,jdbcType=VARCHAR},
+			</if>
+			<if test="reportMonth != null">
+				REPORT_MONTH = #{reportMonth,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where LOG_ID = #{logId,jdbcType=DECIMAL}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysReportLog">
+		update
+		SYS_REPORT_LOG
+		set TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR},
+		TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+		USER_ID =
+		#{userId,jdbcType=VARCHAR},
+		AREA_ID = #{areaId,jdbcType=VARCHAR},
+		DEPARMENT_ID = #{deparmentId,jdbcType=VARCHAR},
+		REPORT_TYPE =
+		#{reportType,jdbcType=DECIMAL},
+		REPORT_DATE =
+		#{reportDate,jdbcType=TIMESTAMP},
+		REPORT_ZQ =
+		#{reportZq,jdbcType=DECIMAL},
+		USER_NAME = #{userName,jdbcType=VARCHAR},
+		AREA_NAME = #{areaName,jdbcType=VARCHAR},
+		DEPARMENT_NAME =
+		#{deparmentName,jdbcType=VARCHAR},
+		REPORT_YEAR =
+		#{reportYear,jdbcType=VARCHAR},
+		REPORT_MONTH =
+		#{reportMonth,jdbcType=VARCHAR}
+		where LOG_ID =
+		#{logId,jdbcType=DECIMAL}
+	</update>
+	<select id="selectByBean" parameterType="com.ahcd.pojo.SysReportLog"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_report_log where 1=1
+
+		<if test="templateName != null">
+			and TEMPLATE_NAME = #{templateName,jdbcType=VARCHAR}
+		</if>
+		<if test="reportYear != null">
+			and REPORT_YEAR = #{reportYear,jdbcType=VARCHAR}
+		</if>
+		<if test="reportMonth != null">
+			and REPORT_MONTH = #{reportMonth,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+
+</mapper>

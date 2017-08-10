@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.CompanyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.CompanyInfo">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="LEGAL_PERSON" jdbcType="VARCHAR" property="legalPerson" />
+    <result column="ID_GBHY" jdbcType="VARCHAR" property="idGbhy" />
+    <result column="NAME_GBHY" jdbcType="VARCHAR" property="nameGbhy" />
+    <result column="IS_ABOVE_SCALE" jdbcType="CHAR" property="isAboveScale" />
+    <result column="IS_CANVASS_BUISINESS" jdbcType="CHAR" property="isCanvassBuisiness" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="COMPANY_ATTR" jdbcType="VARCHAR" property="companyAttr" />
+    <result column="REGISTER_CAPITAL" jdbcType="VARCHAR" property="registerCapital" />
+    <result column="COMPANY_TYPE" jdbcType="VARCHAR" property="companyType" />
+    <result column="DEAL_AREA" jdbcType="VARCHAR" property="dealArea" />
+    <result column="AREA_ID" jdbcType="VARCHAR" property="areaId" />
+    <result column="IS_DELETE" jdbcType="CHAR" property="isDelete" />
+    <result column="REGISTER_DATE" jdbcType="VARCHAR" property="registerDate" />
+    <result column="INDUSTRY_TYPE" jdbcType="VARCHAR" property="industryType" />
+    <result column="LINKMAN" jdbcType="VARCHAR" property="linkman" />
+    <result column="LINKMAN_MOBILE" jdbcType="VARCHAR" property="linkmanMobile" />
+    <result column="POLITICAL_OUTLOOK" jdbcType="VARCHAR" property="politicalOutlook" />
+    <result column="CURRENCY" jdbcType="VARCHAR" property="currency" />
+    <result column="MANAGEMENT_CATEGORY" jdbcType="VARCHAR" property="managementCategory" />
+    <result column="JURISDICTION_UNIT" jdbcType="VARCHAR" property="jurisdictionUnit" />
+    <result column="MAIN_JURISDICTION_UNIT" jdbcType="VARCHAR" property="mainJurisdictionUnit" />
+    <result column="REGISTRATION_UINT" jdbcType="VARCHAR" property="registrationUint" />
+    <result column="MAIN_REGISTRATION_UINT" jdbcType="VARCHAR" property="mainRegistrationUint" />
+    <result column="APPROVAL_DATE" jdbcType="VARCHAR" property="approvalDate" />
+    <result column="CONTACT_MOBILE" jdbcType="VARCHAR" property="contactMobile" />
+    <result column="AREA_NAME" jdbcType="VARCHAR" property="areaName" />
+    <result column="GSZJ_K_ID" jdbcType="VARCHAR" property="gszjKId" />
+    <result column="DSJ_K_ID" jdbcType="VARCHAR" property="dsjKId" />
+    <result column="GSJ_K_ID" jdbcType="VARCHAR" property="gsjKId" />
+    
+    <result column="CYRS" jdbcType="VARCHAR" property="cyrs" />
+    <result column="K_DATE" jdbcType="VARCHAR" property="k_date" />
+    <result column="JYDZ" jdbcType="VARCHAR" property="jydz" />
+    <result column="NSRMC" jdbcType="VARCHAR" property="nsrmc" />
+  </resultMap>
+  
+
+   	<resultMap id="BaseResultMap2" type="com.ahcd.pojo.CompanyInfo" extends="BaseResultMap">
+		<result column="SALES_REVENUE" jdbcType="VARCHAR" property="salesRevenue" />
+		<result column="TAX_AMOUNT" jdbcType="VARCHAR" property="taxAmount" />
+		<result column="THIS_YEAR_TAX" jdbcType="VARCHAR" property="thisYearTax" />
+		<result column="LAST_YEAR_TAX" jdbcType="VARCHAR" property="lastYearTax" />
+		<result column="PREVIOUS_YEAR_TAX" jdbcType="VARCHAR" property="previousYearTax" />
+	</resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    ID, NAME, LEGAL_PERSON, ID_GBHY, NAME_GBHY, IS_ABOVE_SCALE, IS_CANVASS_BUISINESS, 
+    STATUS, COMPANY_ATTR, REGISTER_CAPITAL, COMPANY_TYPE, DEAL_AREA, AREA_ID, IS_DELETE, 
+    REGISTER_DATE, INDUSTRY_TYPE, LINKMAN, LINKMAN_MOBILE, POLITICAL_OUTLOOK, CURRENCY, 
+    MANAGEMENT_CATEGORY, JURISDICTION_UNIT, MAIN_JURISDICTION_UNIT, REGISTRATION_UINT, 
+    MAIN_REGISTRATION_UINT, APPROVAL_DATE, CONTACT_MOBILE, AREA_NAME, GSZJ_K_ID, DSJ_K_ID, 
+    GSJ_K_ID,CYRS,K_DATE,JYDZ,NSRMC
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM SYS_COMPANY_INFO
+    WHERE ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    UPDATE SYS_COMPANY_INFO
+    SET IS_DELETE ='1'
+    WHERE NAME IN(SELECT DISTINCT NAME FROM SYS_COMPANY_INFO WHERE ID = #{id,jdbcType=DECIMAL})
+  </delete>
+  <insert id="insert" parameterType="com.ahcd.pojo.CompanyInfo">
+  	<selectKey keyProperty="id" resultType="DECIMAL" order="BEFORE">
+		SELECT SYS_COMPANY_INFO_SEQ.nextVal FROM dual
+	</selectKey>
+    INSERT INTO SYS_COMPANY_INFO (ID, NAME, LEGAL_PERSON, 
+      ID_GBHY, NAME_GBHY, IS_ABOVE_SCALE, 
+      IS_CANVASS_BUISINESS, STATUS, COMPANY_ATTR, 
+      REGISTER_CAPITAL, COMPANY_TYPE, DEAL_AREA, 
+      AREA_ID, IS_DELETE, REGISTER_DATE, 
+      INDUSTRY_TYPE, LINKMAN, LINKMAN_MOBILE, 
+      POLITICAL_OUTLOOK, CURRENCY, MANAGEMENT_CATEGORY, 
+      JURISDICTION_UNIT, MAIN_JURISDICTION_UNIT, 
+      REGISTRATION_UINT, MAIN_REGISTRATION_UINT, 
+      APPROVAL_DATE, CONTACT_MOBILE, AREA_NAME, 
+      GSZJ_K_ID, DSJ_K_ID, GSJ_K_ID
+      )
+    VALUES (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{legalPerson,jdbcType=VARCHAR}, 
+      #{idGbhy,jdbcType=VARCHAR}, #{nameGbhy,jdbcType=VARCHAR}, #{isAboveScale,jdbcType=CHAR}, 
+      #{isCanvassBuisiness,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}, #{companyAttr,jdbcType=VARCHAR}, 
+      #{registerCapital,jdbcType=VARCHAR}, #{companyType,jdbcType=VARCHAR}, #{dealArea,jdbcType=VARCHAR}, 
+      #{areaId,jdbcType=VARCHAR}, #{isDelete,jdbcType=CHAR}, #{registerDate,jdbcType=VARCHAR}, 
+      #{industryType,jdbcType=VARCHAR}, #{linkman,jdbcType=VARCHAR}, #{linkmanMobile,jdbcType=VARCHAR}, 
+      #{politicalOutlook,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{managementCategory,jdbcType=VARCHAR}, 
+      #{jurisdictionUnit,jdbcType=VARCHAR}, #{mainJurisdictionUnit,jdbcType=VARCHAR}, 
+      #{registrationUint,jdbcType=VARCHAR}, #{mainRegistrationUint,jdbcType=VARCHAR}, 
+      #{approvalDate,jdbcType=VARCHAR}, #{contactMobile,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
+      #{gszjKId,jdbcType=VARCHAR}, #{dsjKId,jdbcType=VARCHAR}, #{gsjKId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.CompanyInfo">
+  	<selectKey keyProperty="id" resultType="DECIMAL" order="BEFORE">
+		SELECT SYS_COMPANY_INFO_SEQ.nextVal FROM dual
+	</selectKey>
+    INSERT INTO SYS_COMPANY_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="legalPerson != null">
+        LEGAL_PERSON,
+      </if>
+      <if test="idGbhy != null">
+        ID_GBHY,
+      </if>
+      <if test="nameGbhy != null">
+        NAME_GBHY,
+      </if>
+      <if test="isAboveScale != null">
+        IS_ABOVE_SCALE,
+      </if>
+      <if test="isCanvassBuisiness != null">
+        IS_CANVASS_BUISINESS,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="companyAttr != null">
+        COMPANY_ATTR,
+      </if>
+      <if test="registerCapital != null">
+        REGISTER_CAPITAL,
+      </if>
+      <if test="companyType != null">
+        COMPANY_TYPE,
+      </if>
+      <if test="dealArea != null">
+        DEAL_AREA,
+      </if>
+      <if test="areaId != null">
+        AREA_ID,
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE,
+      </if>
+      <if test="registerDate != null">
+        REGISTER_DATE,
+      </if>
+      <if test="industryType != null">
+        INDUSTRY_TYPE,
+      </if>
+      <if test="linkman != null">
+        LINKMAN,
+      </if>
+      <if test="linkmanMobile != null">
+        LINKMAN_MOBILE,
+      </if>
+      <if test="politicalOutlook != null">
+        POLITICAL_OUTLOOK,
+      </if>
+      <if test="currency != null">
+        CURRENCY,
+      </if>
+      <if test="managementCategory != null">
+        MANAGEMENT_CATEGORY,
+      </if>
+      <if test="jurisdictionUnit != null">
+        JURISDICTION_UNIT,
+      </if>
+      <if test="mainJurisdictionUnit != null">
+        MAIN_JURISDICTION_UNIT,
+      </if>
+      <if test="registrationUint != null">
+        REGISTRATION_UINT,
+      </if>
+      <if test="mainRegistrationUint != null">
+        MAIN_REGISTRATION_UINT,
+      </if>
+      <if test="approvalDate != null">
+        APPROVAL_DATE,
+      </if>
+      <if test="contactMobile != null">
+        CONTACT_MOBILE,
+      </if>
+      <if test="areaName != null">
+        AREA_NAME,
+      </if>
+      <if test="gszjKId != null">
+        GSZJ_K_ID,
+      </if>
+      <if test="dsjKId != null">
+        DSJ_K_ID,
+      </if>
+      <if test="gsjKId != null">
+        GSJ_K_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="idGbhy != null">
+        #{idGbhy,jdbcType=VARCHAR},
+      </if>
+      <if test="nameGbhy != null">
+        #{nameGbhy,jdbcType=VARCHAR},
+      </if>
+      <if test="isAboveScale != null">
+        #{isAboveScale,jdbcType=CHAR},
+      </if>
+      <if test="isCanvassBuisiness != null">
+        #{isCanvassBuisiness,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAttr != null">
+        #{companyAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="registerCapital != null">
+        #{registerCapital,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null">
+        #{companyType,jdbcType=VARCHAR},
+      </if>
+      <if test="dealArea != null">
+        #{dealArea,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=CHAR},
+      </if>
+      <if test="registerDate != null">
+        #{registerDate,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null">
+        #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null">
+        #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanMobile != null">
+        #{linkmanMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null">
+        #{politicalOutlook,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="managementCategory != null">
+        #{managementCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="jurisdictionUnit != null">
+        #{jurisdictionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="mainJurisdictionUnit != null">
+        #{mainJurisdictionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationUint != null">
+        #{registrationUint,jdbcType=VARCHAR},
+      </if>
+      <if test="mainRegistrationUint != null">
+        #{mainRegistrationUint,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalDate != null">
+        #{approvalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null">
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="gszjKId != null">
+        #{gszjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="dsjKId != null">
+        #{dsjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="gsjKId != null">
+        #{gsjKId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.CompanyInfo">
+    UPDATE SYS_COMPANY_INFO
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null">
+        LEGAL_PERSON = #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="idGbhy != null">
+        ID_GBHY = #{idGbhy,jdbcType=VARCHAR},
+      </if>
+      <if test="nameGbhy != null">
+        NAME_GBHY = #{nameGbhy,jdbcType=VARCHAR},
+      </if>
+      <if test="isAboveScale != null">
+        IS_ABOVE_SCALE = #{isAboveScale,jdbcType=CHAR},
+      </if>
+      <if test="isCanvassBuisiness != null">
+        IS_CANVASS_BUISINESS = #{isCanvassBuisiness,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAttr != null">
+        COMPANY_ATTR = #{companyAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="registerCapital != null">
+        REGISTER_CAPITAL = #{registerCapital,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null">
+        COMPANY_TYPE = #{companyType,jdbcType=VARCHAR},
+      </if>
+      <if test="dealArea != null">
+        DEAL_AREA = #{dealArea,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        AREA_ID = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE = #{isDelete,jdbcType=CHAR},
+      </if>
+      <if test="registerDate != null">
+        REGISTER_DATE = #{registerDate,jdbcType=VARCHAR},
+      </if>
+      <if test="industryType != null">
+        INDUSTRY_TYPE = #{industryType,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null">
+        LINKMAN = #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanMobile != null">
+        LINKMAN_MOBILE = #{linkmanMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="politicalOutlook != null">
+        POLITICAL_OUTLOOK = #{politicalOutlook,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        CURRENCY = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="managementCategory != null">
+        MANAGEMENT_CATEGORY = #{managementCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="jurisdictionUnit != null">
+        JURISDICTION_UNIT = #{jurisdictionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="mainJurisdictionUnit != null">
+        MAIN_JURISDICTION_UNIT = #{mainJurisdictionUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationUint != null">
+        REGISTRATION_UINT = #{registrationUint,jdbcType=VARCHAR},
+      </if>
+      <if test="mainRegistrationUint != null">
+        MAIN_REGISTRATION_UINT = #{mainRegistrationUint,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalDate != null">
+        APPROVAL_DATE = #{approvalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="contactMobile != null">
+        CONTACT_MOBILE = #{contactMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null">
+        AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="gszjKId != null">
+        GSZJ_K_ID = #{gszjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="dsjKId != null">
+        DSJ_K_ID = #{dsjKId,jdbcType=VARCHAR},
+      </if>
+      <if test="gsjKId != null">
+        GSJ_K_ID = #{gsjKId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.CompanyInfo">
+    UPDATE SYS_COMPANY_INFO
+    SET 
+      NAME = #{name,jdbcType=VARCHAR},
+      LEGAL_PERSON = #{legalPerson,jdbcType=VARCHAR},
+      ID_GBHY = #{idGbhy,jdbcType=VARCHAR},
+      NAME_GBHY = #{nameGbhy,jdbcType=VARCHAR},
+      IS_ABOVE_SCALE = #{isAboveScale,jdbcType=CHAR},
+      IS_CANVASS_BUISINESS = #{isCanvassBuisiness,jdbcType=CHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      COMPANY_ATTR = #{companyAttr,jdbcType=VARCHAR},
+      REGISTER_CAPITAL = #{registerCapital,jdbcType=VARCHAR},
+      COMPANY_TYPE = #{companyType,jdbcType=VARCHAR},
+      DEAL_AREA = #{dealArea,jdbcType=VARCHAR},
+      AREA_ID = #{areaId,jdbcType=VARCHAR},
+      IS_DELETE = #{isDelete,jdbcType=CHAR},
+      REGISTER_DATE = #{registerDate,jdbcType=VARCHAR},
+      INDUSTRY_TYPE = #{industryType,jdbcType=VARCHAR},
+      LINKMAN = #{linkman,jdbcType=VARCHAR},
+      LINKMAN_MOBILE = #{linkmanMobile,jdbcType=VARCHAR},
+      POLITICAL_OUTLOOK = #{politicalOutlook,jdbcType=VARCHAR},
+      CURRENCY = #{currency,jdbcType=VARCHAR},
+      MANAGEMENT_CATEGORY = #{managementCategory,jdbcType=VARCHAR},
+      JURISDICTION_UNIT = #{jurisdictionUnit,jdbcType=VARCHAR},
+      MAIN_JURISDICTION_UNIT = #{mainJurisdictionUnit,jdbcType=VARCHAR},
+      REGISTRATION_UINT = #{registrationUint,jdbcType=VARCHAR},
+      MAIN_REGISTRATION_UINT = #{mainRegistrationUint,jdbcType=VARCHAR},
+      APPROVAL_DATE = #{approvalDate,jdbcType=VARCHAR},
+      CONTACT_MOBILE = #{contactMobile,jdbcType=VARCHAR},
+      AREA_NAME = #{areaName,jdbcType=VARCHAR},
+      GSZJ_K_ID = #{gszjKId,jdbcType=VARCHAR},
+      DSJ_K_ID = #{dsjKId,jdbcType=VARCHAR},
+      GSJ_K_ID = #{gsjKId,jdbcType=VARCHAR}
+    WHERE ID = #{id,jdbcType=DECIMAL}
+  </update>
+
+  <!-- 查询记录数 -->
+  <select id="countPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+  	SELECT count(1)
+	FROM (SELECT  ROW_NUMBER() OVER(PARTITION BY t.NAME ORDER BY length(t.NAME) DESC,ROWNUM) RN,t.* 
+     	FROM SYS_COMPANY_INFO t where t.IS_DELETE ='0'
+     	) c
+	WHERE c.IS_DELETE ='0' and c.RN = 1 and status is not  null and  length(name)>3
+	<if test="queryBean!=null">
+	    <if test="queryBean.name !=null and queryBean.name !=''">
+	        AND c.NAME LIKE '%'||#{queryBean.name}||'%'   
+	    </if>
+	    <if test="queryBean.isAboveScale !=null and queryBean.isAboveScale !=''">
+	        AND c.IS_ABOVE_SCALE = #{queryBean.isAboveScale}   
+	    </if>
+	    <if test="queryBean.isCanvassBuisiness !=null and queryBean.isCanvassBuisiness !=''">
+	        AND c.IS_CANVASS_BUISINESS = #{queryBean.isCanvassBuisiness}   
+	    </if>
+	</if>
+  </select> 
+  <!-- 查询列表 -->
+  <select id="selectPage" parameterType="com.ahcd.pojo.Page" resultMap="BaseResultMap">
+  	SELECT *
+    FROM  (SELECT a.*, rownum rnum
+     FROM (
+     	SELECT c.*  
+     	FROM (
+     	SELECT  ROW_NUMBER() OVER(PARTITION BY t.NAME ORDER BY length(t.NAME) DESC,ROWNUM) RN,t.* 
+     	FROM SYS_COMPANY_INFO t where t.IS_DELETE ='0'
+     	) c
+		WHERE c.IS_DELETE ='0' and c.RN = 1 and status is not  null and  length(name)>3
+		<if test="queryBean!=null">
+	      <if test="queryBean.name !=null and queryBean.name !=''">
+	         AND c.NAME LIKE '%'||#{queryBean.name}||'%'   
+	      </if>
+	      <if test="queryBean.isAboveScale !=null and queryBean.isAboveScale !=''">
+	         AND c.IS_ABOVE_SCALE = #{queryBean.isAboveScale}   
+	      </if>
+	      <if test="queryBean.isCanvassBuisiness !=null and queryBean.isCanvassBuisiness !=''">
+	         AND c.IS_CANVASS_BUISINESS = #{queryBean.isCanvassBuisiness}   
+	      </if>
+	    </if>
+			ORDER BY c.NAME DESC
+		) a
+	<if test="endRow !=null">
+	WHERE rownum <![CDATA[<=]]>  #{endRow} 
+	</if>
+	)
+	<if test="beginRow !=null">
+	WHERE rnum <![CDATA[>]]>  #{beginRow} 
+	</if>
+  </select>
+  
+  <!-- 判断企业名称是否唯一 -->
+  <select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+     	SELECT count(1)  
+     	FROM SYS_COMPANY_INFO
+     	WHERE 1=1	
+	    <if test="name !=null and name !=''">
+	        AND NAME = #{name,jdbcType=VARCHAR}   
+	    </if>
+	    <if test="id !=null">
+	        AND ID != #{id,jdbcType=DECIMAL}   
+	    </if>
+  </select>
+  
+  
+   <!-- 根据企业ID获取企业的基本信息以及纳税信息 -->
+    <select id="selectInfoTaxById" parameterType="java.math.BigDecimal" resultMap="BaseResultMap2"> 
+select t1.*,this_year_tax+last_year_tax+previous_year_tax as tax_amount from (
+select *
+  from SYS_COMPANY_INFO,
+       (select nvl(round(sum(tax_basis_gs + tax_basis_ds+ tax_basis_hg+ tax_basis_cz+ tax_basis_szds)/10000,2), '0') as sales_revenue
+          from SYS_COMPANY_TAX_INFO 
+         where company_id = #{id,jdbcType=DECIMAL}),
+       (select nvl(round(sum(tax_amount_gs + tax_amount_ds+tax_amount_hg+tax_amount_cz+tax_amount_szds)/10000,2), '0')  this_year_tax
+          from SYS_COMPANY_TAX_INFO
+         where substr(id_year,0,4) = '2017'
+           and company_id = #{id,jdbcType=DECIMAL}),
+       (select nvl(round(sum(tax_amount_gs + tax_amount_ds+tax_amount_hg+tax_amount_cz+tax_amount_szds)/10000,2), '0')  last_year_tax
+          from SYS_COMPANY_TAX_INFO
+         where substr(id_year,0,4) = '2016'
+           and company_id = #{id,jdbcType=DECIMAL}),
+       (select nvl(round(sum(tax_amount_gs + tax_amount_ds+tax_amount_hg+tax_amount_cz+tax_amount_szds)/10000,2), '0')  previous_year_tax
+          from SYS_COMPANY_TAX_INFO
+         where substr(id_year,0,4) = '2015'
+           and company_id = #{id,jdbcType=DECIMAL})
+ where id = #{id,jdbcType=DECIMAL}) t1
+       
+  </select>
+  
+
+  
+</mapper>

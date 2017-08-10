@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysMapMapper">
+	<select id="getAllQyAddr" resultType="Map">
+		select qymc||','||c12 qyxx, ycss_yj,ycss_se,sjns_yj,sjns_se  from(
+			select qymc,sum(ycss_yj)ycss_yj,sum(ycss_se)ycss_se,sum(sjns_yj)sjns_yj,sum(sjns_se)sjns_se,c12 from(
+			select a.*,b.c12 from QY_YSQS_FQZS_HYZS_FXB a left join zhzs_dsj_swdjxxfb b on a.qymc = b.nsrmc and a.k_del='0'
+			)where k_date like '2014%'group by qymc ,c12
+			)where  ycss_se-sjns_se >0 and c12 is not null and length(qymc)>3 and rownum <![CDATA[   <=  ]]> 100 order by (ycss_se-sjns_se)desc
+	</select>
+</mapper>

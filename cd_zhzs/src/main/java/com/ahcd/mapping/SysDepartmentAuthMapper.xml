@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysDepartmentAuthMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysDepartmentAuth" >
+    <result column="DEPARTMENT_ID" property="departmentId" jdbcType="VARCHAR" />
+    <result column="SUB_DEPARTMENT_ID" property="subDepartmentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getNoticeDepartmentAuth" parameterType="java.lang.String" resultMap="com.ahcd.dao.SysDepartmentAuthMapper.BaseResultMap">
+  	SELECT DEPARTMENT_ID,SUB_DEPARTMENT_ID FROM SYS_DEPARTMENT_AUTH WHERE DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteAllByDepartmentId" parameterType="java.lang.String">
+    delete from sys_department_auth where
+   	DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByDepartmentId" parameterType="hashmap">
+    delete from sys_department_auth where
+   	DEPARTMENT_ID = #{departmentId,jdbcType=VARCHAR}  AND SUB_DEPARTMENT_ID = #{subDepartmentId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertSubDepartments" parameterType="com.ahcd.pojo.SysDepartmentAuth" >
+    insert into SYS_DEPARTMENT_AUTH (DEPARTMENT_ID, SUB_DEPARTMENT_ID)
+    values (#{departmentId,jdbcType=VARCHAR}, #{subDepartmentId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.SysDepartmentAuth" >
+    insert into SYS_DEPARTMENT_AUTH
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        DEPARTMENT_ID,
+      </if>
+      <if test="subDepartmentId != null" >
+        SUB_DEPARTMENT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="subDepartmentId != null" >
+        #{subDepartmentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+</mapper>

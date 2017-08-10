@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.SysWebMenuMapper">
+	<resultMap id="BaseResultMap" type="com.ahcd.pojo.SysWebMenu">
+		<id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="MENU_LEVEL" jdbcType="DECIMAL" property="menuLevel" />
+		<result column="MENU_TYPE" jdbcType="DECIMAL" property="menuType" />
+		<result column="PARENT_CODE" jdbcType="VARCHAR" property="parentCode" />
+		<result column="PARENT_NAME" jdbcType="VARCHAR" property="parentName" />
+		<result column="FUNCTION_ID" jdbcType="VARCHAR" property="functionId" />
+		<result column="ORDER_NUMBER" property="orderNumber" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap2" type="com.ahcd.pojo.SysWebMenu" extends="BaseResultMap">
+		<result column="ROLE_ID" property="roleId" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		MENU_ID, CODE, NAME, MENU_LEVEL,MENU_TYPE,
+		PARENT_CODE,PARENT_NAME,FUNCTION_ID,ORDER_NUMBER,rownum as ROW_NUM
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU
+		where MENU_ID = #{menuId,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="selectByOrderNumber" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU
+		where ORDER_NUMBER = #{orderNumber,jdbcType=DECIMAL} and MENU_LEVEL = '1'
+	</select>
+	
+	<select id="selectByOrderNumberAndparentCode" parameterType="hashmap"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU
+		where ORDER_NUMBER = #{orderNumber,jdbcType=DECIMAL} and PARENT_CODE = #{parentCode,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectBymenuLevel" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+		select k.* from (select t1.MENU_ID,
+	       t1.code,
+	       t.role_id,
+	       t1.name,
+	       t1.parent_code,
+	       t1.parent_name,
+	       t1.MENU_LEVEL,
+	       t1.MENU_TYPE,
+	       t1.function_id,
+	       t1.order_number
+	 	   from SYS_WEB_MENU_ROLE t
+	  	   left join sys_web_menu t1 on t.menu_id = t1.menu_id) k  
+  	   where MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL} order by order_number asc
+	</select>
+	
+	
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		SYS_WEB_MENU
+		where CODE = #{code,jdbcType=VARCHAR}
+		or PARENT_CODE = #{code,jdbcType=VARCHAR}
+	</delete>
+	
+
+	<insert id="insertSelective" parameterType="com.ahcd.pojo.SysWebMenu">
+		<selectKey resultType="string" order="BEFORE" keyProperty="menuId"> 
+			SELECT SYS_WEB_MENU_SEQ.NEXTVAL FROM dual 
+		</selectKey> 
+		insert into SYS_WEB_MENU
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			MENU_ID，
+			<if test="code != null">
+				CODE,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="menuLevel != null">
+				MENU_LEVEL,
+			</if>
+			<if test="menuType != null">
+				MENU_TYPE,
+			</if>
+			<if test="parentCode != null">
+				PARENT_CODE,
+			</if>
+			<if test="parentName != null">
+				PARENT_NAME,
+			</if>
+			<if test="functionId != null">
+				FUNCTION_ID,
+			</if>
+			<if test="orderNumber != null">
+				ORDER_NUMBER,
+			</if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{menuId,jdbcType=VARCHAR},
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR}||#{menuId,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="menuLevel != null">
+				#{menuLevel,jdbcType=DECIMAL},
+			</if>
+			<if test="menuType != null">
+				#{menuType,jdbcType=DECIMAL},
+			</if>
+			<if test="parentCode != null">
+				#{parentCode,jdbcType=VARCHAR},
+			</if>
+			<if test="parentName != null">
+				#{parentName,jdbcType=VARCHAR},
+			</if>
+			<if test="functionId != null">
+				#{functionId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNumber != null">
+				#{orderNumber,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysWebMenu">
+		update SYS_WEB_MENU
+		<set>
+			<if test="code != null">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="menuLevel != null">
+				MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL},
+			</if>
+			<if test="menuType != null">
+				MENU_TYPE = #{menuType,jdbcType=DECIMAL},
+			</if>
+			<if test="parentCode != null">
+				PARENT_CODE=#{parentCode,jdbcType=VARCHAR},
+			</if>
+			<if test="parentName != null">
+				PARENT_NAME=#{parentName,jdbcType=VARCHAR},
+			</if>
+			<if test="functionId != null">
+				FUNCTION_ID=#{functionId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNumber != null">
+				ORDER_NUMBER = #{orderNumber,jdbcType=DECIMAL}
+			</if>
+		</set>
+		where MENU_ID = #{menuId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysWebMenu">
+		update
+		SYS_WEB_MENU
+		set CODE = #{code,jdbcType=VARCHAR},
+		NAME =
+		#{name,jdbcType=VARCHAR},
+		MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL},
+		MENU_TYPE = #{menuType,jdbcType=DECIMAL},
+		PARENT_CODE = #{parentCode,jdbcType=VARCHAR},
+		PARENT_NAME =
+		#{parentName,jdbcType=VARCHAR},
+		FUNCTION_ID =
+		#{functionId,jdbcType=VARCHAR},
+		ORDER_NUMBER =
+		#{orderNumber,jdbcType=DECIMAL}
+		where MENU_ID = #{menuId,jdbcType=VARCHAR}
+	</update>
+
+	<sql id="Add_RowNum">
+		WHERE ROW_NUM &gt; #{beginRow,jdbcType=DECIMAL} AND ROW_NUM
+		&lt;=
+		#{endRow,jdbcType=DECIMAL}
+	</sql>
+
+	<sql id="getAllByBean_map">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU where 1=1 
+		<if test="menuLevel != null">
+			AND MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL} 
+		</if>
+			<if test="name != null">
+				AND NAME LIKE CONCAT(CONCAT('%',
+				#{name,jdbcType=VARCHAR}), '%')
+			</if>
+		<if test="parentCode != null">
+			AND PARENT_CODE = #{parentCode,jdbcType=DECIMAL} order by order_number asc
+		</if>
+	</sql>
+
+
+	<select id="getAllByBean" resultMap="BaseResultMap"
+		parameterType="hashmap">
+
+		select * from (
+		<include refid="getAllByBean_map" />
+		)
+		<include refid="Add_RowNum" />
+	</select>
+	
+	
+	
+	<sql id="getAllByBean_map1">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU where 1=1 
+		<if test="name != null">
+				AND NAME LIKE CONCAT(CONCAT('%',
+				#{name,jdbcType=VARCHAR}), '%')
+			</if>
+		<if test="menuLevel != null">
+			AND MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL} order by order_number asc
+		</if>
+	</sql>
+
+
+	<select id="getAllByBean1" resultMap="BaseResultMap"
+		parameterType="hashmap">
+
+		select * from (
+		<include refid="getAllByBean_map1" />
+		)
+		<include refid="Add_RowNum" />
+	</select>
+
+
+
+
+
+	<select id="getAllByType" resultMap="BaseResultMap"
+		parameterType="com.ahcd.pojo.SysWebMenu">
+
+		<include refid="getAllByBean_map" />
+
+	</select>
+
+	<select id="getACount" resultType="java.lang.Integer"
+		parameterType="java.math.BigDecimal">
+		select count(1) from sys_web_menu where MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL}
+	</select>
+
+	<select id="getCount" resultType="java.lang.Integer"
+		parameterType="hashmap">
+		select count(*) as COUNT_NUM from (
+		select
+		<include refid="Base_Column_List" />
+		from SYS_WEB_MENU where 1=1
+		<if test="menuLevel != null">
+			AND MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL}
+		</if>
+		<if test="name != null">
+			AND NAME LIKE CONCAT(CONCAT('%',
+			#{name,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="parentCode != null">
+			AND PARENT_CODE = #{parentCode,jdbcType=DECIMAL}
+		</if>
+		
+		)
+	</select>
+
+
+
+	<select id="getMaxId" resultType="java.lang.String">
+		select
+		max(to_number(menu_id))+1 as MAX_ID from SYS_WEB_MENU
+	</select>
+	
+	<select id="countAMaxOrderNumber" resultType="java.lang.Integer" parameterType="java.math.BigDecimal">
+		select count(1) from sys_web_menu where MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL}
+	</select>
+	
+	<select id="countBCMaxOrderNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(1) from sys_web_menu where PARENT_CODE = #{parentCode,jdbcType=DECIMAL}
+	</select>
+	
+	
+	
+	<select id="getAMaxOrderNumber" resultType="java.lang.Integer" parameterType="java.math.BigDecimal">
+		select nvl(max(order_number),0) as order_number from 
+		sys_web_menu where MENU_LEVEL = #{menuLevel,jdbcType=DECIMAL}
+	</select>
+	
+	<select id="getBCMaxOrderNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select nvl(max(order_number),0) as order_number from 
+		sys_web_menu where PARENT_CODE = #{parentCode,jdbcType=DECIMAL}
+	</select>
+	
+	
+	
+	<select id="getWebMenuByUserID" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select swm.* from sys_web_menu swm,
+		(select distinct(swmr.menu_id) from sys_web_menu_role swmr ,
+		(select sur.user_id,sur.role_id
+		from SYS_USER_ROLE sur 
+		where sur.user_id = #{userId,jdbcType=VARCHAR}
+		)b where swmr.role_id =b.role_id) c
+		where c.menu_id=swm.menu_id
+		order by swm.order_number asc
+	</select>
+	<select id="getDefaultIndexMenu" resultMap="BaseResultMap">
+		select *
+	  from SYS_WEB_MENU t
+	 where t.is_default_index=1 and rownum=1
+	</select>
+	<select id="getWebMenuByUserIDAndLevelAndParentCode" parameterType="hashmap" resultMap="BaseResultMap">
+	select *
+	  from SYS_WEB_MENU t
+	 where 1=1
+	 <if test="menuLevel != null and menuLevel !=''">
+	 	and menu_level =  #{menuLevel}
+	 </if>
+	<if test="parentCode != null and parentCode !=''">
+	   and instr(parent_code,  #{parentCode}) > 0
+   	</if>
+   	<if test="userId != null">
+	   and exists (select 1
+	          from sys_web_menu_role
+	         where ROLE_ID in (select ROLE_ID from sys_user_role where USER_ID=#{userId})
+	           and menu_id = t.menu_id)
+	 </if>
+	 order by is_default_index desc,order_number asc
+	</select>
+</mapper>

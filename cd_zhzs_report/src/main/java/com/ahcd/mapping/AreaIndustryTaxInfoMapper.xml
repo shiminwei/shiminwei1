@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 分行业分税种分地区税率表-->
+<mapper namespace="com.ahcd.dao.AreaIndustryTaxInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.AreaIndustryTaxInfo" >
+    <id column="AITI_ID" property="aitiId" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TAXRATE" property="taxrate" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="AREA_ID" property="areaId" jdbcType="DECIMAL" />
+    <result column="INDUSTRY_ID" property="industryId" jdbcType="DECIMAL" />
+    <result column="TAX_ID" property="taxId" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="com.ahcd.pojo.AreaIndustryTaxInfo" extends="BaseResultMap">
+    <result column="INDUSTRYNAME" property="industryname" jdbcType="VARCHAR" />
+    <result column="TAXNAME" property="taxname" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    AITI_ID, NAME, nvl(TAXRATE,0)*100 TAXRATE, REMARK, AREA_ID, INDUSTRY_ID, TAX_ID
+  </sql>
+  <!-- 查询实体 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM AREA_INDUSTRY_TAX_INFO
+    WHERE AITI_ID = #{aitiId,jdbcType=DECIMAL}
+  </select>
+  
+  <!-- 查询列表 -->
+  <select id="selectAreaIndustryTaxInfoPage" parameterType="com.ahcd.pojo.Page"
+		resultMap="BaseResultMap2">
+		SELECT * FROM (
+		SELECT b.*,rownum AS rnum FROM (
+		SELECT a.aiti_id,a.name,nvl(a.taxrate,0)*100 taxrate,a.remark,a.area_Id,a.industry_Id,a.tax_Id,ind.name industryname,t.name taxname
+		FROM AREA_INDUSTRY_TAX_INFO a,TAX_INFO t,INDUSTRY_INFO ind
+		WHERE a.TAX_ID = t.tax_id AND a.INDUSTRY_ID = ind.INDUSTRY_ID
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND a.name LIKE '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="queryBean.aitiId !=null and queryBean.aitiId !=''">
+				AND a.aiti_id = #{queryBean.aitiId,jdbcType=DECIMAL}
+			</if>
+		</if>
+		ORDER BY a.area_Id,a.tax_Id,a.industry_Id
+		)b
+		<if test="endRow !=null">
+			WHERE rownum <![CDATA[<=]]>
+			#{endRow}
+		</if>
+		)
+		<if test="beginRow !=null">
+			WHERE rnum <![CDATA[>]]>
+			#{beginRow}
+		</if>
+	</select>
+	<!-- 查询条数 -->
+	<select id="selectCountAreaIndustryTaxInfoPage" parameterType="com.ahcd.pojo.Page"
+		resultType="java.lang.Integer">
+		SELECT count(1) FROM (
+		SELECT a.aiti_id,a.name,a.taxrate,a.remark,a.area_id,a.industry_id,a.tax_id,ind.name industryname,t.name taxname
+		FROM AREA_INDUSTRY_TAX_INFO a,TAX_INFO t,INDUSTRY_INFO ind
+		WHERE a.TAX_ID = t.tax_id AND a.INDUSTRY_ID = ind.INDUSTRY_ID
+		<if test="queryBean !=null">
+			<if test="queryBean.name !=null and queryBean.name !=''">
+				AND a.name LIKE '%'||#{queryBean.name,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="queryBean.aitiId !=null and queryBean.aitiId !=''">
+				AND a.aiti_id = #{queryBean.aitiId,jdbcType=DECIMAL}
+			</if>
+		</if>
+		)
+	</select>
+  
+  <!-- 删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    DELETE 
+    FROM AREA_INDUSTRY_TAX_INFO
+    WHERE AITI_ID = #{aitiId,jdbcType=DECIMAL}
+  </delete>
+  
+  <!-- 新增 -->
+  <insert id="insert" parameterType="com.ahcd.pojo.AreaIndustryTaxInfo" >
+    <selectKey keyProperty="aitiId" resultType="DECIMAL" order="BEFORE">
+		SELECT AREA_INDUSTRY_TAX_INFO_SEQ.nextVal FROM dual
+	</selectKey>
+    INSERT 
+    INTO AREA_INDUSTRY_TAX_INFO 
+    (AITI_ID, NAME, TAXRATE, REMARK, AREA_ID, INDUSTRY_ID, TAX_ID)
+     VALUES 
+    (#{aitiId,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{taxrate,jdbcType=DECIMAL}, 
+     #{remark,jdbcType=VARCHAR}, #{areaId,jdbcType=DECIMAL}, #{industryId,jdbcType=DECIMAL}, 
+     #{taxId,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.AreaIndustryTaxInfo" >
+    INSERT INTO AREA_INDUSTRY_TAX_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aitiId != null" >
+        AITI_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="taxrate != null" >
+        TAXRATE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="areaId != null" >
+        AREA_ID,
+      </if>
+      <if test="industryId != null" >
+        INDUSTRY_ID,
+      </if>
+      <if test="taxId != null" >
+        TAX_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aitiId != null" >
+        #{aitiId,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="taxrate != null" >
+        #{taxrate,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=DECIMAL},
+      </if>
+      <if test="industryId != null" >
+        #{industryId,jdbcType=DECIMAL},
+      </if>
+      <if test="taxId != null" >
+        #{taxId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.AreaIndustryTaxInfo" >
+    update AREA_INDUSTRY_TAX_INFO
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="taxrate != null" >
+        TAXRATE = #{taxrate,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        AREA_ID = #{areaId,jdbcType=DECIMAL},
+      </if>
+      <if test="industryId != null" >
+        INDUSTRY_ID = #{industryId,jdbcType=DECIMAL},
+      </if>
+      <if test="taxId != null" >
+        TAX_ID = #{taxId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    WHERE AITI_ID = #{aitiId,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.AreaIndustryTaxInfo" >
+    UPDATE AREA_INDUSTRY_TAX_INFO
+    SET 
+      NAME = #{name,jdbcType=VARCHAR},
+      TAXRATE = #{taxrate,jdbcType=DECIMAL},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      AREA_ID = #{areaId,jdbcType=DECIMAL},
+      INDUSTRY_ID = #{industryId,jdbcType=DECIMAL},
+      TAX_ID = #{taxId,jdbcType=DECIMAL}
+    WHERE AITI_ID = #{aitiId,jdbcType=DECIMAL}
+  </update>
+</mapper>
