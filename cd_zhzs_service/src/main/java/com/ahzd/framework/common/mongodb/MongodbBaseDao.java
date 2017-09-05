@@ -11,9 +11,8 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import com.ahcd.pojo.Page;
 
-
 /**
- * mongodb　基础操作类
+ * mongodb 基础操作类
  * 
  * @author oyhk
  * 
@@ -30,7 +29,7 @@ public abstract class MongodbBaseDao<T> {
 	 * @return
 	 */
 	public Page<T> getPageList(Page<T> page) {
-		Query query = page.getQueryBean()!=null ? (Query) page.getQueryBean() : new Query();
+		Query query = page.getQueryBean() != null ? (Query) page.getQueryBean() : new Query();
 		long totalCount = this.mongoTemplate.count(query, this.getEntityClass());
 		int beginRow = (page.getPageNum() - 1) * page.getNumPerPage();
 		int endRow = page.getPageNum() * page.getNumPerPage();
@@ -148,28 +147,42 @@ public abstract class MongodbBaseDao<T> {
 		return mongoTemplate.findOne(new Query(Criteria.where("name").is(name)), this.getEntityClass());
 	}
 
-	public boolean checkExistByName(String name){
-		return mongoTemplate.findOne(new Query(Criteria.where("name").is(name)), this.getEntityClass())!=null ? true:false;
-	}
-	public void deleteByName(String name){
-		mongoTemplate.remove(new Query(Criteria.where("name").is(name)), this.getEntityClass());
-	}
-	public void deleteById(String id){
-		mongoTemplate.remove(new Query(Criteria.where("_id").is(id)), this.getEntityClass());
-	}
-	// 根据id判断是否已存在      2017-04-05   peixizhu
-	public boolean checkExistById(String  id){
-		return mongoTemplate.findOne(new Query(Criteria.where("_id").is(id)), this.getEntityClass())!=null ? true:false;
+	public List<T> findByIn(String[] values) {
+		return mongoTemplate.find(new Query(Criteria.where("name").in(values)),
+				this.getEntityClass());
+		// return mongoTemplate.find(new
+		// Query(Criteria.where("name").in(values), this.getEntityClass());
 	}
 
-	//分组查询
-	public GroupByResults<T> groupBy(Criteria criteria,String collectionName,GroupBy groupBy){
+	public boolean checkExistByName(String name) {
+		return mongoTemplate.findOne(new Query(Criteria.where("name").is(name)), this.getEntityClass()) != null ? true
+				: false;
+	}
+
+	public void deleteByName(String name) {
+		mongoTemplate.remove(new Query(Criteria.where("name").is(name)), this.getEntityClass());
+	}
+
+	public void deleteById(String id) {
+		mongoTemplate.remove(new Query(Criteria.where("_id").is(id)), this.getEntityClass());
+	}
+
+	// 根据id判断是否已存在 2017-04-05 peixizhu
+	public boolean checkExistById(String id) {
+		return mongoTemplate.findOne(new Query(Criteria.where("_id").is(id)), this.getEntityClass()) != null ? true
+				: false;
+	}
+
+	// 分组查询
+	public GroupByResults<T> groupBy(Criteria criteria, String collectionName, GroupBy groupBy) {
 		return mongoTemplate.group(criteria, collectionName, groupBy, this.getEntityClass());
 	}
-	//count
-	public long getCount(Query query){
-		return mongoTemplate.count(query,  this.getEntityClass());
+
+	// count
+	public long getCount(Query query) {
+		return mongoTemplate.count(query, this.getEntityClass());
 	}
+
 	/**
 	 * 获取需要操作的实体类class
 	 * 
@@ -185,7 +198,10 @@ public abstract class MongodbBaseDao<T> {
 	protected abstract void setMongoTemplate(MongoTemplate mongoTemplate);
 
 	/**
-	 * spring mongodb　集成操作类　
+	 * spring mongodb 集成操作类
 	 */
 	protected MongoTemplate mongoTemplate;
+	
+	
+	
 }
