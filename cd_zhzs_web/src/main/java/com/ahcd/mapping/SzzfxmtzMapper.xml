@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ahcd.dao.SzzfxmtzMapper">
+  <!-- 查询地税记录数 -->
+	<select id="selectPage" resultType="Map">
+      <![CDATA[ 
+SELECT *
+    FROM  (SELECT a.*, rownum rnum FROM (SELECT
+ XH,XMMC,JSXZ,JSGMJNR, ZFZJTZZTZ,JZBNNDWCTZ,BNJHTZHJ, ZY,
+ ZYYSNDGBZJ,HMCSSDZJ, SJ,SJ1,CZ,CT,JT,QT,XQJGWH,YBKGXMBNNJHTZ,
+ APDQQGZJF,DWZC,PPPXMZTZ,PPPXMJHTZ,BNGZMB,XMZRDW,ZRR,BZ
+  FROM zhzs_czj_jjk_zfxtzxmb 
+  where k_year =   #{2} 
+   and xmmc LIKE #{3}  
+      order by  to_number(px)
+    ) a
+  WHERE rownum <= #{1} 
+  )
+  WHERE rnum > #{0} 
+    ]]>
+	</select>
+	<select id="selectCountPage" resultType="java.lang.Integer">
+  <![CDATA[
+    SELECT count(1) from (
+  SELECT
+ XH,XMMC,JSXZ,JSGMJNR, ZFZJTZZTZ,JZBNNDWCTZ,BNJHTZHJ, ZY,
+ ZYYSNDGBZJ,HMCSSDZJ, SJ,SJ1,CZ,CT,JT,QT,XQJGWH,YBKGXMBNNJHTZ,
+ APDQQGZJF,DWZC,PPPXMZTZ,PPPXMJHTZ,BNGZMB,XMZRDW,ZRR,BZ
+  FROM zhzs_czj_jjk_zfxtzxmb 
+  where k_year =   #{0} 
+   and xmmc LIKE #{1}  )
+     ]]>
+	</select>
+</mapper>  
+
+
+
+
+ 

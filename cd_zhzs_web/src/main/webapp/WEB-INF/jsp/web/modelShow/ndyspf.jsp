@@ -10,6 +10,8 @@
 		type="hidden" name="orderDirection" value="${param.orderDirection}" />
 	<input type="hidden" name="id" value="${param.id}" /> <input
 		type="hidden" name="name" value="${param.name}" />
+		<input
+		type="hidden" name="year" value="${param.year}" />
 </form>
 <form method="post" name="pagerForm"
 	action="${basePath }web/modelShow/ndyspf"
@@ -33,13 +35,13 @@
 						<option value="2017"
 							<c:if test="${year==2017 }">selected="selected"</c:if>>2017</option>
 				</select></li>
-				<li><label>支出类别：</label> <select name="lbmc">
+				<%-- <li><label>支出类别：</label> <select name="lbmc">
 						<option value="">请选择支出类别</option>
 						<option value="基本支出"
 							<c:if test="${lbmc=='基本支出' }">selected="selected"</c:if>>基本支出</option>
 						<option value="项目支出"
 							<c:if test="${lbmc=='项目支出' }">selected="selected"</c:if>>项目支出</option>
-				</select></li>
+				</select></li> --%>
 			</ul>
 		</div>
 	</div>
@@ -57,17 +59,17 @@
 	</div>
 </form>
 <div class="pageContent">
-	<table class="list" width="100%" layoutH="121">
+	<table class="list" width="180%" layoutH="121">
 		<thead>
 			<tr>
-				<th width="center" align="center" rowspan="4"
-					style="font-size: 14px">单位名称</th>
+				<th width="center" align="center" rowspan="4"  colspan="3"
+					style="font-size: 14px">功能科目/类、款、项</th>
 				<th width="center" align="center" colspan="1" rowspan="4"
-					style="font-size: 14px">项目名称</th>
-				<c:if test="${lbmc!=''&&lbmc!=null}">
+					style="font-size: 14px">单位名称/项目类别/经济科目</th>
+				<%-- <c:if test="${lbmc!=''&&lbmc!=null}">
 					<th width="center" align="center" colspan="1" rowspan="4"
 						style="font-size: 14px">经济科目</th>
-				</c:if>
+				</c:if> --%>
 
 				<th width="center" align="center" colspan="1" rowspan="4"
 					style="font-size: 14px">合计</th>
@@ -84,7 +86,7 @@
 				<th align="center" colspan="1" rowspan="4" width="10%"
 					style="font-size: 14px">上年结余</th>
 				<th align="center" rowspan="4" style="font-size: 14px">其他收入安排</th>
-
+				<th align="center" rowspan="4" style="font-size: 14px">所属时间</th>
 			</tr>
 			<tr>
 			</tr>
@@ -103,23 +105,29 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach begin="0" end="19">
-		<tr>
-		<c:if test="${lbmc==''||lbmc==null }">
-		<c:forEach begin="0" end="14">
-		<td>&nbsp</td>
+			<c:forEach var="list" items="${pageList.result}" varStatus="status">			
+				<tr>		
+					<td align="center">${list.GNKML }</td>
+					<td align="center">${list.GNKMK }</td>
+					<td align="center">${list.GNKMX }</td>
+					<td align="center">${list.DWMCXMLBJJKM }</td>
+					<td align="center">${list.HJ }</td>
+					<td align="center">${list.XJ }</td>
+					<td align="center">${list.CZBK }</td>
+					<td align="center">${list.ZXSR }</td>
+				    <td align="center">${list.XZSYXSR}</td>
+				    <td align="center">${list.FMSR}</td>
+				    <td align="center">${list.NRYSGLQTFSSR}</td>
+				    <td align="center">${list.SHBXJJSRAP}</td>
+				    <td align="center">${list.ZFXJJSRAP}</td>
+				    <td align="center">${list.NRCZZHGLDFSSRAP}</td>
+				    <td align="center">${list.SJTQXDDZXSRAP}</td>
+				    <td align="center">${list.SNJY}</td>
+				    <td align="center">${list.QTSRXJ}</td>
+				    <td align="center">${list.SSRQ}</td>
+				</tr>
 			</c:forEach>
-		</c:if>
-<c:if test="${lbmc!=''&&lbmc!=null }">
-		<c:forEach begin="0" end="15">
-		<td>&nbsp</td>
-			</c:forEach>
-		</c:if>
-		</tr>
-		</c:forEach>
-		
 		</tbody>
-
 	</table>
 </div>
 <div class="panelBar">

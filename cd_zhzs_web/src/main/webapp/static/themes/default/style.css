@@ -86,7 +86,7 @@
 .pagination li.disabled span span,
 .panelBar .line, .pagination li.jumpto, .pagination li.jumpto .goto { background:url(./images/grid/grid.png) no-repeat;}
 
-.panelBar { border-color:#b8d0d6; background-color:#efefef;margin-top:-2px;}
+.panelBar { border-color:#b8d0d6; background-color:#efefef;}
 
 .grid .gridHeader { background:#EEE;}
 .grid { background:#FFF;}

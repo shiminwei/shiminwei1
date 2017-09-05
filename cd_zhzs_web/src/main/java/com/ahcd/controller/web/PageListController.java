@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+//import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,10 +159,11 @@ public class PageListController {
 	 */
 	public static Map<String, String[]> getChileQueryMap(ConfigBean bean) {
 		Map<String, String[]> chileQueryMap = new HashMap<String, String[]>();
-		for (int i = 0; i < bean.getResults().getFieldBeans().size(); i++) {
-			if ("1".equals(bean.getResults().getFieldBeans().get(i).getIsByValue())) {
+		List<FieldBean> fieldBeanslist = bean.getResults().getFieldBeans() ;
+		for (int i = 0; i < fieldBeanslist.size(); i++) {
+			if ("1".equals(fieldBeanslist.get(i).getIsByValue())) {
 				String[] value = { "" };
-				chileQueryMap.put(bean.getResults().getFieldBeans().get(i).getJspFielName(), value);
+				chileQueryMap.put(fieldBeanslist.get(i).getJspFielName(), value);
 			}
 		}
 		return chileQueryMap;
@@ -253,7 +254,7 @@ public class PageListController {
 					for (Map.Entry<String, String[]> entry : queryMap.entrySet()) {
 						if (entry.getKey().equals(bean.getConditionId()) && !StringUtil.isBlank(entry.getValue())) {
 							disptype = bean.getDisptype();
-							/*if ("2".equals(disptype)) {// 年份下拉框
+							if ("2".equals(disptype)) {// 年份下拉框
 								showQueryName += entry.getValue()[0] + "年";
 							} else if ("3".equals(disptype)) {// 年月下拉框
 								if (entry.getValue().length == 1) {// 只有年
@@ -274,18 +275,18 @@ public class PageListController {
 								for (int j = 0; j < entry.getValue().length; j++) {
 									showQueryName += entry.getValue()[j];
 								}
-							}*/
+							}/*
 							switch (disptype) {
 							case "2":// 年份下拉框
 								showQueryName += entry.getValue()[0] + "年";
-//							break;
+							break;
 							case "3":// 年月下拉框
 								switch (entry.getValue().length) {
 								case 1:// 只有年
 									if (StringUtil.isNotEmpty(entry.getValue()[0])) {
 										showQueryName += entry.getValue()[0] + "年";
 									}
-//								break;
+								break;
 								case 2:// 存在年月
 									if (StringUtil.isNotEmpty(entry.getValue()[0])) {
 										showQueryName += entry.getValue()[0] + "年";
@@ -293,20 +294,20 @@ public class PageListController {
 									if (StringUtil.isNotEmpty(entry.getValue()[1])) {
 										showQueryName += getNewMonthInt(entry.getValue()[1]) + "月";
 									}
-//								break;
+								break;
 //							default:
 //								break;
 								}
-//							break;
+							break;
 							case "5":// 月份下拉框
 								showQueryName += getNewMonthInt(entry.getValue()[0]) + "月";
-//							break;
+							break;
 							default:
 								for (int j = 0; j < entry.getValue().length; j++) {
 									showQueryName += entry.getValue()[j];
 								}
-//							break;
-							}
+							break;
+							}*/
 						}
 						
 					}
@@ -319,7 +320,6 @@ public class PageListController {
 	/**
 	 * 
 	 * 功能说明 :替换月份数据 （01==》1）
-	 * 
 	 * @author : fei yang
 	 * @version ：2017年4月24日 下午12:30:36
 	 * @param monthStr

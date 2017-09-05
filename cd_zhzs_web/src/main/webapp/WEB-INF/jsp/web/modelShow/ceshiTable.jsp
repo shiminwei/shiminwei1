@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../../../../common/base.jsp"%>
+
 <script src="${basePath }static/js/cd_common.js" />
+<script src="${basePath }static/js/dwz.stable.js" />
 <form id="pagerForm" name="pagerForm" method="post"
 	action="${basePath }web/modelShow/ceshiTable">
 	<input type="hidden" name="pageNum" value="${pageList.pageNum }" /> <input
@@ -18,13 +20,13 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li><label>所属时间：</label> <select>
-					<option value="">----请选择时间----</option>
+						<option value="">----请选择时间----</option>
 						<option value="2014">2014</option>
 						<option value="2015">2015</option>
 						<option value="2016">2016</option>
 						<option value="2017">2017</option>
-				</select></li>	
-				<li><label>部门名称：</label><input type="text" /></li>			
+				</select></li>
+				<li><label>部门名称：</label><input type="text" /></li>
 			</ul>
 		</div>
 	</div>
@@ -41,56 +43,53 @@
 	</div>
 </form>
 <div class="pageContent">
-	<table class="table" width="200%" layoutH="110">
+	<table class="table" width="200%" layoutH="140">
 		<thead>
-			<tr>
-				<th width="center" align="center" rowspan="2">序号</th>
-				<th width="center" align="center">部门</th>
-				<th width="center" align="center">行政编制人员</th>
-				<th width="center" align="center">行政在职人员</th>
-				<th width="center" align="center">行政离退人员</th>
-				<th width="center" align="center">事业编制人员</th>
-				<th width="center" align="center">事业在职人员</th>
-				<th width="center" align="center">事业离退人员</th>
-				<th width="center" align="center">行政编制人员</th>
-				<th width="center" align="center">行政在职人员</th>
-				<th width="center" align="center">行政离退人员</th>
-				<th width="center" align="center">事业编制人员</th>
-				<th width="center" align="center">事业在职人员</th>
-				<th width="center" align="center">事业离退人员</th>
-				<th width="center" align="center">行政编制人员</th>
-				<th width="center" align="center">行政在职人员</th>
-
+			<tr >
+				<th rowspan="2">序号</th>
+				<th colspan="2">部门</th>
+				<th >行政编制人员</th>
+				<th >行政在职人员</th>
+				<th >行政离退人员</th>
+				<th >事业编制人员</th>
+				<th >事业在职人员</th>
+				<th >事业离退人员</th>
+				<th >行政编制人员</th>
+				<th >行政在职人员</th>
+				<th >行政离退人员</th>
+				<th >事业编制人员</th>
+				<th >事业在职人员</th>
+				<th >事业离退人员</th>
+				<th >行政编制人员</th>
+				<th >结尾</th>
 			</tr>
-			<tr>
-				<th width="center" align="center">序号</th>
-				<th width="center" align="center">行政编制人员</th>
-				<th width="center" align="center">行政在职人员</th>
-				<th width="center" align="center">行政离退人员</th>
-				<th width="center" align="center">事业编制人员</th>
-				<th width="center" align="center">事业在职人员</th>
-				<th width="center" align="center">事业离退人员</th>
-				<th width="center" align="center">行政编制人员</th>
-				<th width="center" align="center">行政在职人员</th>
-				<th width="center" align="center">行政离退人员</th>
-				<th width="center" align="center">事业编制人员</th>
-				<th width="center" align="center">事业在职人员</th>
-				<th width="center" align="center">事业离退人员</th>
-				<th width="center" align="center">行政编制人员</th>
-				<th width="center" align="center">行政在职人员</th>
-
+			<tr >
+				<th >部门</th>
+				
+				<th  >行政在职人员</th>
+				<th >行政离退人员</th>
+				<th >事业编制人员</th>
+				<th >事业在职人员</th>
+				<th >事业离退人员</th>
+				<th >行政编制人员</th>
+				<th >行政在职人员</th>
+				<th >行政离退人员</th>
+				<th >事业编制人员</th>
+				<th >事业在职人员</th>
+				<th >事业离退人员</th>
+				<th >行政编制人员</th>
+				<th >结尾</th>
 			</tr>
 		</thead>
 		<tbody>
-<c:forEach items="${pageList.result}" var="result">
-<tr>
-<c:forEach items="${result}" var="resultStr" varStatus="varSta">
-<td>${resultStr}asddddddddddddddddddddddddddddddddd</td>
-</c:forEach>
+			<c:forEach items="${pageList.result}" var="result">
+				<tr >
+					<c:forEach items="${result}" var="resultStr" varStatus="varSta">
+						<td >${resultStr}</td>
+					</c:forEach>
+				</tr>
 
-</tr>
-
-</c:forEach>
+			</c:forEach>
 		</tbody>
 
 	</table>

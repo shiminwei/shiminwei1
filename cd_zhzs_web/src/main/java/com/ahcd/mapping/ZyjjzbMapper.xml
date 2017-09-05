@@ -4,190 +4,184 @@
   <!-- 查询地税记录数 -->
   <select id="selectAllResult" resultType="Map">
     <![CDATA[ 
-select t3.zhibiao_name,
-       t3.zhibiao_unit,
-       round(t3.lj, 1) lj,
-       t4.lj sntq,
-       case
-         when (t3.tbzz) IS NOT NULL THEN
-          to_char(ROUND(t3.tbzz, 1), 'fm9999999990.0') || '%'
-         ELSE
-          ''
-       END tbzz
-  from (select zhibiao_name,
-               t1.value,
-               zhibiao_unit,
-               round(lj, 1) lj,
-               '' sntq,
-               ROUND(tbzz, 1) tbzz
-          from (select substr(code, 0, instr(code, ',') - 1) zhibiao_name,
-                       substr(code, instr(code, ',') + 1, length(code)) zhibiao_unit,
-                       value
+		select k.zbmc ZHIBIAO_UNIT,
+       k.dw,
+       round(k.lj, 2) lj,
+       round(k1.lj, 2) sntq,
+       
+      case when    IS_NUMBER(k.tbzz) = 'Y'
+       then  to_char(round(k.tbzz,2),'fm9999999990.00') 
+       else k.tbzz
+       end tbzz
+from (select t.code, t1.*
+          from (select code, value
                   from zd_constant
-                 where type = 'web_tjj_zyjjzb'
-                 order by order_number) t1
-          left join (select case
-                             when instr(xmmc, '(') > 0 then
-                              substr(xmmc, 0, instr(xmmc, '(') - 1)
-                             when instr(xmmc, '（') > 0 then
-                              substr(xmmc, 0, instr(xmmc, '（') - 1)
-                             else
-                              xmmc
-                           end xmmc,
+                 where type = 'web_zyjjzb_first'
+                 order by order_number) t
+         right join (select replace(replace(zbmc, ' ', ''), '　', '') zbmc,
+                           dw,
                            lj,
                            tbzz
-                      from (select replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(substr(xmmc,
-                                                                                                                                          instr(xmmc,
-                                                                                                                                                '、'),
-                                                                                                                                          length(xmmc)),
-                                                                                                                                   '#',
-                                                                                                                                   ''),
-                                                                                                                           '、',
-                                                                                                                           ''),
-                                                                                                                   '＃',
-                                                                                                                   ''),
-                                                                                                           '　',
-                                                                                                           ''),
-                                                                                                   ' ',
-                                                                                                   ''),
-                                                                                           '其中：',
-                                                                                           ''),
-                                                                                   '（万美元）',
-                                                                                   ''),
-                                                                           '（万元）',
-                                                                           ''),
-                                                                   '    （万人次）',
-                                                                   ''),
-                                                           '（元）',
-                                                           ''),
-                                                   '（%）',
-                                                   ''),
-                                           '（万千瓦时）',
-                                           '') xmmc,
-                                   lj,
-                                   tbzz
-                              from zhzs_tjj_zyjjzb
-                             where k_del = '0'
-                               and k_year||k_month = #{0})) t2 on t1.value = t2.xmmc) t3
-  left join (select case
-                      when instr(xmmc, '(') > 0 then
-                       substr(xmmc, 0, instr(xmmc, '(') - 1)
-                      when instr(xmmc, '（') > 0 then
-                       substr(xmmc, 0, instr(xmmc, '（') - 1)
-                      else
-                       xmmc
-                    end xmmc,
-                    lj,
-                    tbzz
-               from (select replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(substr(xmmc,
-                                                                                                                                   instr(xmmc,
-                                                                                                                                         '、'),
-                                                                                                                                   length(xmmc)),
-                                                                                                                            '#',
-                                                                                                                            ''),
-                                                                                                                    '、',
-                                                                                                                    ''),
-                                                                                                            '＃',
-                                                                                                            ''),
-                                                                                                    '　',
-                                                                                                    ''),
-                                                                                            ' ',
-                                                                                            ''),
-                                                                                    '其中：',
-                                                                                    ''),
-                                                                            '（万美元）',
-                                                                            ''),
-                                                                    '（万元）',
-                                                                    ''),
-                                                            '    （万人次）',
-                                                            ''),
-                                                    '（元）',
-                                                    ''),
-                                            '（%）',
-                                            ''),
-                                    '（万千瓦时）',
-                                    '') xmmc,
-                            lj,
-                            tbzz
-                       from zhzs_tjj_zyjjzb
-                      where k_del = '0'
-                        and k_year||k_month = #{1})) t4 on t3.value = t4.xmmc
+                      from zhzs_zyjjzb_zyjjzb
+                     where k_year || k_month = #{0}) t1 on t.value =
+                                                               t1.zbmc) k
+ left join
+  (select t.code, t1.*
+    from (select code, value
+            from zd_constant
+           where type = 'web_zyjjzb_first'
+           order by order_number) t
+   right join (select replace(replace(zbmc, ' ', ''), '　', '') zbmc,
+                     dw,
+                     lj,
+                     tbzz
+                from zhzs_zyjjzb_zyjjzb
+               where k_year || k_month = #{1}) t1 on t.value = t1.zbmc) k1
+
+on k.code = k1.code
   ]]>  
   </select>
   
   
-    <select id="selectAllJjzbFqy" resultType="Map"  parameterType="java.lang.String">
+<!--     <select id="selectAllJjzbFqy" resultType="Map"  parameterType="java.lang.String"> -->
+<!--     <![CDATA[  -->
+<!-- select show_name, -->
+<!--        max(show_unit) show_unit, -->
+<!--        max(order_number) order_number, -->
+<!--        max(order_number_new) order_number_new, -->
+<!--        nvl(max(ljwcs_sz), '') ljwcs_sz, -->
+<!--        nvl(max(tbzz_sz), '') tbzz_sz, -->
+<!--        nvl(max(ljwcs_jnjzq), '') ljwcs_jnjzq, -->
+<!--        nvl(max(tbzz_jnjzq), '') tbzz_jnjzq, -->
+<!--        nvl(max(ljwcs_gcq), '') ljwcs_gcq, -->
+<!--        nvl(max(tbzz_gcq), '') tbzz_gcq, -->
+<!--        nvl(max(ljwcs_dzx), '') ljwcs_dzx, -->
+<!--        nvl(max(tbzz_dzx), '') tbzz_dzx, -->
+<!--        nvl(max(ljwcs_stx), '') ljwcs_stx, -->
+<!--        nvl(max(tbzz_stx), '') tbzz_stx, -->
+<!--        nvl(max(ljwcs_qyx), '') ljwcs_qyx, -->
+<!--        nvl(max(tbzz_qyx), '') tbzz_qyx, -->
+<!--        nvl(max(ljwcs_kfq), '') ljwcs_kfq, -->
+<!--        nvl(max(tbzz_kfq), '') tbzz_kfq, -->
+<!--        nvl(max(ljwcs_qhsfjq), '') ljwcs_qhsfjq, -->
+<!--        nvl(max(tbzz_qhsfjq), '') tbzz_qhsfjq, -->
+<!--        nvl(max(ljwcs_pthfjq), '') ljwcs_pthfjq, -->
+<!--        nvl(max(tbzz_pthfjq), '') tbzz_pthfjq -->
+<!--   from (select t1.show_name, -->
+<!--                t1.show_unit, -->
+<!--                t1.order_number, -->
+<!--                t1.order_number_new, -->
+<!--                t2.* -->
+<!--           from (select substr(show_name, 0, instr(show_name, ',') - 1) show_name, -->
+<!--                        substr(show_name, -->
+<!--                               instr(show_name, ',') + 1, -->
+<!--                               length(show_name)) show_unit, -->
+<!--                        zbmc, -->
+<!--                        ORDER_NUMBER, -->
+<!--                        ORDER_NUMBER_NEW -->
+<!--                   from temp_bd_jjzb_fqy) t1 -->
+<!--           left join (select zbmc, -->
+<!--                            max(decode(qymc, '池州市', ljwcs)) ljwcs_czs, -->
+<!--                            max(decode(qymc, '池州市', tbzz)) tbzz_czs, -->
+<!--                            max(decode(qymc, '市直', ljwcs)) ljwcs_sz, -->
+<!--                            max(decode(qymc, '市直', tbzz)) tbzz_sz, -->
+<!--                            max(decode(qymc, '江南产业集中区', ljwcs)) ljwcs_jnjzq, -->
+<!--                            max(decode(qymc, '江南产业集中区', tbzz)) tbzz_jnjzq, -->
+<!--                            max(decode(qymc, '贵池区', ljwcs)) ljwcs_gcq, -->
+<!--                            max(decode(qymc, '贵池区', tbzz)) tbzz_gcq, -->
+<!--                            max(decode(qymc, '东至县', ljwcs)) ljwcs_dzx, -->
+<!--                            max(decode(qymc, '东至县', tbzz)) tbzz_dzx, -->
+<!--                            max(decode(qymc, '石台县', ljwcs)) ljwcs_stx, -->
+<!--                            max(decode(qymc, '石台县', tbzz)) tbzz_stx, -->
+<!--                            max(decode(qymc, '青阳县', ljwcs)) ljwcs_qyx, -->
+<!--                            max(decode(qymc, '青阳县', tbzz)) tbzz_qyx, -->
+<!--                            max(decode(qymc, '开发区', ljwcs)) ljwcs_kfq, -->
+<!--                            max(decode(qymc, '开发区', tbzz)) tbzz_kfq, -->
+<!--                            max(decode(qymc, '九华山风景区', ljwcs)) ljwcs_qhsfjq, -->
+<!--                            max(decode(qymc, '九华山风景区', tbzz)) tbzz_qhsfjq, -->
+<!--                            max(decode(qymc, '平天湖风景区', ljwcs)) ljwcs_pthfjq, -->
+<!--                            max(decode(qymc, '平天湖风景区', tbzz)) tbzz_pthfjq -->
+<!--                       from (select case -->
+<!--                                      when instr(zbmc, '（') > 0 then -->
+<!--                                       substr(zbmc, 0, instr(zbmc, '（') - 1) -->
+<!--                                      else -->
+<!--                                       zbmc -->
+<!--                                    end zbmc, -->
+<!--                                    replace(qymc, ' ', '') qymc, -->
+<!--                                    case -->
+<!--                                      when is_number(ljwcs) = 'Y' then -->
+<!--                                       to_char(round(ljwcs, 2), -->
+<!--                                               'fm9999999990.00') -->
+<!--                                      else -->
+<!--                                       ljwcs -->
+<!--                                    end ljwcs, -->
+<!--                                    case -->
+<!--                                      when is_number(tbzz) = 'Y' then -->
+<!--                                       to_char(round(tbzz, 2), -->
+<!--                                               'fm9999999990.00') || '%' -->
+<!--                                      else -->
+<!--                                       tbzz -->
+<!--                                    end tbzz -->
+<!--                               from zhzs_czj_fqyzyjjzbwcqk -->
+<!--                              where k_del = '0' -->
+<!--                                and k_year||k_month = #{k_year||k_month,jdbcType=VARCHAR}) -->
+<!--                      group by zbmc) t2 -->
+<!--             on t1.zbmc = t2.zbmc) -->
+<!--  group by show_name -->
+<!--  order by order_number, order_number_new -->
+
+<!--   ]]>   -->
+<!--   </select> -->
+
+<select id="selectAllJjzbFqy" resultType="Map"  parameterType="java.lang.String">
     <![CDATA[ 
-select show_name,
-       max(show_unit) show_unit,
-       max(order_number) order_number,
-       max(order_number_new) order_number_new,
-       nvl(max(ljwcs_sz), '') ljwcs_sz,
-       nvl(max(tbzz_sz), '') tbzz_sz,
-       nvl(max(ljwcs_jnjzq), '') ljwcs_jnjzq,
-       nvl(max(tbzz_jnjzq), '') tbzz_jnjzq,
-       nvl(max(ljwcs_gcq), '') ljwcs_gcq,
-       nvl(max(tbzz_gcq), '') tbzz_gcq,
-       nvl(max(ljwcs_dzx), '') ljwcs_dzx,
-       nvl(max(tbzz_dzx), '') tbzz_dzx,
-       nvl(max(ljwcs_stx), '') ljwcs_stx,
-       nvl(max(tbzz_stx), '') tbzz_stx,
-       nvl(max(ljwcs_qyx), '') ljwcs_qyx,
-       nvl(max(tbzz_qyx), '') tbzz_qyx,
-       nvl(max(ljwcs_kfq), '') ljwcs_kfq,
-       nvl(max(tbzz_kfq), '') tbzz_kfq,
-       nvl(max(ljwcs_qhsfjq), '') ljwcs_qhsfjq,
-       nvl(max(tbzz_qhsfjq), '') tbzz_qhsfjq,
-       nvl(max(ljwcs_pthfjq), '') ljwcs_pthfjq,
-       nvl(max(tbzz_pthfjq), '') tbzz_pthfjq
-  from (select t1.show_name,
-               t1.show_unit,
+   select f.* from (
+   
+select a.*
+  from (select t1.value, 
+               t1.code, 
                t1.order_number,
-               t1.order_number_new,
+               t1.CONSTANT_DESC, 
+               t1.r,    
                t2.*
-          from (select substr(show_name, 0, instr(show_name, ',') - 1) show_name,
-                       substr(show_name,
-                              instr(show_name, ',') + 1,
-                              length(show_name)) show_unit,
-                       zbmc,
-                       ORDER_NUMBER,
-                       ORDER_NUMBER_NEW
-                  from temp_bd_jjzb_fqy) t1
-          left join (select zbmc,
-                           max(decode(qymc, '池州市', ljwcs)) ljwcs_czs,
-                           max(decode(qymc, '池州市', tbzz)) tbzz_czs,
-                           max(decode(qymc, '市直', ljwcs)) ljwcs_sz,
-                           max(decode(qymc, '市直', tbzz)) tbzz_sz,
-                           max(decode(qymc, '江南产业集中区', ljwcs)) ljwcs_jnjzq,
-                           max(decode(qymc, '江南产业集中区', tbzz)) tbzz_jnjzq,
-                           max(decode(qymc, '贵池区', ljwcs)) ljwcs_gcq,
-                           max(decode(qymc, '贵池区', tbzz)) tbzz_gcq,
-                           max(decode(qymc, '东至县', ljwcs)) ljwcs_dzx,
-                           max(decode(qymc, '东至县', tbzz)) tbzz_dzx,
-                           max(decode(qymc, '石台县', ljwcs)) ljwcs_stx,
-                           max(decode(qymc, '石台县', tbzz)) tbzz_stx,
-                           max(decode(qymc, '青阳县', ljwcs)) ljwcs_qyx,
-                           max(decode(qymc, '青阳县', tbzz)) tbzz_qyx,
-                           max(decode(qymc, '开发区', ljwcs)) ljwcs_kfq,
-                           max(decode(qymc, '开发区', tbzz)) tbzz_kfq,
-                           max(decode(qymc, '九华山风景区', ljwcs)) ljwcs_qhsfjq,
-                           max(decode(qymc, '九华山风景区', tbzz)) tbzz_qhsfjq,
-                           max(decode(qymc, '平天湖风景区', ljwcs)) ljwcs_pthfjq,
-                           max(decode(qymc, '平天湖风景区', tbzz)) tbzz_pthfjq
-                      from (select case
+          from (select value,code,order_number,constant_desc,rownum r
+                  from zd_constant where type='web_fqyjjzb_code' order by order_number asc ) t1
+          RIGHT join (select zbmc zbmc,
+                             max(dw) dw,
+                           max(decode(qy, '池州市', ljwc)) ljwc_czs,
+                           max(decode(qy, '池州市', tbzz)) tbzz_czs,
+                           max(decode(qy, '市直', ljwc)) ljwc_sz,
+                           max(decode(qy, '市直', tbzz)) tbzz_sz,
+                           max(decode(qy, '江南产业集中区', ljwc)) ljwc_jnjzq,
+                           max(decode(qy, '江南产业集中区', tbzz)) tbzz_jnjzq,
+                           max(decode(qy, '贵池区', ljwc)) ljwc_gcq,
+                           max(decode(qy, '贵池区', tbzz)) tbzz_gcq,
+                           max(decode(qy, '东至县', ljwc)) ljwc_dzx,
+                           max(decode(qy, '东至县', tbzz)) tbzz_dzx,
+                           max(decode(qy, '石台县', ljwc)) ljwc_stx,
+                           max(decode(qy, '石台县', tbzz)) tbzz_stx,
+                           max(decode(qy, '青阳县', ljwc)) ljwc_qyx,
+                           max(decode(qy, '青阳县', tbzz)) tbzz_qyx,
+                           max(decode(qy, '开发区', ljwc)) ljwc_kfq,
+                           max(decode(qy, '开发区', tbzz)) tbzz_kfq,
+                           max(decode(qy, '九华山风景区', ljwc)) ljwc_qhsfjq,
+                           max(decode(qy, '九华山风景区', tbzz)) tbzz_qhsfjq,
+                           max(decode(qy, '平天湖风景区', ljwc)) ljwc_pthfjq,
+                           max(decode(qy, '平天湖风景区', tbzz)) tbzz_pthfjq
+                      from (select dw dw,case
                                      when instr(zbmc, '（') > 0 then
                                       substr(zbmc, 0, instr(zbmc, '（') - 1)
                                      else
                                       zbmc
                                    end zbmc,
-                                   replace(qymc, ' ', '') qymc,
+                                   replace(qy, ' ', '') qy,
                                    case
-                                     when is_number(ljwcs) = 'Y' then
-                                      to_char(round(ljwcs, 2),
+                                     when is_number(ljwc) = 'Y' then
+                                      to_char(round(ljwc, 2),
                                               'fm9999999990.00')
                                      else
-                                      ljwcs
-                                   end ljwcs,
+                                      ljwc
+                                   end ljwc,
                                    case
                                      when is_number(tbzz) = 'Y' then
                                       to_char(round(tbzz, 2),
@@ -195,24 +189,112 @@ select show_name,
                                      else
                                       tbzz
                                    end tbzz
-                              from zhzs_czj_fqyzyjjzbwcqk
+                              from zhzs_jjzb
                              where k_del = '0'
-                               and k_year||k_month = #{k_year||k_month,jdbcType=VARCHAR})
-                     group by zbmc) t2
-            on t1.zbmc = t2.zbmc)
- group by show_name
- order by order_number, order_number_new
 
+                               and k_year||k_month = #{0})
+                     group by zbmc) t2
+            on t1.value = t2.zbmc order by t1.order_number asc) a
   ]]>  
+  where 
+<!--   <if test="_parameter !=null"> -->
+<!-- 	 rownum <![CDATA[<=]]>  #{endRow}  -->
+	 rownum <![CDATA[<=]]>  #{1} 
+<!-- 	</if> -->
+	) f
+<!-- 		<if test="_parameter !=null"> -->
+		
+<!-- 	where rownm <![CDATA[>]]>  #{beginRow}  -->
+	where r <![CDATA[>]]>  #{2} 
+<!-- 	</if> -->
+order by order_number
   </select>
+
   
   
-    <select id="selectAllJjzbQs" resultType="Map"  parameterType="java.lang.String">
+<!--     <select id="selectAllJjzbQs" resultType="Map"  parameterType="java.lang.String"> -->
+<!--     <![CDATA[  -->
+<!-- select show_name, -->
+<!--        max(show_unit) show_unit, -->
+<!--        max(order_number) order_number, -->
+<!--        max(order_number_new) order_number_new, -->
+<!--        NVL(MAX(CZZSRJDS_HFS), '') CZZSRJDS_HFS, -->
+<!--        NVL(MAX(ZZ_HFS), '') ZZ_HFS, -->
+<!--        NVL(MAX(CZZSRJDS_HBS), '') CZZSRJDS_HBS, -->
+<!--        NVL(MAX(ZZ_HBS), '') ZZ_HBS, -->
+<!--        NVL(MAX(CZZSRJDS_BZS), '') CZZSRJDS_BZS, -->
+<!--        NVL(MAX(ZZ_BZS), '') ZZ_BZS, -->
+<!--        NVL(MAX(CZZSRJDS_SZS), '') CZZSRJDS_SZS, -->
+<!--        NVL(MAX(ZZ_SZS), '') ZZ_SZS, -->
+<!--        NVL(MAX(CZZSRJDS_BBS), '') CZZSRJDS_BBS, -->
+<!--        NVL(MAX(ZZ_BBS), '') ZZ_BBS, -->
+<!--        NVL(MAX(CZZSRJDS_FYS), '') CZZSRJDS_FYS, -->
+<!--        NVL(MAX(ZZ_FYS), '') ZZ_FYS, -->
+<!--        NVL(MAX(CZZSRJDS_HNS), '') CZZSRJDS_HNS, -->
+<!--        NVL(MAX(ZZ_HNS), '') ZZ_HNS, -->
+<!--        NVL(MAX(CZZSRJDS_CHUZS), '') CZZSRJDS_CHUZS, -->
+<!--        NVL(MAX(ZZ_CHUZS), '') ZZ_CHUZS, -->
+<!--        NVL(MAX(CZZSRJDS_LAS), '') CZZSRJDS_LAS, -->
+<!--        NVL(MAX(ZZ_LAS), '') ZZ_LAS, -->
+<!--        NVL(MAX(CZZSRJDS_MASS), '') CZZSRJDS_MASS, -->
+<!--        NVL(MAX(ZZ_MASS), '') ZZ_MASS, -->
+<!--        NVL(MAX(CZZSRJDS_WHS), '') CZZSRJDS_WHS, -->
+<!--        NVL(MAX(ZZ_WHS), '') ZZ_WHS, -->
+<!--        NVL(MAX(CZZSRJDS_XCS), '') CZZSRJDS_XCS, -->
+<!--        NVL(MAX(ZZ_XCS), '') ZZ_XCS, -->
+<!--        NVL(MAX(CZZSRJDS_TLS), '') CZZSRJDS_TLS, -->
+<!--        NVL(MAX(ZZ_TLS), '') ZZ_TLS, -->
+<!--        NVL(MAX(CZZSRJDS_CZS), '') CZZSRJDS_CZS, -->
+<!--        NVL(MAX(ZZ_CZS), '') ZZ_CZS, -->
+<!--        NVL(MAX(CZZSRJDS_AQS), '') CZZSRJDS_AQS, -->
+<!--        NVL(MAX(ZZ_AQS), '') ZZ_AQS, -->
+<!--        NVL(MAX(CZZSRJDS_HSS), '') CZZSRJDS_HSS, -->
+<!--        NVL(MAX(ZZ_HSS), '') ZZ_HSS -->
+<!--   from （ -->
+<!--         SELECT t1.show_name, -->
+<!--                t1.show_unit, -->
+<!--                t1.order_number, -->
+<!--                t1.order_number_new, -->
+<!--                t2.* -->
+<!--           FROM (select substr(show_name, 0, instr(show_name, ',') - 1) show_name, -->
+<!--                        substr(show_name, -->
+<!--                               instr(show_name, ',') + 1, -->
+<!--                               length(show_name)) show_unit, -->
+<!--                        zbmc, -->
+<!--                        ORDER_NUMBER, -->
+<!--                        ORDER_NUMBER_NEW -->
+<!--                   from temp_bd_jjzb_fqy) T1 -->
+<!--           LEFT JOIN （select zb, max(decode(sj, '合肥市', czzsrjds)) CZZSRJDS_HFS, max(decode(sj, '合肥市', zz)) ZZ_HFS, max(decode(sj, '淮北市', czzsrjds)) CZZSRJDS_HBS, max(decode(sj, '淮北市', zz)) ZZ_HBS, max(decode(sj, '亳州市', czzsrjds)) CZZSRJDS_BZS, max(decode(sj, '亳州市', zz)) ZZ_BZS, max(decode(sj, '宿州市', czzsrjds)) CZZSRJDS_SZS, max(decode(sj, '宿州市', zz)) ZZ_SZS, max(decode(sj, '蚌埠市', czzsrjds)) CZZSRJDS_BBS, max(decode(sj, '蚌埠市', zz)) ZZ_BBS, max(decode(sj, '阜阳市', czzsrjds)) CZZSRJDS_FYS, max(decode(sj, '阜阳市', zz)) ZZ_FYS, max(decode(sj, '淮南市', czzsrjds)) CZZSRJDS_HNS, max(decode(sj, '淮南市', zz)) ZZ_HNS, max(decode(sj, '滁州市', czzsrjds)) CZZSRJDS_CHUZS, max(decode(sj, '滁州市', zz)) ZZ_CHUZS, max(decode(sj, '六安市', czzsrjds)) CZZSRJDS_LAS, max(decode(sj, '六安市', zz)) ZZ_LAS, max(decode(sj, '马鞍山市', czzsrjds)) CZZSRJDS_MASS, max(decode(sj, '马鞍山市', zz)) ZZ_MASS, max(decode(sj, '芜湖市', czzsrjds)) CZZSRJDS_WHS, max(decode(sj, '芜湖市', zz)) ZZ_WHS, max(decode(sj, '宣城市', czzsrjds)) CZZSRJDS_XCS, max(decode(sj, '宣城市', zz)) ZZ_XCS, max(decode(sj, '铜陵市', czzsrjds)) CZZSRJDS_TLS, max(decode(sj, '铜陵市', zz)) ZZ_TLS, max(decode(sj, '池州市', czzsrjds)) CZZSRJDS_CZS, max(decode(sj, '池州市', zz)) ZZ_CZS, max(decode(sj, '安庆市', czzsrjds)) CZZSRJDS_AQS, max(decode(sj, '安庆市', zz)) ZZ_AQS, max(decode(sj, '黄山市', czzsrjds)) CZZSRJDS_HSS, max(decode(sj, '黄山市', zz)) ZZ_HSS -->
+<!--           from (select zb, -->
+<!--                        sj, -->
+<!--                        case -->
+<!--                          when is_number(czzsrjds) = 'Y' then -->
+<!--                           to_char(round(czzsrjds, 2), 'fm9999999990.00') -->
+<!--                          else -->
+<!--                           czzsrjds -->
+<!--                        end czzsrjds, -->
+                       
+<!--                        case -->
+<!--                          when is_number(zz) = 'Y' then -->
+<!--                           to_char(round(zz, 2), 'fm9999999990.00') || '%' -->
+<!--                          else -->
+<!--                           zz -->
+<!--                        end zz -->
+<!--                   from zhzs_czj_qsjjzb -->
+<!--                  where k_del = '0' -->
+<!--                    and k_year||k_month =#{k_year||k_month,jdbcType=VARCHAR}) -->
+<!--          group by zb ）T2 -->
+<!--             ON T1.ZBMC = T2.ZB ）group by show_name -->
+<!--          order by order_number, order_number_new -->
+
+<!--   ]]>   -->
+<!--   </select> -->
+<select id="selectAllJjzbQs" resultType="Map"  parameterType="java.lang.String">
     <![CDATA[ 
-select show_name,
-       max(show_unit) show_unit,
-       max(order_number) order_number,
-       max(order_number_new) order_number_new,
+SELECT CODE,
+       MAX(SHOW_UNIT) SHOW_UNIT,
+       MAX(ORDER_NUMBER) ORDER_NUMBER,
+       MAX(CONSTANT_DESC) CONSTANT_DESC,
        NVL(MAX(CZZSRJDS_HFS), '') CZZSRJDS_HFS,
        NVL(MAX(ZZ_HFS), '') ZZ_HFS,
        NVL(MAX(CZZSRJDS_HBS), '') CZZSRJDS_HBS,
@@ -245,47 +327,67 @@ select show_name,
        NVL(MAX(ZZ_AQS), '') ZZ_AQS,
        NVL(MAX(CZZSRJDS_HSS), '') CZZSRJDS_HSS,
        NVL(MAX(ZZ_HSS), '') ZZ_HSS
-  from （
-        SELECT t1.show_name,
-               t1.show_unit,
-               t1.order_number,
-               t1.order_number_new,
-               t2.*
-          FROM (select substr(show_name, 0, instr(show_name, ',') - 1) show_name,
-                       substr(show_name,
-                              instr(show_name, ',') + 1,
-                              length(show_name)) show_unit,
-                       zbmc,
-                       ORDER_NUMBER,
-                       ORDER_NUMBER_NEW
-                  from temp_bd_jjzb_fqy) T1
-          LEFT JOIN （select zb, max(decode(sj, '合肥市', czzsrjds)) CZZSRJDS_HFS, max(decode(sj, '合肥市', zz)) ZZ_HFS, max(decode(sj, '淮北市', czzsrjds)) CZZSRJDS_HBS, max(decode(sj, '淮北市', zz)) ZZ_HBS, max(decode(sj, '亳州市', czzsrjds)) CZZSRJDS_BZS, max(decode(sj, '亳州市', zz)) ZZ_BZS, max(decode(sj, '宿州市', czzsrjds)) CZZSRJDS_SZS, max(decode(sj, '宿州市', zz)) ZZ_SZS, max(decode(sj, '蚌埠市', czzsrjds)) CZZSRJDS_BBS, max(decode(sj, '蚌埠市', zz)) ZZ_BBS, max(decode(sj, '阜阳市', czzsrjds)) CZZSRJDS_FYS, max(decode(sj, '阜阳市', zz)) ZZ_FYS, max(decode(sj, '淮南市', czzsrjds)) CZZSRJDS_HNS, max(decode(sj, '淮南市', zz)) ZZ_HNS, max(decode(sj, '滁州市', czzsrjds)) CZZSRJDS_CHUZS, max(decode(sj, '滁州市', zz)) ZZ_CHUZS, max(decode(sj, '六安市', czzsrjds)) CZZSRJDS_LAS, max(decode(sj, '六安市', zz)) ZZ_LAS, max(decode(sj, '马鞍山市', czzsrjds)) CZZSRJDS_MASS, max(decode(sj, '马鞍山市', zz)) ZZ_MASS, max(decode(sj, '芜湖市', czzsrjds)) CZZSRJDS_WHS, max(decode(sj, '芜湖市', zz)) ZZ_WHS, max(decode(sj, '宣城市', czzsrjds)) CZZSRJDS_XCS, max(decode(sj, '宣城市', zz)) ZZ_XCS, max(decode(sj, '铜陵市', czzsrjds)) CZZSRJDS_TLS, max(decode(sj, '铜陵市', zz)) ZZ_TLS, max(decode(sj, '池州市', czzsrjds)) CZZSRJDS_CZS, max(decode(sj, '池州市', zz)) ZZ_CZS, max(decode(sj, '安庆市', czzsrjds)) CZZSRJDS_AQS, max(decode(sj, '安庆市', zz)) ZZ_AQS, max(decode(sj, '黄山市', czzsrjds)) CZZSRJDS_HSS, max(decode(sj, '黄山市', zz)) ZZ_HSS
-          from (select zb,
-                       sj,
-                       case
-                         when is_number(czzsrjds) = 'Y' then
-                          to_char(round(czzsrjds, 2), 'fm9999999990.00')
-                         else
-                          czzsrjds
-                       end czzsrjds,
-                       
-                       case
-                         when is_number(zz) = 'Y' then
-                          to_char(round(zz, 2), 'fm9999999990.00') || '%'
-                         else
-                          zz
-                       end zz
-                  from zhzs_czj_qsjjzb
-                 where k_del = '0'
-                   and k_year||k_month =#{k_year||k_month,jdbcType=VARCHAR})
-         group by zb ）T2
-            ON T1.ZBMC = T2.ZB ）group by show_name
-         order by order_number, order_number_new
 
-
+  FROM ((SELECT * FROM ZD_CONSTANT WHERE TYPE = 'web_zyjjzb_code') A RIGHT JOIN
+        (SELECT ZB,
+                SHOW_UNIT,
+                MAX(DECODE(SJ, '合肥市', CZZSRJDS)) CZZSRJDS_HFS,
+                MAX(DECODE(SJ, '合肥市', ZZ)) ZZ_HFS,
+                MAX(DECODE(SJ, '淮北市', CZZSRJDS)) CZZSRJDS_HBS,
+                MAX(DECODE(SJ, '淮北市', ZZ)) ZZ_HBS,
+                MAX(DECODE(SJ, '亳州市', CZZSRJDS)) CZZSRJDS_BZS,
+                MAX(DECODE(SJ, '亳州市', ZZ)) ZZ_BZS,
+                MAX(DECODE(SJ, '宿州市', CZZSRJDS)) CZZSRJDS_SZS,
+                MAX(DECODE(SJ, '宿州市', ZZ)) ZZ_SZS,
+                MAX(DECODE(SJ, '蚌埠市', CZZSRJDS)) CZZSRJDS_BBS,
+                MAX(DECODE(SJ, '蚌埠市', ZZ)) ZZ_BBS,
+                MAX(DECODE(SJ, '阜阳市', CZZSRJDS)) CZZSRJDS_FYS,
+                MAX(DECODE(SJ, '阜阳市', ZZ)) ZZ_FYS,
+                MAX(DECODE(SJ, '淮南市', CZZSRJDS)) CZZSRJDS_HNS,
+                MAX(DECODE(SJ, '淮南市', ZZ)) ZZ_HNS,
+                MAX(DECODE(SJ, '滁州市', CZZSRJDS)) CZZSRJDS_CHUZS,
+                MAX(DECODE(SJ, '滁州市', ZZ)) ZZ_CHUZS,
+                MAX(DECODE(SJ, '六安市', CZZSRJDS)) CZZSRJDS_LAS,
+                MAX(DECODE(SJ, '六安市', ZZ)) ZZ_LAS,
+                MAX(DECODE(SJ, '马鞍山市', CZZSRJDS)) CZZSRJDS_MASS,
+                MAX(DECODE(SJ, '马鞍山市', ZZ)) ZZ_MASS,
+                MAX(DECODE(SJ, '芜湖市', CZZSRJDS)) CZZSRJDS_WHS,
+                MAX(DECODE(SJ, '芜湖市', ZZ)) ZZ_WHS,
+                MAX(DECODE(SJ, '宣城市', CZZSRJDS)) CZZSRJDS_XCS,
+                MAX(DECODE(SJ, '宣城市', ZZ)) ZZ_XCS,
+                MAX(DECODE(SJ, '铜陵市', CZZSRJDS)) CZZSRJDS_TLS,
+                MAX(DECODE(SJ, '铜陵市', ZZ)) ZZ_TLS,
+                MAX(DECODE(SJ, '池州市', CZZSRJDS)) CZZSRJDS_CZS,
+                MAX(DECODE(SJ, '池州市', ZZ)) ZZ_CZS,
+                MAX(DECODE(SJ, '安庆市', CZZSRJDS)) CZZSRJDS_AQS,
+                MAX(DECODE(SJ, '安庆市', ZZ)) ZZ_AQS,
+                MAX(DECODE(SJ, '黄山市', CZZSRJDS)) CZZSRJDS_HSS,
+                MAX(DECODE(SJ, '黄山市', ZZ)) ZZ_HSS
+           FROM (SELECT ZB,
+                        SHOW_UNIT,
+                        SJ,
+                        CASE
+                          WHEN IS_NUMBER(CZZSRJDS) = 'Y' THEN
+                           TO_CHAR(ROUND(CZZSRJDS, 2), 'fm9999999990.00')
+                          ELSE
+                           CZZSRJDS
+                        END CZZSRJDS,
+                        
+                        CASE
+                          WHEN IS_NUMBER(ZZ) = 'Y' THEN
+                           TO_CHAR(ROUND(ZZ, 2), 'fm9999999990.00') || '%'
+                          ELSE
+                           ZZ
+                        END ZZ
+                   FROM ZHZS_ZYJJZB_QSJJZB
+                  WHERE K_DEL = '0'
+                    AND K_YEAR || K_MONTH =#{k_year||k_month,jdbcType=VARCHAR})
+          GROUP BY ZB, SHOW_UNIT) B ON A.VALUE = B.ZB)
+ GROUP BY CODE
+ ORDER BY CONSTANT_DESC
   ]]>  
   </select>
-  <select id="selectQssrqk" resultType="Map">
+ <!-- <select id="selectQssrqk" resultType="Map">
     <![CDATA[ 
 select t3.code,'' yqs,'' yqwc,''yqzf,''zfwc, replace(to_number(t2.czzsr),'.0','') czzsr,replace(t2.wc,'.0','') wc,''jd,''jdwc, 
 
@@ -306,7 +408,36 @@ where t.dq = t1.dqt and t.k_year||t.k_month = #{0} and t1.k_year||t1.k_month = #
 on t3.code = t2.dq
   ]]>  
   </select>
+  --> 
   
+  <select id="selectQssrqk" resultType="Map">
+    <![CDATA[ 
+SELECT code dq,
+       yqs,
+       yqwc,
+       zf,
+       zfwc,
+       czzsr,
+       wc,
+       jd,
+       jdwc ,
+       jsntqzf,
+       wct           
+FROM 
+(select t3.code ,'' yqs,'' yqwc,''zfwc, replace(to_number(t2.czzsr),'.0','') czzsr,replace(t2.wc,'.0','') wc,''jd,''jdwc, 
+case when t2.jsntqzf='%'
+      then jsntqzf
+      else jsntqzf end jsntqzf,
+replace(t2.wct,'.0','') wct from 
+(select * from zd_constant where type = 'web_czj_qssrwcqk' order by order_number) t3 left join 
+(select t.dq,t.czzsr,t.wc,t1.dqt, to_char(round(t1.jsntqzf, 2), 'fm9999999990.0') || '%' jsntqzf,t1.wct from zhzs_czj_qssrwcqk t,zhzs_czj_qssrwcqk t1 
+where t.dq = t1.dqt and t.k_year||t.k_month = #{0} and t1.k_year||t1.k_month = #{1}) t2
+on t3.code = t2.dq) t4
+LEFT JOIN
+     zhzs_czj_xqndzf t5
+ON t5.dq = t4.code AND t5.year=#{2}
+  ]]>  
+  </select> 
   
   <select id="selectFqyfsz" resultType="Map">
     <![CDATA[ 
@@ -398,7 +529,7 @@ on k.value=k1.value
   </select>
   
   
-  
+ <!--  
     <select id="selectFjfkm" resultType="Map"  >
     <![CDATA[ 
 select k.code,
@@ -531,6 +662,388 @@ select k.code,
     on k.code = k1.code
   ]]>  
   </select>
+  -->
+    <select id="selectFjfkm" resultType="Map"  >
+    <![CDATA[ 
+
+SELECT ZCKM,
+       HJ_NDYS,
+       HJ_LJWC,
+       CASE
+         WHEN HJ_NDYS > 0 THEN
+          TO_CHAR(ROUND(HJ_LJWC / HJ_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END HJ_JD,
+       SZ_NDYS,
+       SZ_LJWCS,
+       SZ_JD,
+       JNJZQ_NDYS,
+       JNJZQ_LJWCS,
+       CASE
+         WHEN JNJZQ_NDYS > 0 THEN
+          TO_CHAR(ROUND(JNJZQ_LJWCS / JNJZQ_NDYS * 100, 2),
+                  'fm9999999990.00') 
+         ELSE
+          '-'
+       END JNJZQ_JD,
+       GC_NDYS,
+       GC_LJWCS,
+       CASE
+         WHEN GC_NDYS > 0 THEN
+          TO_CHAR(ROUND(GC_LJWCS / GC_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END GC_JD,
+       DZ_NDYS,
+       DZ_LJWCS,
+       CASE
+         WHEN DZ_NDYS > 0 THEN
+          TO_CHAR(ROUND(DZ_LJWCS / DZ_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END DZ_JD,
+       ST_NDYS,
+       ST_LJWCS,
+       CASE
+         WHEN DZ_NDYS > 0 THEN
+          TO_CHAR(ROUND(ST_LJWCS / ST_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END ST_JD,
+       QY_NDYS,
+       QY_LJWCS,
+       CASE
+         WHEN QY_NDYS > 0 THEN
+          TO_CHAR(ROUND(QY_LJWCS / QY_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END QY_JD,
+       KFQ_NDYS,
+       KFQ_LJWCS,
+       CASE
+         WHEN KFQ_NDYS > 0 THEN
+          TO_CHAR(ROUND(KFQ_LJWCS / KFQ_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END KFQ_JD,
+       JHS_NDYS,
+       JHS_LJWCS,
+       CASE
+         WHEN JHS_NDYS > 0 THEN
+          TO_CHAR(ROUND(JHS_LJWCS / JHS_NDYS * 100, 2), 'fm9999999990.00') 
+         ELSE
+          '-'
+       END JHS_JD,
+       PTH_NDYS,
+       PTH_LJWCS,
+       '' PTH_JD
+  FROM (SELECT C.CODE1 ZCKM,
+               REPLACE(NVL(D.JNJZQ_YSS, 0) + NVL(D.SZ_YSS, 0) +
+                       NVL(D.DZ_YSS, 0) + NVL(D.ST_YSS, 0) +
+                       NVL(D.GC_YSS, 0) + NVL(D.QY_YSS, 0) +
+                       NVL(D.KFQ_YSS, 0) + NVL(D.JHS_YSS, 0),
+                       '') HJ_NDYS,
+               C.HJ_LJWC HJ_LJWC,
+               D.SZ_YSS SZ_NDYS,
+               '' SZ_LJWCS,
+               '' SZ_JD,
+               D.JNJZQ_YSS JNJZQ_NDYS,
+               JNJZQ_LJWCS,
+               D.GC_YSS GC_NDYS,
+               GC_LJWCS,
+               D.DZ_YSS DZ_NDYS,
+               DZ_LJWCS,
+               D.ST_YSS ST_NDYS,
+               ST_LJWCS,
+               D.QY_YSS QY_NDYS,
+               QY_LJWCS,
+               D.KFQ_YSS KFQ_NDYS,
+               KFQ_LJWCS,
+               D.JHS_YSS JHS_NDYS,
+               JHS_LJWCS,
+               '' PTH_NDYS,
+               PTH_LJWCS
+          FROM (SELECT A.CODE,
+                       A.VALUE,
+                       B.CODE CODE1，B.HJ_LJWC，B.JNJZQ_LJWCS，B.GC_LJWCS，B.DZ_LJWCS，B.ST_LJWCS，B.QY_LJWCS，B.KFQ_LJWCS，B.JHS_LJWCS，B.PTH_LJWCS
+                  FROM (SELECT *
+                          FROM ZD_CONSTANT
+                         WHERE TYPE = 'web_zyjjzb_fjfkm') A
+                 RIGHT JOIN (SELECT K.CODE,
+                                   '' HJ_NDYS,
+                                   REPLACE(NVL(K1.JNJZQ, 0) + NVL(K1.GC, 0) +
+                                           NVL(K1.DZ, 0) + NVL(K1.ST, 0) +
+                                           NVL(K1.QY, 0) + NVL(K1.KFQ, 0) +
+                                           NVL(K1.JHS, 0) + NVL(K1.PTH, 0),
+                                           '0',
+                                           '') HJ_LJWC,
+                                   '' HJ_JD,
+                                   '' SZ_NDYS,
+                                   '' SZ_LJWCS,
+                                   '' SZ_JD,
+                                   '' JNJZQ_NDYS,
+                                   K1.JNJZQ JNJZQ_LJWCS,
+                                   '' JNJZQ_JD,
+                                   '' GC_NDYS,
+                                   K1.GC GC_LJWCS,
+                                   '' GC_JD,
+                                   '' DZ_NDYS,
+                                   K1.DZ DZ_LJWCS,
+                                   '' DZ_JD,
+                                   '' ST_NDYS,
+                                   K1.ST ST_LJWCS,
+                                   '' ST_JD,
+                                   '' QY_NDYS,
+                                   K1.QY QY_LJWCS,
+                                   '' QY_JD,
+                                   '' KFQ_NDYS,
+                                   K1.KFQ KFQ_LJWCS,
+                                   '' KFQ_JD,
+                                   '' JHS_NDYS,
+                                   K1.JHS JHS_LJWCS,
+                                   '' JHS_JD,
+                                   '' PTH_NDYS,
+                                   K1.PTH PTH_LJWCS,
+                                   '' PTH_JD
+                              FROM (SELECT *
+                                      FROM ZD_CONSTANT
+                                     WHERE TYPE = 'web_czj_fjfkm'
+                                     ORDER BY ORDER_NUMBER) K
+                              LEFT JOIN (SELECT *
+                                          FROM (SELECT T.CODE,
+                                                       CASE
+                                                         WHEN T1.JNJZQ = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.JNJZQ,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          JNJZQ
+                                                       END JNJZQ,
+                                                       CASE
+                                                         WHEN T1.GC = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.GC,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          GC
+                                                       END GC,
+                                                       CASE
+                                                         WHEN T1.DZ = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.DZ,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          DZ
+                                                       END DZ,
+                                                       CASE
+                                                         WHEN T1.ST = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.ST,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          ST
+                                                       END ST,
+                                                       CASE
+                                                         WHEN T1.QY = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.QY,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          QY
+                                                       END QY,
+                                                       CASE
+                                                         WHEN T1.KFQ = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.KFQ,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          KFQ
+                                                       END KFQ,
+                                                       CASE
+                                                         WHEN T1.JHS = '0.0' THEN
+                                                          TO_CHAR(REPLACE(T1.JHS,
+                                                                          '0.0',
+                                                                          ''))
+                                                         ELSE
+                                                          JHS
+                                                       END JHS,
+                                                       TO_CHAR('') PTH
+                                                  FROM (SELECT *
+                                                          FROM ZD_CONSTANT
+                                                         WHERE TYPE =
+                                                               'web_czj_fjfkm'
+                                                         ORDER BY ORDER_NUMBER) T
+                                                  LEFT JOIN (SELECT MAX(YSKM) YSKM,
+                                                                   KMBM,
+                                                                   MAX(KMMC) KMMC,
+                                                                   MAX(HJ) HJ,
+                                                                   MAX(SZ) SZ,
+                                                                   MAX(GC) GC,
+                                                                   MAX(ST) ST,
+                                                                   MAX(QY) QY,
+                                                                   MAX(DZ) DZ,
+                                                                   MAX(JHS) JHS,
+                                                                   MAX(JNJZQ) JNJZQ,
+                                                                   MAX(KFQ) KFQ
+                                                              FROM ZHZS_CZJ_ZCYB
+                                                             WHERE K_YEAR ||
+                                                                   K_MONTH = #{0}
+                                                               AND YSKM LIKE '%一般预算%'
+                                                             GROUP BY KMBM) T1
+                                                    ON T.VALUE = T1.KMBM)
+                                         WHERE CODE <> '其中：八项支出小计'
+                                        UNION ALL
+                                        SELECT TO_CHAR('其中：八项支出小计') CODE,
+                                               TO_CHAR(SUM(JNJZQ)) JNJZQ,
+                                               TO_CHAR(SUM(GC)) GC,
+                                               TO_CHAR(SUM(DZ)) DZ,
+                                               TO_CHAR(SUM(ST)) ST,
+                                               TO_CHAR(SUM(QY)) QY,
+                                               TO_CHAR(SUM(KFQ)) KFQ,
+                                               TO_CHAR(SUM(JHS)) JHS,
+                                               TO_CHAR(SUM('')) PTH
+                                          FROM (SELECT *
+                                                  FROM (SELECT *
+                                                          FROM ZD_CONSTANT
+                                                         WHERE TYPE =
+                                                               'web_czj_fjfkm'
+                                                         ORDER BY ORDER_NUMBER) T
+                                                  LEFT JOIN (SELECT MAX(YSKM) YSKM,
+                                                                   KMBM,
+                                                                   MAX(KMMC) KMMC,
+                                                                   MAX(HJ) HJ,
+                                                                   MAX(SZ) SZ,
+                                                                   MAX(GC) GC,
+                                                                   MAX(ST) ST,
+                                                                   MAX(QY) QY,
+                                                                   MAX(DZ) DZ,
+                                                                   MAX(JHS) JHS,
+                                                                   MAX(JNJZQ) JNJZQ,
+                                                                   MAX(KFQ) KFQ
+                                                              FROM ZHZS_CZJ_ZCYB
+                                                             WHERE K_YEAR ||
+                                                                   K_MONTH = #{0}
+                                                               AND YSKM LIKE '%一般预算%'
+                                                             GROUP BY KMBM) T1
+                                                    ON T.VALUE = T1.KMBM
+                                                 WHERE T.VALUE IN
+                                                       ('201',
+                                                        '204',
+                                                        '205',
+                                                        '206',
+                                                        '208',
+                                                        '210',
+                                                        '211',
+                                                        '212'))
+                                         GROUP BY TYPE) K1
+                                ON K.CODE = K1.CODE) B
+                    ON B.CODE = A.CODE) C
+          LEFT JOIN (SELECT XM,
+                           JNJZQ_YSS,
+                           SZ_YSS,
+                           DZ_YSS,
+                           ST_YSS,
+                           GC_YSS,
+                           QY_YSS,
+                           KFQ_YSS,
+                           JHS_YSS 
+                      FROM (SELECT * FROM ( SELECT QY, XM, REPLACE(YSS,' ','') YSS, REPLACE(BZ,' ','') BZ FROM ZHZS_CZJ_NDYS) )
+                    PIVOT(SUM(YSS) YSS
+                       FOR QY IN('江南集中区' JNJZQ,
+                                '市直' SZ,
+                                '东至县' DZ,
+                                '石台县' ST,
+                                '贵池区' GC,
+                                '青阳县' QY,
+                                '开发区' KFQ,
+                                '九华山风景区' JHS)) ) D
+            ON C.VALUE = D.XM) E
+
+
+  ]]>  
+  </select>
+  
+
+  
+  
+  <!-- 预算批复 -->
+  <select id="selectDetailPage" parameterType="com.ahcd.pojo.Page" resultType="Map"> 
+ select *
+  from  (select a.*, rownum rnum
+  from (
+   select xh,
+       GNKML,
+       GNKMK,
+       GNKMX,
+       DWMCXMLBJJKM,
+       HJ,
+       XJ,
+       CZBK,
+       ZXSR,
+       XZSYXSR,
+       FMSR,
+       NRYSGLQTFSSR,
+       SHBXJJSRAP,
+       ZFXJJSRAP,
+       NRCZZHGLDFSSRAP,
+       SJTQXDDZXSRAP,
+       SNJY,
+       QTSRXJ,
+       SYDWJYSR,
+       SJBZSR,
+       FSDWSJSR,
+       QTSR,
+       k_year ssrq
+  from zhzs_bmyspfbxx
+  <if test="queryBean.year !=null and queryBean.year !=''">
+	 where k_year = #{queryBean.year} 
+  </if>
+  order by to_number(xh) asc
+  ) a
+  <if test="endRow !=null">
+  where rownum <![CDATA[<=]]>  #{endRow} 
+  </if>
+  )
+  <if test="beginRow !=null">
+  where rnum <![CDATA[>]]>  #{beginRow} 
+  </if>
+  </select>
+  
+  <select id="countDetailPage" parameterType="com.ahcd.pojo.Page" resultType="java.lang.Integer">
+   select count(1)
+  from (
+   select xh,
+       GNKML,
+       GNKMK,
+       GNKMX,
+       DWMCXMLBJJKM,
+       HJ,
+       XJ,
+       CZBK,
+       ZXSR,
+       XZSYXSR,
+       FMSR,
+       NRYSGLQTFSSR,
+       SHBXJJSRAP,
+       ZFXJJSRAP,
+       NRCZZHGLDFSSRAP,
+       SJTQXDDZXSRAP,
+       SNJY,
+       QTSRXJ,
+       SYDWJYSR,
+       SJBZSR,
+       FSDWSJSR,
+       QTSR,
+       k_year ssrq
+  from zhzs_bmyspfbxx
+    <if test="queryBean.year !=null and queryBean.year !=''">
+	 where k_year = #{queryBean.year} 
+  </if>
+  order by to_number(xh) asc
+  ) a
+  </select> 
+
 </mapper>  
 
 

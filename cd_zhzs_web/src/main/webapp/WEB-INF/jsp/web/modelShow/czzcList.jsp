@@ -110,7 +110,7 @@
 			<tr>
 			<td <c:if test="${status.count==1||status.count==3||status.count==4||status.count==5||status.count==7
 			||status.count==8||status.count==9||status.count==22
-			}"> style="color: red"</c:if>>${list.CODE}</td>
+			}"> style="color: red"</c:if>>${list.ZCKM}</td>
        		<td align="center" >${list.HJ_NDYS}</td>	
 			<td align="center" >${list.HJ_LJWC}</td>	
 			<td align="center" >${list.HJ_JD}</td>
@@ -118,28 +118,28 @@
 			<td align="center" >${list.SZ_LJWC}</td>	
 			<td align="center" >${list.SZ_JD}</td>
          	<td align="center" >${list.JNJZQ_NDYS}</td>	
-			<td align="center" >${list.JNJZQ_LJWC}</td>	
+			<td align="center" >${list.JNJZQ_LJWCS}</td>	
 			<td align="center" >${list.JNJZQ_JD}</td>
     		<td align="center" >${list.GC_NDYS}</td>	
-			<td align="center" >${list.GC_LJWC}</td>	
+			<td align="center" >${list.GC_LJWCS}</td>	
 			<td align="center" >${list.GC_JD}</td>
      	    <td align="center" >${list.DZ_NDYS}</td>	
-			<td align="center" >${list.DZ_LJWC}</td>	
+			<td align="center" >${list.DZ_LJWCS}</td>	
 			<td align="center" >${list.DZ_JD}</td>
             <td align="center" >${list.ST_NDYS}</td>	
-			<td align="center" >${list.ST_LJWC}</td>	
+			<td align="center" >${list.ST_LJWCS}</td>	
 			<td align="center" >${list.ST_JD}</td>
      	    <td align="center" >${list.QY_NDYS}</td>	
-			<td align="center" >${list.QY_LJWC}</td>	
+			<td align="center" >${list.QY_LJWCS}</td>	
 			<td align="center" >${list.QY_JD}</td>
             <td align="center" >${list.KFQ_NDYS}</td>	
-			<td align="center" >${list.KFQ_LJWC}</td>	
+			<td align="center" >${list.KFQ_LJWCS}</td>	
 			<td align="center" >${list.KFQ_JD}</td>
       		<td align="center" >${list.JHS_NDYS}</td>	
-			<td align="center" >${list.JHS_LJWC}</td>	
+			<td align="center" >${list.JHS_LJWCS}</td>	
 			<td align="center" >${list.JHS_JD}</td>
 			<td align="center" >${list.PTH_NDYS}</td>	
-			<td align="center" >${list.PTH_LJWC}</td>	
+			<td align="center" >${list.PTH_LJWCS}</td>	
 			<td align="center" >${list.PTH_JD}</td>
 
 			</tr>

@@ -1,7 +1,7 @@
 package com.ahcd.controller.admin;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+//import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ahcd.common.OpreateResult;
 import com.ahcd.common.StringUtil;
-import com.ahcd.common.XmlUtils;
+//import com.ahcd.common.XmlUtils;
 import com.ahcd.pojo.ConfigBean;
 import com.ahcd.pojo.Page;
 import com.ahcd.pojo.SysWebMenu;

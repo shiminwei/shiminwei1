@@ -14,12 +14,16 @@
 <form method="post" name="pagerForm"
 	action="${basePath }web/modelShow/economicqsList"
 	onsubmit="return navTabSearch(this);">
-
+ 
 	<div class="pageHeader">
 		<div class="searchBar">
-				<h1 align="center" style="font-size: 30px;margin-bottom: -12px">${year}年<c:if test="${newMonth!=null&&newMonth!=''}">${newMonth}月</c:if>全省主要经济指标完成情况表</h1>
-
-		
+				<h1 align="center" style="font-size: 30px;margin-bottom: -12px">
+				${year}年<c:if test="${newMonth!=null&&newMonth!=''}">
+				${newMonth}月</c:if>
+				全省主要经济指标完成情况表</h1>
+				<h2 class="contentTitle" align="center">&nbsp;</h2>
+				
+				<h1 align="right"  style="font-size: 16px"></h1>	
 			<ul class="searchContent" style="margin-bottom: -4px;margin-top: -9px">
 				<li><label>所属时间：</label>				
 										<select id="year" name="year">
@@ -59,7 +63,7 @@
 </form>
 <div class="pageContent" style="width: auto; overflow: x:scroll;">
 	<div style="width: auto; height: auto; overflow: x:scroll;">
-	<table class="list" width="180%" layoutH="105">
+	<table class="list" width="200%" layoutH="135">
 		<thead>
 			<tr>
 			
@@ -120,9 +124,8 @@
 		<tbody>
 				<c:forEach items="${pageList.result}" var="list"	varStatus="status">
 			<tr>
-			<td <c:if test="${status.count==1||status.count==2||status.count==3||status.count==6||status.count==8
-			||status.count==9||status.count==10||status.count==11||status.count==13||status.count==14
-			}"> style="color: red"</c:if>>${list.SHOW_NAME}</td>
+			<td <c:if test="${fn:contains(list.CONSTANT_DESC,'-')==true}">style="color: red"
+			</c:if><c:if test="${fn:contains(list.CONSTANT_DESC,'-')==false}"><a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a</c:if>>${list.CODE}</td>
 			<td align="center" >${list.SHOW_UNIT}</td>			
 			<td align="center" >${list.CZZSRJDS_HFS}</td>			
 			<td align="center" >${list.ZZ_HFS}</td>

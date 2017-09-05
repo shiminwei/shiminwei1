@@ -68,7 +68,7 @@
 <div class="pageContent">
 	<table class="list" 
 		<c:if test="${ ssqy == '1'}">width="200%"</c:if>
-		<c:if test="${ ssqy == '2'}">width="200%"</c:if> 
+		<c:if test="${ ssqy == '2'}">width="380%"</c:if> 
 		<c:if test="${ ssqy == '3' or ssqy == '4' }">width="100%"</c:if>
 	 layoutH="121" >
 		<thead>
@@ -282,7 +282,7 @@
 					<th align="center">${pageList.totalaMap.JKGS_ZJE }</th>
 					<th align="center">${pageList.totalaMap.JKGS_ZF }%</th>
 					<th align="center">${pageList.totalaMap.JKZZS }</th>
-					<th align="center">${pageList.totalaMap.JKZZS_ZJE }</th>
+					<th align="center">${pageList.totalaMap.JKZZS_ZJS }</th>
 					<th align="center">${pageList.totalaMap.JKZZS_ZF }%</th>
 				</tr>
 			</c:if>
@@ -308,43 +308,43 @@
 				<td align="center"><a href="${basePath }web/companyinfo/detail?id=${list.COMPANY_ID }"  mask="true" target="dialog" rel="dlg_page10" width="750" height="600" 
 						title="企业基本信息"  minable="true"><span>${list.NSRMC }</span></a></td>
 				<td align="center">${list.SSQY }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=''" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.LJWC }</span></a></td>
 				<td align="center">${list.ZJE }</td>
 				<td align="center">${list.ZF }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='增值税'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=增值税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.ZZS }</span></a></td>
 				<td align="center">${list.ZZS_ZJE }</td>
 				<td align="center">${list.ZZS_ZF }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='消费税'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=消费税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.XFS }</span></a></td>
 				<td align="center">${list.XFS_ZJE }</td>
 				<td align="center">${list.XFS_ZF }</td>
 				
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='企业所得税'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=企业所得税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.QYSDS }</span></a></td>
 				<td align="center">${list.QYSDS_ZJE }</td>
 				<td align="center">${list.QYSDS_ZF }</td>
 				
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='个人所得税'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=个人所得税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.GRSDS }</span></a></td>
 				<td align="center">${list.GRSDS_ZJE }</td>
 				<td align="center">${list.GRSDS_ZF }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='车辆购置税'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=车辆购置税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.CLGZS }</span></a></td>
 				<td align="center">${list.CLGZS_ZJE }</td>
 				<td align="center">${list.CLGZS_ZF }</td>
 				
 				
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='废弃电器电子产品处理基金收入'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=废弃电器电子产品处理基金收入" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.CLJJSR }</span></a></td>
 				<td align="center">${list.CLJJSR_ZJE }</td>
 				<td align="center">${list.CLJJSR_ZF }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='文化事业建设费'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=文化事业建设费" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WHSYJSF }</span></a></td>
 				<td align="center">${list.WHSYJSF_ZJE }</td>
 				<td align="center">${list.WHSYJSF_ZF }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='税务部门罚没收入'" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=税务部门罚没收入" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.SWBMFMSR }</span></a></td>
 				<td align="center">${list.SWBMFMSR_ZJE }</td>
 				<td align="center">${list.SWBMFMSR_ZF }</td>
@@ -359,90 +359,90 @@
 						title="企业基本信息"  minable="true"><span>${list.NAME }</span></a></td>					
 				<td align="center">${list.AREA_NAME }</td>
 				
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=''" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS }</span></a></td>
 				<td align="center">${list.ZJE }</td>
-				<td align="center">${list.ZF }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='营业税'" 
+				<td align="center">${list.ZF }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=个人所得税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS1 }</span></a></td>
 				<td align="center">${list.ZJE1 }</td>
-				<td align="center">${list.Z1F }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='房产税'" 
+				<td align="center">${list.Z1F }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=企业所得税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS2 }</span></a></td>
 				<td align="center">${list.ZJE2 }</td>
-				<td align="center">${list.ZF2 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='土地增值税'" 
+				<td align="center">${list.ZF2 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=其他收入" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS3 }</span></a></td>
 				<td align="center">${list.ZJE3 }</td>
-				<td align="center">${list.ZF3 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='城镇土地使用税'" 
+				<td align="center">${list.ZF3 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=印花税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS4 }</span></a></td>
 				<td align="center">${list.ZJE4 }</td>
-				<td align="center">${list.ZF4 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='契税'" 
+				<td align="center">${list.ZF4 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=土地增值税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS5 }</span></a></td>
 				<td align="center">${list.ZJE5 }</td>
-				<td align="center">${list.ZF5 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='资源税'" 
+				<td align="center">${list.ZF5 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=地方教育附加" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS6 }</span></a></td>
 				<td align="center">${list.ZJE6 }</td>
-				<td align="center">${list.ZF6 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='烟叶税'" 
+				<td align="center">${list.ZF6 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=城市维护建设税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS7 }</span></a></td>
 				<td align="center">${list.ZJE7 }</td>
-				<td align="center">${list.ZF7 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='印花税'" 
+				<td align="center">${list.ZF7 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=城镇土地使用税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WVS8 }</span></a></td>
 				<td align="center">${list.ZJE8 }</td>
-				<td align="center">${list.ZF8 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='企业所得税'" 
+				<td align="center">${list.ZF8 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=契税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS9 }</span></a></td>
 				<td align="center">${list.WCS9 }</td>
-				<td align="center">${list.ZF9 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='个人所得税'" 
+				<td align="center">${list.ZF9 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=房产税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS10 }</span></a></td>
 				<td align="center">${list.WCS10 }</td>
-				<td align="center">${list.ZF10 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='城市维护建设税'" 
+				<td align="center">${list.ZF10 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=教育费附加" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS11 }</span></a></td>
 				<td align="center">${list.ZJE11 }</td>
-				<td align="center">${list.ZF11 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='教育费附加'" 
+				<td align="center">${list.ZF11 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=文化事业建设费" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS12 }</span></a></td>
 				<td align="center">${list.ZJE12 }</td>
-				<td align="center">${list.ZF12 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF12 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=残疾人就业保障金" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS13 }</span></a></td>
 				<td align="center">${list.ZJE13 }</td>
-				<td align="center">${list.ZF13 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF13 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=水利建设专项收入" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS14 }</span></a></td>
 				<td align="center">${list.ZJE14 }</td>
-				<td align="center">${list.ZF14 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF14 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=烟叶税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS15 }</span></a></td>
 				<td align="center">${list.ZJE15 }</td>
-				<td align="center">${list.ZF15 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF15 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=税务部门罚没收入" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS16 }</span></a></td>
 				<td align="center">${list.ZJE16 }</td>
-				<td align="center">${list.ZF16 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF16 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=耕地占用税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS17 }</span></a></td>
 				<td align="center">${list.ZJE17 }</td>
-				<td align="center">${list.ZF17 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF17 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=营业税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS18 }</span></a></td>
 				<td align="center">${list.ZJE18 }</td>
-				<td align="center">${list.ZF18 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF18 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=资源税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS19 }</span></a></td>
 				<td align="center">${list.ZJE19 }</td>
-				<td align="center">${list.ZF19 }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='地方教育附加'" 
+				<td align="center">${list.ZF19 }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NAME }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=车船税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.WCS20 }</span></a></td>
 				<td align="center">${list.ZJE20 }</td>
-				<td align="center">${list.ZF20 }%</td>
+				<td align="center">${list.ZF20 }</td>
 				</c:if>
 				
 				<c:if test="${ ssqy == '3'}">
@@ -452,18 +452,18 @@
 						title="企业基本信息"  minable="true"><span>${list.NSRMC }</span></a>
 				</td>
 				<td align="center">${list.SSQY }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=''" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.LJWC }</span></a></td>
 				<td align="center">${list.ZJE }</td>
-				<td align="center">${list.ZF }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='进口关税'" 
+				<td align="center">${list.ZF }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=进口关税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.JKGS }</span></a></td>
 				<td align="center">${list.JKGS_ZJE }</td>
-				<td align="center">${list.JKGS_ZF }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm='进口增值税'" 
+				<td align="center">${list.JKGS_ZF }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=进口增值税" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.JKZZS }</span></a></td>
-				<td align="center">${list.JKZZS_ZJE }</td>
-				<td align="center">${list.JKZZS_ZF }%</td>
+				<td align="center">${list.JKZZS_ZJS }</td>
+				<td align="center">${list.JKZZS_ZF }</td>
 				</c:if>
 				<c:if test="${ ssqy == '4'}">
 				<td align="center">${ status.index + 1}</td>					
@@ -472,14 +472,14 @@
 						title="企业基本信息"  minable="true"><span>${list.NSRMC }</span></a>
 				</td>
 				<td align="center">${list.AREA_NAME }</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=''" 
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.LJWCS }</span></a></td>
 				<td align="center">${list.LJZJE }</td>
-				<td align="center">${list.LJZF }%</td>
-				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}&zsxm=''" 
+				<td align="center">${list.LJZF }</td>
+				<td align="center"><a href="${basePath }web/companytax/detail?qymc=${list.NSRMC }&year=${year}&month=${month}&ssqy=${ssqy}" 
 				 mask="true" target="navTab" rel="detail" title="纳税累计情况表 " minable="true"><span>${list.HLWCS }</span></a></td>
 				<td align="center">${list.HLZJE }</td>
-				<td align="center">${list.HLZF }%</td>
+				<td align="center">${list.HLZF }</td>
 				</c:if>
 				</tr>
 			</c:forEach>

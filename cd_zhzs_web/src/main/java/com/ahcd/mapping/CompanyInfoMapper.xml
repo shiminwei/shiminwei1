@@ -494,25 +494,18 @@
   
    <!-- 根据企业ID获取企业的基本信息以及纳税信息 -->
     <select id="selectInfoTaxById" parameterType="java.math.BigDecimal" resultMap="BaseResultMap2"> 
-select t1.*,this_year_tax+last_year_tax+previous_year_tax as tax_amount from (
-select *
-  from SYS_COMPANY_INFO,
-       (select nvl(round(sum(tax_basis_gs + tax_basis_ds+ tax_basis_hg+ tax_basis_cz+ tax_basis_szds)/10000,2), '0') as sales_revenue
-          from SYS_COMPANY_TAX_INFO 
-         where company_id = #{id,jdbcType=DECIMAL}),
-       (select nvl(round(sum(tax_amount_gs + tax_amount_ds+tax_amount_hg+tax_amount_cz+tax_amount_szds)/10000,2), '0')  this_year_tax
-          from SYS_COMPANY_TAX_INFO
-         where substr(id_year,0,4) = '2017'
-           and company_id = #{id,jdbcType=DECIMAL}),
-       (select nvl(round(sum(tax_amount_gs + tax_amount_ds+tax_amount_hg+tax_amount_cz+tax_amount_szds)/10000,2), '0')  last_year_tax
-          from SYS_COMPANY_TAX_INFO
-         where substr(id_year,0,4) = '2016'
-           and company_id = #{id,jdbcType=DECIMAL}),
-       (select nvl(round(sum(tax_amount_gs + tax_amount_ds+tax_amount_hg+tax_amount_cz+tax_amount_szds)/10000,2), '0')  previous_year_tax
-          from SYS_COMPANY_TAX_INFO
-         where substr(id_year,0,4) = '2015'
-           and company_id = #{id,jdbcType=DECIMAL})
- where id = #{id,jdbcType=DECIMAL}) t1
+	 select T1.NAME,t1.LEGAL_PERSON,t1.ID_GBHY,t1.NAME_GBHY,t1.IS_ABOVE_SCALE,t1.IS_CANVASS_BUISINESS,
+t1.STATUS,t1.COMPANY_ATTR,to_number(round(t1.REGISTER_CAPITAL/10000,2)) REGISTER_CAPITAL,
+t1.COMPANY_TYPE,t1.DEAL_AREA,t1.AREA_ID,t1.IS_DELETE,t1.REGISTER_DATE,t1.INDUSTRY_TYPE,
+t1.LINKMAN,t1.LINKMAN_MOBILE,t1.POLITICAL_OUTLOOK,t1.CURRENCY,t1.MANAGEMENT_CATEGORY,
+t1.JURISDICTION_UNIT,t1.MAIN_JURISDICTION_UNIT,t1.REGISTRATION_UINT,t1.MAIN_REGISTRATION_UINT,
+t1.APPROVAL_DATE,t1.CONTACT_MOBILE,t1.AREA_NAME,t1.CYRS,t1.GSZJ_K_ID,t1.DSJ_K_ID,
+t1.GSJ_K_ID,t1.K_DATE,t1.JYDZ,t.* from   
+(select company_id, round(sum(jsyj)/10000,2) as sales_revenue,round(sum(five)/10000,2) previous_year_tax, round(sum(six)/10000,2) last_year_tax, round(sum(seven)/10000,2) this_year_tax,round((sum(seven)+sum(six)+sum(five))/10000,2) tax_amount
+  from (select company_id, jsyj, sjje, to_char(rkrq, 'yyyy') rkrq
+          from bd_qy_sjxx
+         where company_id = #{id,jdbcType=DECIMAL}) pivot(sum(sjje) for rkrq in ('2015' five, '2016' six, '2017'seven)) group by company_id) t  left join sys_company_info t1
+         on t.company_id = t1.id
        
   </select>
   

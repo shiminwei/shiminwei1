@@ -83,10 +83,10 @@
 		<tbody>
 			<c:forEach items="${pageList.result}" var="list"	varStatus="status">
 			<tr>
-			<td align="center" <c:if test="${status.count==14}"> style="color: red;"</c:if>>${list.CODE}</td>
+			<td align="center" <c:if test="${status.count==14}"> style="color: red;"</c:if>>${list.DQ}</td>
 				<td align="center" >${list.YQS}</td>	
 				<td align="center" >${list.YQWC}</td>
-				<td align="center" >${list.YQZF}</td>
+				<td align="center" >${list.ZF}</td>
 				<td align="center" >${list.ZFWC}</td>
 				<td align="center" >${list.CZZSR}</td>
 				<td align="center" >${list.WC}</td>

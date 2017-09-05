@@ -1,25 +1,24 @@
-package com.ahcd.controller.web;
+﻿package com.ahcd.controller.web;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.ahcd.common.Constant;
 import com.ahcd.common.StringUtil;
 import com.ahcd.pojo.Page;
 import com.ahcd.pojo.ZdConstant;
 import com.ahcd.service.impl.SysWebCzsrServiceImpl;
 import com.ahcd.service.impl.SysWebZyjjzbServiceImpl;
+import com.ahcd.service.impl.SzzfxmtzServiceImpl;
 import com.ahcd.service.impl.ZdConstantServiceImpl;
 import com.alibaba.fastjson.JSON;
 
@@ -41,6 +40,9 @@ public class ModelShowController {
 
 	@Resource
 	private SysWebZyjjzbServiceImpl sysWebZyjjzbServiceImpl;
+
+	@Resource
+	private SzzfxmtzServiceImpl szzfxmtzService;
 
 	/**
 	 * 
@@ -129,7 +131,7 @@ public class ModelShowController {
 	 * @author : fei yang
 	 * @version ：2017年3月30日 上午9:20:55
 	 * @return
-	 */
+	 
 	@RequestMapping("economicfqxList")
 	public String economicfqxList(Model model, Page<Map<String, Object>> pageList, String year, String month) {
 		List<ZdConstant> yearList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_YEAR_TYPE);
@@ -144,8 +146,48 @@ public class ModelShowController {
 		pageList.setTotalCount(mapList.size());
 		model.addAttribute("pageList", pageList);
 		return "web/modelShow/economicfqxList";
-	}
+	}*/
 
+/**
+	 * 
+	 * 功能说明 : 全市分区县主要经济指标完成情况
+	 * 
+	 * @author : fei yang
+	 * @version ：2017年3月30日 上午9:20:55
+	 * @return
+	 */
+	@RequestMapping("economicfqxList")
+	public String economicfqxList(Model model, Page<Map<String, Object>> pageList, String year, String month) {
+		List<ZdConstant> yearList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_YEAR_TYPE);
+		List<ZdConstant> monthList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_MONTH_TYPE);
+//		List<Map<String, Object>> mapList = sysWebZyjjzbServiceImpl.selectAllJjzbFqy(year + month);
+		List<Map<String, Object>> mapList = sysWebZyjjzbServiceImpl.selectAllJjzbFqy(year + month);
+		model.addAttribute("yearList", yearList);
+		model.addAttribute("monthList", monthList);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+		model.addAttribute("newMonth", getNewMonthInt(month));
+		if(mapList!=null && mapList.size()>0){
+			String str[] = {"一、","二、","三、","四、","五、","六、","七、","八、","九、","十、","十一、","十二、","十三、","十四、","十五、","十六、","十七、","十八、","十九、","二十、","二十一、","二十二、","二十三、","二十四、","二十五、","二十六、","二十七、","二十八、","二十九、","三十、","三十一、","三十二、","三十三、","三十四、","三十五、","三十六、","三十七、","三十八、","三十九、","四十、","四十一、"}; 
+			int i = 0 ;
+			for(Object obj : mapList){
+				Map<String,String> map = (Map<String, String>) obj;
+				if(map.get("CONSTANT_DESC")!=null&&!StringUtil.isBlank(map.get("CONSTANT_DESC"))){
+					if(map.get("CONSTANT_DESC").contains("-")){
+						map.put("CODE",str[i]+map.get("CODE"));
+						i++;
+					}
+					obj = map;
+				}
+				}
+				
+			pageList.setResult(mapList);
+			pageList.setTotalCount(mapList.size());
+			model.addAttribute("pageList", pageList);
+		}
+		return "web/modelShow/economicfqxList";
+		}
+	
 	/**
 	 * 
 	 * 功能说明 : 全省主要经济指标完成情况
@@ -159,6 +201,24 @@ public class ModelShowController {
 		List<ZdConstant> yearList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_YEAR_TYPE);
 		List<ZdConstant> monthList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_MONTH_TYPE);
 		List<Map<String, Object>> mapList = sysWebZyjjzbServiceImpl.selectAllJjzbQs(year + month);
+		int index = -1;
+		String[] strs = {"一、","二、","三、","四、","五、","六、","七、","八、","九、","十、",
+						"十一、","十二、","十三、","十四、","十五、","十六、","十七、","十八、","十九、","二十、",
+						"二十一、","二十二、","二十三、","二十四、","二十五、","二十六、","二十七、","二十八、","二十九、","三十、"};
+		if(mapList!=null && mapList.size()>0) {
+			Map<String,String> map = new HashMap<String,String>();
+			for(Object obj :mapList) {
+				map = (Map<String, String>) obj;
+				if(map.get("CONSTANT_DESC")!=null&&!StringUtil.isBlank(map.get("CONSTANT_DESC"))){
+				if(map.get("CONSTANT_DESC").contains("-")) {
+					index++;
+					map.put("CODE",strs[index]+map.get("CODE"));
+				}
+				obj = map;
+			}
+			}
+			
+		}
 		pageList.setResult(mapList);
 		pageList.setTotalCount(mapList.size());
 		model.addAttribute("pageList", pageList);
@@ -296,7 +356,7 @@ public class ModelShowController {
 		model.addAttribute("pageList", pageList);
 		List<ZdConstant> yearList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_YEAR_TYPE);
 		List<ZdConstant> monthList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_MONTH_TYPE);
-		List<Map<String, Object>> allResult = sysWebZyjjzbServiceImpl.selectQssrqk(year + month, year + month);
+		List<Map<String, Object>> allResult = sysWebZyjjzbServiceImpl.selectQssrqk(year + month, year + month,year);
 		pageList.setResult(allResult);
 		pageList.setTotalCount(allResult.size());
 
@@ -523,12 +583,18 @@ public class ModelShowController {
 	 * @return
 	 */
 	@RequestMapping("ndyspf")
-	public String ndyspf(Model model, Page<String> pageList, String year, String lbmc) {
+	public String ndyspf(Model model, Page<Map<String,String>> pageList, String year) {
+		Map<String,String> param = new HashMap<String, String>();
+		param.put("year", year);
+		pageList.setQueryBean(param);
+		pageList = sysWebZyjjzbServiceImpl.getDetailPage(pageList);
 		model.addAttribute("pageList", pageList);
 		model.addAttribute("year", year);
-		model.addAttribute("lbmc", lbmc);
 		return "web/modelShow/ndyspf";
 	}
+	
+	
+	
 
 	/**
 	 * 
@@ -666,19 +732,13 @@ public class ModelShowController {
 	@RequestMapping("toGetHangYe")
 	public void toGetHangYe(HttpServletResponse response, String cy) {
 		
-			String cy1="";
-			try {
-				cy1 = new String(cy.getBytes("ISO-8859-1"),"utf-8");
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (StringUtil.isNotEmpty(cy1)) {
+		
+			if (StringUtil.isNotEmpty(cy)) {
 				List<ZdConstant> ssdlList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_SSDL_TYPE);// 所属大类
 				List<ZdConstant> list = new ArrayList<ZdConstant>();
 				for (int i = 0; i < ssdlList.size(); i++) {
 					String str = ssdlList.get(i).getConstantDesc();
-					if (StringUtil.isNotEmpty(str) && str.equals(cy1)) {
+					if (StringUtil.isNotEmpty(str) && str.equals(cy)) {
 						list.add(ssdlList.get(i));
 					}
 				}
@@ -796,15 +856,15 @@ public class ModelShowController {
 	 * @return:
 	 */
 	@RequestMapping("sbjzfxxmjhb")
-	public String sbjzfxxmjhb(Model model, Page<String> pageList, String year, String month, String xmmc) {
+	public String sbjzfxxmjhb(Model model, Page<Map<String, Object>> pageList, String year, String month, String xmmc) {
 		List<ZdConstant> yearList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_YEAR_TYPE);
 		List<ZdConstant> monthList = zdConstantService.getConstantListByType(Constant.WEB_SHOW_MONTH_TYPE);
+		pageList=	szzfxmtzService.selectPage(pageList, year, xmmc);
 		model.addAttribute("yearList", yearList);
 		model.addAttribute("monthList", monthList);
 		model.addAttribute("pageList", pageList);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
-
 		model.addAttribute("xmmc", xmmc);
 		return "web/modelShow/sbjzfxxmjhb";
 	}

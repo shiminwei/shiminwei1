@@ -9,11 +9,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import com.ahcd.common.DBconn;
 import com.ahcd.common.StringUtil;
-import com.ahcd.pojo.DatasourceBean;
+//import com.ahcd.pojo.DatasourceBean;
 import com.ahcd.pojo.HyQuertyBean;
 import com.ahcd.pojo.Page;
 import com.ahcd.pojo.ShuiEBean;
-import com.ahcd.pojo.ShuiHuBean;
+//import com.ahcd.pojo.ShuiHuBean;
 
 @Service("shuiEService")
 public class ShuiEService {

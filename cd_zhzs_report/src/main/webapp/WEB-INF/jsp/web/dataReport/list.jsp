@@ -37,14 +37,11 @@
 					<td align="center"
 						<c:if test="${list.nowIsReport == 0}">style="color: red" </c:if>>${list.nowIsReport == 1?'是':'否'}</td>
 					<td align="center"><a class="button"
-						href="${basePath }web/dataReport/toReport?reportType=1&reportPeroid=${list.zq}&templateName=${list.name}&reportPeroid=${list.zq}"
-						target="navTab" rel="toReportPage"><span>报送</span></a></td>
+						onclick="show('${basePath }web/dataReport/toReport?reportType=1&reportPeroid=${list.zq}&templateName=${list.name}&reportPeroid=${list.zq}','报送')"><span>报送</span></a></td>
 					<td align="center"><a class="button"
-						href="${basePath }web/dataReport/toReport?reportType=2&reportPeroid=${list.zq}&templateName=${list.name}&reportPeroid=${list.zq}"
-						target="navTab" rel="toReportPage"><span>重报</span></a></td>
+						onclick="show('${basePath }web/dataReport/toReport?reportType=2&reportPeroid=${list.zq}&templateName=${list.name}&reportPeroid=${list.zq}','重报')"><span>重报</span></a></td>
 					<td align="center"><a class="button"
-						href="${basePath }web/dataReport/toReport?reportType=3&reportPeroid=${list.zq}&templateName=${list.name}&reportPeroid=${list.zq}"
-						target="navTab" rel="toReportPage"><span>补报</span></a></td>
+						onclick="show('${basePath }web/dataReport/toReport?reportType=3&reportPeroid=${list.zq}&templateName=${list.name}&reportPeroid=${list.zq}','补报')"><span>补报</span></a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -68,3 +65,30 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+	function show(url,urlTitle) {
+		var datas = {};
+		if (url.indexOf("?") > 0) {
+			var urlRel = url.substr(0, url.indexOf("?"));
+			var parmet = url.substr(url.indexOf("?") + 1, url.length);
+			var strs = new Array();
+			strs = parmet.split("&");
+			for (var i = 0; i < strs.length; i++) {
+				if (strs[i] != null && strs[i] != ""
+						&& strs[i].indexOf("=") > 0) {
+					var key = strs[i].substr(0, strs[i].indexOf("="));
+					var value = strs[i].substr(strs[i].indexOf("=") + 1,
+							strs[i].length);
+					datas[key] = value;
+				}
+			}
+		}
+		alert(">>>>>>>")
+		navTab.openTab("toReportPage", urlRel, {
+			title : urlTitle,
+			fresh : true,
+			data : datas
+		});
+	}
+</script>

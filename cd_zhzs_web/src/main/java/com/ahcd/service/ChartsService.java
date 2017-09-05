@@ -7,10 +7,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+//import java.util.HashMap;
+//import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.ahcd.common.Constant;
 import com.ahcd.common.DBconn;
@@ -18,14 +18,14 @@ import com.ahcd.common.PropertiesUntil;
 import com.ahcd.common.StringUtil;
 import com.ahcd.common.XmlUtils;
 import com.ahcd.pojo.ChartsBean;
-import com.ahcd.pojo.ChartsChileBean;
-import com.ahcd.pojo.ConditionBean;
-import com.ahcd.pojo.ConfigBean;
-import com.ahcd.pojo.DatasourceBean;
-import com.ahcd.pojo.FieldBean;
+//import com.ahcd.pojo.ChartsChileBean;
+//import com.ahcd.pojo.ConditionBean;
+//import com.ahcd.pojo.ConfigBean;
+//import com.ahcd.pojo.DatasourceBean;
+//import com.ahcd.pojo.FieldBean;
 import com.ahcd.pojo.Page;
-import com.ahcd.pojo.ResultBean;
-import com.alibaba.fastjson.JSONArray;
+//import com.ahcd.pojo.ResultBean;
+//import com.alibaba.fastjson.JSONArray;
 
 /**
  * @author : fei yang

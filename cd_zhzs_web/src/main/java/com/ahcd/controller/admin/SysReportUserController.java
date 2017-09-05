@@ -76,7 +76,7 @@ public class SysReportUserController {
 		request.setAttribute("bean", sysReportUser);
 		request.setAttribute("pageList", page);
 		request.setAttribute("sysReportUser", sysReportUser);
-		String str=request.getParameter("param");
+//		String str=request.getParameter("param");
 		return "admin/user/list";
 	}
 

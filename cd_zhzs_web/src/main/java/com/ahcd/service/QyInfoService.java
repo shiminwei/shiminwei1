@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.ahcd.common.DBconn;
 import com.ahcd.common.StringUtil;
 import com.ahcd.pojo.QyBean;
-import com.alibaba.fastjson.JSONArray;
+//import com.alibaba.fastjson.JSONArray;
 @Service("qyInfoService")
 public class QyInfoService {
 	public static List<Object> getQyJbxx(QyBean qyBean) {

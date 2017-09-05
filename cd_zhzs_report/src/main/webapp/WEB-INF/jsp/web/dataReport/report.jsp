@@ -19,7 +19,7 @@
 				<dl style="margin-top: 10px">
 					<dt>选择上报时间：</dt>
 					<dd>
-						<select  class="combox" name="year" id="myYear"
+						<select  name="year" id="myYear"
 							onchange="getMonth()">
 							<c:forEach items="${year }" var="year">
 								<option value="${year.key }"
@@ -28,7 +28,7 @@
 							
 						</select> 
 						<c:if test="${month != null && month.size() > 0 }">
-						<select  class="combox" name="month" id="myMonth">
+						<select   name="month" id="myMonth">
 							<c:forEach items="${month }" var="month">
 								<option value="${month.key }"
 									<c:if test="${nowMonth== month.key}"> selected="selected"</c:if>>${month.value }</option>

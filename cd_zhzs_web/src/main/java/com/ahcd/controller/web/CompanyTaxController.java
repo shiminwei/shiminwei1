@@ -193,6 +193,7 @@ public class CompanyTaxController {
 		param.put("nsrmc", qymc);
 		param.put("ssgds", ssgds);
 		param.put("zsxm", zsxm);
+		param.put("ssqy", ssqy);
 		param.put("startdate", year+"01");
 		month = month=="" || month ==null?"12":month;
 		param.put("enddate", year+month);

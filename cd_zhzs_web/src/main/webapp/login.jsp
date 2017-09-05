@@ -58,12 +58,12 @@ function checkIt(){
             <li class="topC"></li>
             <li class="topD">
                 <ul class="login">
-		<%-- 	 	<li><span class="left">平&nbsp;&nbsp;&nbsp;台：</span> <span style="left">
-                        <select onchange="checkIt();" id="select"><option value="02">展现平台</option><option value="01">采集平台</option> </select>
+			 	<li><span class="left">平&nbsp;&nbsp;&nbsp;台：</span> <span style="left">
+                        <select onchange="checkIt();" id="select"><option value="02">财税平台</option><option value="01">采集平台</option> </select>
                          <c:if test="${msg ne  null}">
 				             <span style="color: red;font-size: 12px;">${msg }</span>
 				         </c:if>
-                    </span></li>  --%>
+                    </span></li>  
                     <li><span class="left">用户名：</span> <span style="left">
                         <input type="text" name="loginCode" id="loginCode" value="${loginCode }" />  
                     </span></li>

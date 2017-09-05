@@ -249,8 +249,13 @@ public class ExcelTemplateMongoService {
 		int totalCount = departmentTemplateService.countDepartmentTemplateByuserIdPage(pager);
 		List<SysDepartmentTemplate> dtList = departmentTemplateService.selectDepartmentTemplateByuserIdPage(pager);
 		if (dtList != null && dtList.size() > 0) {
+			String[] valus=new String[dtList.size()];
+			for (int i = 0; i < dtList.size(); i++) {
+				valus[i]=dtList.get(i).getTemplateName();
+			}
 			List<ExcelTemplate> results = new ArrayList<ExcelTemplate>();
-			List<ExcelTemplate> etList = excelTemplateMongoDao.findAll();
+			//List<ExcelTemplate> etList = excelTemplateMongoDao.findAll();
+			List<ExcelTemplate> etList = excelTemplateMongoDao.findByIn(valus);
 			Map<String, ExcelTemplate> mapt = new HashMap<String, ExcelTemplate>();
 			for (ExcelTemplate excelTemplate : etList) {
 				if (excelTemplate == null)

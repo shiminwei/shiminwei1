@@ -67,146 +67,16 @@
 			<c:forEach items="${allResult}" var="list" varStatus="status">
 				<tr>
 					<td width="center"
-						<c:if test="${fn:contains(list.ZHIBIAO_NAME,'、')==true}">style="color: red"</c:if>>
-					${list.ZHIBIAO_NAME}</td>
-					<td align="center">${list.ZHIBIAO_UNIT}</td>
+						<c:if test="${fn:contains(list.ZHIBIAO_UNIT,'、')==true}">style="color: red"</c:if>
+						<c:if test="${fn:contains(list.ZHIBIAO_UNIT,'、')==false}"><a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a</c:if>
+						>
+					${list.ZHIBIAO_UNIT}</td>
+					<td align="center">${list.DW}</td>
 					<td align="center">${list.LJ}</td>
 					<td align="center">${list.SNTQ}</td>
 					<td align="center">${list.TBZZ}</td>
 				</tr>
 			</c:forEach>
-
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">一、生产总值</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">二、规模以上工业增加值</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-
-
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">三、固定资产投资完成额</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp其中：工业投资</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp房地产开发投资</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">四、财政总收入</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp其中：地方财政收入</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td  align="left" style="color: red">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp财政支出</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">五、限额以上消费品零售总额</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">六、外贸进出口总额</td> -->
-			<!-- 				<td align="center">万美元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">七、全社会用电量</td> -->
-			<!-- 				<td align="center">万千瓦时</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp其中：工业用电量</td> -->
-			<!-- 				<td align="center">万千瓦时</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">八、旅游总收入</td> -->
-			<!-- 				<td align="center">万元</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
-			<!-- 			<tr> -->
-
-			<!-- 				<td align="left" style="color: red">九、接待游客人数</td> -->
-			<!-- 				<td align="center">万人次</td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 				<td align="center"></td> -->
-			<!-- 			</tr> -->
-
 		</tbody>
 
 	</table>
