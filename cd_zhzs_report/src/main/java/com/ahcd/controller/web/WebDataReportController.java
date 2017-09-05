@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-//import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +21,7 @@ import com.ahcd.common.Constant;
 import com.ahcd.common.ExcelBase;
 import com.ahcd.common.ExcelUtil;
 import com.ahcd.common.ExcelUtils;
-//import com.ahcd.common.FileUploadUtil;
+import com.ahcd.common.FileUploadUtil;
 import com.ahcd.common.OpreateResult;
 import com.ahcd.common.StringUtil;
 import com.ahcd.pojo.ExcelBean;
@@ -102,7 +102,6 @@ public class WebDataReportController {
 		// } catch (UnsupportedEncodingException e) {
 		// e.printStackTrace();
 		// }
-		
 		ExcelTemplate template = excelTemplateMongoService.findByName(bean.getTemplateName());
 		Map<String, String> map = Constant.getMapByType(bean.getReportPeroid());
 		SysReportLog record = new SysReportLog();

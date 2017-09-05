@@ -7,8 +7,7 @@
   </context-param>
   <filter>
     <filter-name>encodingFilter</filter-name>
-<!--     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class> -->
-    <filter-class>com.ahzd.util.filter.EncodingFilter</filter-class>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <async-supported>true</async-supported>
     <init-param>
       <param-name>encoding</param-name>

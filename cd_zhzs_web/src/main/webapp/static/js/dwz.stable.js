@@ -9,7 +9,6 @@
 					var $table = $(this), nowrapTD = $table.attr("nowrapTD");
 					var tlength = $table.width();
 					if ($table.attr("width") == "100%") {
-						alert(0);
 						var th_w_all = 0;
 						$table.children("thead").children("tr").find("th")
 								.each(
@@ -21,10 +20,8 @@
 												th_w_all += "100";
 											}
 										});
-						alert(1);
 						if (th_w_all > 0) {
 							tlength = th_w_all;
-							alert(2);
 						}
 					}
 					var aStyles = [];
@@ -37,24 +34,19 @@
 
 					for (var i = 0, l = oldThs.size(); i < l; i++) {
 						var $th = $(oldThs[i]);
-						var style = [], width = $th.innerWidth();
-//								- (100 * $th.innerWidth() / tlength) - 2;
-//						alert(width);
-//						alert(tlength);
+						var style = [], width = $th.innerWidth()
+								- (100 * $th.innerWidth() / tlength) - 2;
 						style[0] = parseInt(width);
 						style[1] = $th.attr("align");
-//						alert(style);
 						aStyles[aStyles.length] = style;
 					}
 					$(this).wrap("<div class='grid'></div>");
 					var $grid = $table.parent().html($table.html());
 					var thead = $grid.find("thead");
 					thead
-//							.wrap("<div class='gridHeader'><div class='gridThead'><table style='width:"
-									.wrap("<div class='gridHeader'><div class='gridThead'><table "
-//									+ (tlength - 20)
-//									+ "px;'></table></div></div>");
-					+ "></table></div></div>");
+							.wrap("<div class='gridHeader'><div class='gridThead'><table style='width:"
+									+ (tlength - 20)
+									+ "px;'></table></div></div>");
 
 					var lastH = $(">tr:last-child", thead);
 					var ths = $(">th", lastH);

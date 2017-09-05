@@ -441,90 +441,116 @@ ON t5.dq = t4.code AND t5.year=#{2}
   
   <select id="selectFqyfsz" resultType="Map">
     <![CDATA[ 
-select k.* ,''pth, k1.hj-k.hj zjhj,k1.sz-k.sz zjsz,k1.jnjzq-k.jnjzq zjjnjzq,k1.gc-k.gc zjgc,k1.dz-k.dz zjdz,k1.st-k.st zjst,
-k1.qy-k.qy zjqy,k1.kfq-k.kfq zjkfq,k1.jhs-k.jhs zjjhs,''zjpth,
-case when k1.hj=0
- then '-'
- else 
- to_char(round((k.hj-k1.hj)/ k1.hj*100,2),'fm9999999990.00')||'%'
- end zfhj,
- case when k1.sz=0
- then '-'
- else 
- to_char(round((k.sz-k1.sz)/ k1.hj*100,2),'fm9999999990.00')||'%'
- end zfsz,
- case when k1.jnjzq=0
- then '-'
- else 
- to_char(round((k.jnjzq-k1.jnjzq)/ k1.jnjzq*100,2),'fm9999999990.00')||'%'
- end zfjnjzq,
- 
- case when k1.gc=0
- then '-'
- else 
- to_char(round((k.gc-k1.gc)/ k1.gc*100,2),'fm9999999990.00')||'%'
- end zfgc,
- 
- case when k1.dz=0
- then '-'
- else 
- to_char(round((k.dz-k1.dz)/ k1.dz*100,2),'fm9999999990.00')||'%'
- end zfdz,
- 
- case when k1.st=0
- then '-'
- else 
- to_char(round((k.st-k1.st)/ k1.st*100,2),'fm9999999990.00')||'%'
- end zfst,
- 
- case when k1.qy=0
- then '-'
- else 
- to_char(round((k.qy-k1.qy)/ k1.qy*100,2),'fm9999999990.00')||'%'
- end zfqy,
- 
- case when k1.kfq=0
- then '-'
- else 
- to_char(round((k.kfq-k1.kfq)/ k1.kfq*100,2),'fm9999999990.00')||'%'
- end zfkfq,
- 
-  case when k1.jhs=0
- then '-'
- else 
- to_char(round((k.jhs-k1.jhs)/ k1.jhs*100,2),'fm9999999990.00')||'%'
- end zfjhs, ''zfpth  from (
+select k.show_name,
+       case when k.hj = '0'
+       then '' else k.hj end hj,
+       case when k.SZ = '0'
+       then '' else k.SZ end SZ,
+       case when k.GC = '0'
+       then '' else k.GC end GC,
+       case when k.ST = '0'
+       then '' else k.ST end ST,
+       case when k.QY = '0'
+       then '' else k.QY end QY,
+       case when k.DZ = '0'
+       then '' else k.DZ end DZ,
+       case when k.JHS = '0'
+       then '' else k.JHS end JHS,
+       case when k.KFQ = '0'
+       then '' else k.KFQ end KFQ,
+       case when k.JZQ = '0'
+       then '' else k.JZQ end JZQ,
+   
+       ''pth,
+       case when k.hj-k1.hj = '0'
+       then '' else to_char(k.hj-k1.hj) end zjhj,
+       case when k.SZ-k1.SZ = '0'
+       then '' else to_char(k.SZ-k1.SZ) end zjSZ,
+       case when k.GC-k1.GC = '0'
+       then '' else to_char(k.GC-k1.GC) end zjGC,
+       case when k.ST-k1.ST = '0'
+       then '' else to_char(k.ST-k1.ST) end zjST,
+       case when k.QY-k1.QY = '0'
+       then '' else to_char(k.QY-k1.QY) end zjQY,
+       
+       case when k.DZ-k1.DZ = '0'
+       then '' else to_char(k.DZ-k1.DZ) end zjDZ,
+       
+       case when k.JHS-k1.JHS = '0'
+       then '' else to_char(k.JHS-k1.JHS) end zjJHS,
+       
+       case when k.kFQ-k1.kFQ = '0'
+       then '' else to_char(k.kFQ-k1.kFQ) end zjkFQ,
+       
+       case when k.JZQ-k1.JZQ = '0'
+       then '' else to_char(k.JZQ-k1.JZQ) end zjJZQ,
+       ''zjpth,
+       
+       case when k1.hj is null or k1.hj = '0'
+       then '-' 
+       else to_char(round((k.hj-k1.hj)/ k1.hj*100,2),'fm9999999990.00')||'%'
+       end zfhj,
+       
+       case when k1.sz is null or k1.sz = '0'
+       then '-' 
+       else to_char(round((k.sz-k1.sz)/ k1.sz*100,2),'fm9999999990.00')||'%'
+       end zfsz,
+       
+       case when k1.gc is null or k1.gc = '0'
+       then '-' 
+       else to_char(round((k.gc-k1.gc)/ k1.gc*100,2),'fm9999999990.00')||'%'
+       end zfgc,
+       
+       case when k1.st is null or k1.st = '0'
+       then '-' 
+       else to_char(round((k.st-k1.st)/ k1.st*100,2),'fm9999999990.00')||'%'
+       end zfst,
+       
+       case when k1.qy is null or k1.qy = '0'
+       then '-' 
+       else to_char(round((k.qy-k1.qy)/ k1.qy*100,2),'fm9999999990.00')||'%'
+       end zfqy,
+       
+       case when k1.dz is null or k1.dz = '0'
+       then '-' 
+       else to_char(round((k.dz-k1.dz)/ k1.dz*100,2),'fm9999999990.00')||'%'
+       end zfdz,
+       
+       case when k1.jhs is null or k1.jhs = '0'
+       then '-' 
+       else to_char(round((k.jhs-k1.jhs)/ k1.jhs*100,2),'fm9999999990.00')||'%'
+       end zfjhs,
+       
+       case when k1.kfq is null or k1.kfq = '0'
+       then '-' 
+       else to_char(round((k.kfq-k1.kfq)/ k1.kfq*100,2),'fm9999999990.00')||'%'
+       end zfkfq,
+       
+       case when k1.jzq is null or k1.jzq = '0'
+       then '-' 
+       else to_char(round((k.jzq-k1.jzq)/ k1.jzq*100,2),'fm9999999990.00')||'%'
+       end zfjzq,
+       
+       ''zfpth,
+       
+       
+       k.ORDER_NUMBER from (select t1.show_name,max(t2.QS) hj,max(t2.SZ) SZ,max(t2.GC) GC,max(t2.ST) ST,max(t2.QY) QY,max(t2.DZ) DZ,max(t2.JHS) JHS,max(t2.KFQ) KFQ,max(t2.JZQ) JZQ,T1.ORDER_NUMBER  from 
+(select crkm_id,show_name,name,px,order_number from zhzs_zyjjzb_srybmb) t1
+left join (SELECT FLDM,
+       Replace(REPLACE(KMMC, ' ', ''), '　', '') KMMC, QS, SZ, GC, ST,
+       QY, DZ, JHS, KFQ, JZQ
+  FROM ZHZS_ZYJJZB_SRYB WHERE K_YEAR||K_MONTH = #{0} AND K_DEL = '0') t2 
+on t1.CRKM_ID||t1.name=t2.FLDM||KMMC  group by show_name,ORDER_NUMBER ) k
+,
+(select t1.show_name,max(t2.QS) hj,max(t2.SZ) SZ,max(t2.GC) GC,max(t2.ST) ST,max(t2.QY) QY,max(t2.DZ) DZ,max(t2.JHS) JHS,max(t2.KFQ) KFQ,max(t2.JZQ) JZQ,T1.ORDER_NUMBER  from 
+(select crkm_id,show_name,name,px,order_number from zhzs_zyjjzb_srybmb order by ORDER_NUMBER) t1
+left join (SELECT FLDM,
+       Replace(REPLACE(KMMC, ' ', ''), '　', '') KMMC, QS, SZ, GC, ST,
+       QY, DZ, JHS, KFQ, JZQ
+  FROM ZHZS_ZYJJZB_SRYB WHERE K_YEAR||K_MONTH = #{1} AND K_DEL = '0') t2 
+on t1.CRKM_ID||t1.name=t2.FLDM||KMMC  group by show_name,ORDER_NUMBER order by ORDER_NUMBER) k1
 
-select  t1.*,t2.HJ,t2.sz,t2.JNJZQ,t2.gc,t2.DZ,t2.st,t2.qy,t2.kfq,t2.jhs from (
-select code,value from zd_constant where type = 'web_czj_fqyfsz' order by order_number
-) t1 left join (
-select case when kmmc='国有资本经营预算收入合计' then 
-'999999'
-when kmmc='国内增值税（含改征增值税）' then 
-'10101'
-when kmmc='国内增值税(含改征增值税)' then 
-'10101'
-else kmbm end kmbm,HJ,sz,JNJZQ,gc,DZ,st,qy,kfq,jhs from (
-select  
-case when is_number(kmbm) ='Y' then to_char( to_number(kmbm)) else kmbm end kmbm
-,kmmc,HJ,sz,JNJZQ,gc,DZ,st,qy,kfq,jhs from zhzs_czj_sryb where k_year||k_month =  #{0} and k_del = '0')) t2 
-on t1.value=t2.kmbm) k
-left join (
-select t1.*,t2.HJ,t2.sz,t2.JNJZQ,t2.gc,t2.DZ,t2.st,t2.qy,t2.kfq,t2.jhs from (
-select code,value from zd_constant where type = 'web_czj_fqyfsz' order by order_number
-) t1 left join (
-select case when kmmc='国有资本经营预算收入合计' then 
-'999999'
-when kmmc='国内增值税（含改征增值税）' then 
-'10101'
-when kmmc='国内增值税(含改征增值税)' then 
-'10101'
-else kmbm end kmbm,HJ,sz,JNJZQ,gc,DZ,st,qy,kfq,jhs from (
-select  
-case when is_number(kmbm) ='Y' then to_char( to_number(kmbm)) else kmbm end kmbm
-,kmmc,HJ,sz,JNJZQ,gc,DZ,st,qy,kfq,jhs from zhzs_czj_sryb where k_year||k_month = #{1} and k_del = '0')) t2 
-on t1.value=t2.kmbm) k1
-on k.value=k1.value
+where k.ORDER_NUMBER = k1.ORDER_NUMBER order by k.ORDER_NUMBER
   ]]>  
   </select>
   

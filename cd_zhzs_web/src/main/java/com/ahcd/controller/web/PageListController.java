@@ -1,6 +1,7 @@
 package com.ahcd.controller.web;
 
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +74,169 @@ public class PageListController {
 			page = DbUntil.toQueryByProcedure(bean, page, queryMap);
 		} else {
 			page = DbUntil.toQuery(bean, page, queryMap);
+		}
+		String[] SZPageTypes = queryMap.get("SZPageType");
+		if(SZPageTypes != null && SZPageTypes.length > 0){
+			String SZPageType =SZPageTypes[0];
+			if(SZPageType.equals("2")){
+				String[] months = queryMap.get("month");
+				int month =Integer.valueOf(months[0]);
+				DecimalFormat df=new DecimalFormat("0.00");
+			    String beichu = df.format(((float)month/12)*100);
+				List<String[]> list =page.getResult();
+				for(int i=0;i<list.size();i++){
+					String[] newsList = list.get(i);
+					float AMT11 = Float.valueOf(newsList[2]);
+					float AMT12 = Float.valueOf(newsList[3]);
+					String zxjd1="";
+					if(AMT11 != 0){
+						 zxjd1 = df.format((AMT12/AMT11)*100);
+						 newsList[4]=zxjd1+"%";
+					}else{
+						zxjd1="/";
+						newsList[4]=zxjd1;
+					}
+					if(zxjd1.equals("/")){
+						newsList[5]="/";
+					}else{
+						float yxsjdb1 =Float.valueOf(zxjd1)-Float.valueOf(beichu);
+						String yxsjdb11 =df.format(yxsjdb1)+"%";
+						newsList[5]=yxsjdb11;
+					}
+					float AMT21 = Float.valueOf(newsList[6]);
+					float AMT22 = Float.valueOf(newsList[7]);
+					String zxjd2="";
+					if(AMT21 != 0){
+						 zxjd2 = df.format((AMT22/AMT21)*100);
+						 newsList[8]=zxjd2+"%";
+					}else{
+						zxjd2="/";
+						newsList[8]=zxjd2;
+					}
+					if(zxjd2.equals("/")){
+						newsList[9]="/";
+					}else{
+						float yxsjdb2 =Float.valueOf(zxjd2)-Float.valueOf(beichu);
+						String yxsjdb22 =df.format(yxsjdb2)+"%";
+						newsList[9]=yxsjdb22;
+					}
+					float AMT31 = Float.valueOf(newsList[10]);
+					float AMT32 = Float.valueOf(newsList[11]);
+					String zxjd3="";
+					if(AMT31 != 0){
+						zxjd3 = df.format((AMT32/AMT31)*100);
+						 newsList[12]=zxjd3+"%";
+					}else{
+						zxjd3="/";
+						newsList[12]=zxjd3;
+					}
+					if(zxjd3.equals("/")){
+						newsList[13]="/";
+					}else{
+						float yxsjdb3 =Float.valueOf(zxjd3)-Float.valueOf(beichu);
+						String yxsjdb33 =df.format(yxsjdb3)+"%";
+						newsList[13]=yxsjdb33;
+					}
+					float AMT41 = Float.valueOf(newsList[14]);
+					float AMT42 = Float.valueOf(newsList[15]);
+					String zxjd4="";
+					if(AMT41 != 0){
+						zxjd4 = df.format((AMT42/AMT41)*100);
+						 newsList[16]=zxjd4+"%";
+					}else{
+						zxjd4="/";
+						newsList[16]=zxjd4;
+					}
+					float AMT51 = Float.valueOf(newsList[17]);
+					float AMT52 = Float.valueOf(newsList[18]);
+					String zxjd5="";
+					if(AMT51 != 0){
+						zxjd5 = df.format((AMT52/AMT51)*100);
+						 newsList[19]=zxjd5+"%";
+					}else{
+						zxjd5="/";
+						newsList[19]=zxjd5;
+					}
+					float AMT61 = Float.valueOf(newsList[20]);
+					float AMT62 = Float.valueOf(newsList[21]);
+					String zxjd6="";
+					if(AMT61 != 0){
+						zxjd6 = df.format((AMT62/AMT61)*100);
+						 newsList[22]=zxjd6+"%";
+					}else{
+						zxjd6="/";
+						newsList[22]=zxjd6;
+					}
+					if(zxjd6.equals("/")){
+						newsList[23]="/";
+					}else{
+						float yxsjdb6 =Float.valueOf(zxjd6)-Float.valueOf(beichu);
+						String yxsjdb66 =df.format(yxsjdb6)+"%";
+						newsList[23]=yxsjdb66;
+					}
+				}
+			}else if(SZPageType.equals("3")){
+				DecimalFormat df=new DecimalFormat("0.00");
+				List<String[]> list =page.getResult();
+				for(int i=0;i<list.size();i++){
+					String[] newsList = list.get(i);
+					float AMT1 = Float.valueOf(newsList[6]);
+					float AMT2 = Float.valueOf(newsList[7]);
+					String yss = df.format(AMT1 + AMT2);
+					newsList[4] = yss;
+					String amt =newsList[5].trim();
+					if(amt == null || StringUtil.isBlank(amt)){
+						newsList[5]="/";
+					}else{
+						float amtnews = Float.valueOf(amt);
+						String newsamt = df.format(amtnews);
+						newsList[5]=newsamt;
+					}
+				}
+			}else  if(SZPageType.equals("4")){
+				DecimalFormat df=new DecimalFormat("0.00");
+				List<String[]> list =page.getResult();
+				for(int i=0;i<list.size();i++){
+					String[] newsList = list.get(i);
+					float AMT1 = Float.valueOf(newsList[3]);
+					float AMT2 = Float.valueOf(newsList[4]);
+					float zys = AMT1+ AMT2;
+					String amt = newsList[5];
+					if(zys == 0){
+						newsList[5]="/";
+						newsList[6]="/";
+					}else{
+						if(amt == null || StringUtil.isBlank(amt)){
+							newsList[5]="/";
+							newsList[6]="/";
+						}else{
+							float newsamt = Float.valueOf(amt);
+							String zcjd = df.format((newsamt/zys)*100);
+							newsList[6]=zcjd;
+						}
+					}
+				}
+				for(int i=0;i<list.size();i++){
+					for(int j=i;j<list.size();j++){
+						String[] newsListi = list.get(i);					
+						String[] newsListj = list.get(j);
+						String a1 = newsListi[6];
+						String a2 = newsListj[6];
+						if(a1 != "/" && a2 != "/" ){
+							float zcjdi = Float.valueOf(newsListi[6]);	
+							float zcjdj = Float.valueOf(newsListj[6]); 
+							if(zcjdj > zcjdi){
+								list.set(i, newsListj);
+								list.set(j, newsListi);
+							}
+						}else if(a1 != "/" && a2 == "/"){
+							String[] newsListLast = list.get(list.size()-1);
+							list.set(list.size()-1, newsListj);
+							list.set(j, newsListLast);
+						}
+					}
+				}
+			}
 		}
 		model.addAttribute("bean", bean);
 		String type = "a";
@@ -159,11 +323,10 @@ public class PageListController {
 	 */
 	public static Map<String, String[]> getChileQueryMap(ConfigBean bean) {
 		Map<String, String[]> chileQueryMap = new HashMap<String, String[]>();
-		List<FieldBean> fieldBeanslist = bean.getResults().getFieldBeans() ;
-		for (int i = 0; i < fieldBeanslist.size(); i++) {
-			if ("1".equals(fieldBeanslist.get(i).getIsByValue())) {
+		for (int i = 0; i < bean.getResults().getFieldBeans().size(); i++) {
+			if ("1".equals(bean.getResults().getFieldBeans().get(i).getIsByValue())) {
 				String[] value = { "" };
-				chileQueryMap.put(fieldBeanslist.get(i).getJspFielName(), value);
+				chileQueryMap.put(bean.getResults().getFieldBeans().get(i).getJspFielName(), value);
 			}
 		}
 		return chileQueryMap;

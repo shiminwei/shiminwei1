@@ -38,7 +38,7 @@ html,body{
 #listBody tr{cursor:pointer;}
 #listBody .hover{background:#F0F0F0;}
 #listBody .select{background:#DFE8F6;}
-#listBody td{padding:5px;border:1px solid #666666;}
+#listBody td{padding:5px;border-bottom:1px solid #EDEDED;}
 #progressArea{
 	background:#D4E1F2;
 	border-top:1px solid #99BBE8;

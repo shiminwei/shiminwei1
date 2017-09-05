@@ -45,9 +45,9 @@
 <div class="pageContent">
 	<table class="table" width="200%" layoutH="140">
 		<thead>
-			<tr >
-				<th rowspan="2">序号</th>
-				<th colspan="2">部门</th>
+			<tr>
+				<th >序号</th>
+				<th  colspan="2">部门</th>
 				<th >行政编制人员</th>
 				<th >行政在职人员</th>
 				<th >行政离退人员</th>
@@ -63,10 +63,10 @@
 				<th >行政编制人员</th>
 				<th >结尾</th>
 			</tr>
-			<tr >
+			<tr>
 				<th >部门</th>
 				
-				<th  >行政在职人员</th>
+				<th >行政在职人员</th>
 				<th >行政离退人员</th>
 				<th >事业编制人员</th>
 				<th >事业在职人员</th>
@@ -83,9 +83,9 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${pageList.result}" var="result">
-				<tr >
+				<tr>
 					<c:forEach items="${result}" var="resultStr" varStatus="varSta">
-						<td >${resultStr}</td>
+						<td>${resultStr}</td>
 					</c:forEach>
 				</tr>
 

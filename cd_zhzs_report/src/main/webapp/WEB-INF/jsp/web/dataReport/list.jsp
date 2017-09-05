@@ -84,7 +84,6 @@
 				}
 			}
 		}
-		alert(">>>>>>>")
 		navTab.openTab("toReportPage", urlRel, {
 			title : urlTitle,
 			fresh : true,

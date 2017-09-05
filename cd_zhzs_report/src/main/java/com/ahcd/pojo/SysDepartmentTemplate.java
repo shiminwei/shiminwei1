@@ -9,8 +9,6 @@ public class SysDepartmentTemplate {
     private String departmentName;
     
     private int reportPeroid;
-    
-    private String templateCode;
 
     public String getDepartmentId() {
 		return departmentId;
@@ -36,14 +34,6 @@ public class SysDepartmentTemplate {
     public void setTemplateName(String templateName) {
         this.templateName = templateName == null ? null : templateName.trim();
     }
-
-	public String getTemplateCode() {
-		return templateCode;
-	}
-
-	public void setTemplateCode(String templateCode) {
-		this.templateCode = templateCode;
-	}
 
 	public int getReportPeroid() {
 		return reportPeroid;
