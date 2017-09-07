@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ahcd.dao.SysDepartmentLeadMapper" >
+  <resultMap id="BaseResultMap" type="com.ahcd.pojo.SysDepartmentLead" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="LEAD_ID" property="leadId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, LEAD_ID, STATUS, IS_DELETE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_LEAD
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  
+    <select id="selectByLeadId" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DEPARTMENT_LEAD
+    where LEAD_ID = #{LEAD_ID,jdbcType=DECIMAL} and STATUS=1 and IS_DELETE=1
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from SYS_DEPARTMENT_LEAD
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    insert into SYS_DEPARTMENT_LEAD (ID, USER_ID, LEAD_ID, 
+      STATUS, IS_DELETE)
+    values (#{id,jdbcType=DECIMAL}, #{userId,jdbcType=VARCHAR}, #{leadId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=DECIMAL}, #{isDelete,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    insert into SYS_DEPARTMENT_LEAD
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="leadId != null" >
+        LEAD_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="leadId != null" >
+        #{leadId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    update SYS_DEPARTMENT_LEAD
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="leadId != null" >
+        LEAD_ID = #{leadId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ahcd.pojo.SysDepartmentLead" >
+    update SYS_DEPARTMENT_LEAD
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      LEAD_ID = #{leadId,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=DECIMAL},
+      IS_DELETE = #{isDelete,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

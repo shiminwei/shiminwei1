@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+
+<!-- 	<jaxws:endpoint id="helloWorld" implementor="com.ahzd.cxf.test.HelloWorldImpl" -->
+<!-- 		address="/HelloWorld" > -->
+		
+<!-- 		</jaxws:endpoint> -->
+
+<!-- 	<jaxws:endpoint id="XMLData4GS" -->
+<!-- 		implementor="com.ahzd.cxf.test.XMLData4GSImpl" address="/XMLData4GS" ></jaxws:endpoint> -->
+		
+	<jaxws:endpoint id="JSONData4GS"
+		implementor="com.ahzd.webservice.service.impl.JSONData4GSImpl" address="/JSONData4GS" ></jaxws:endpoint>
+	<jaxws:endpoint id="XMLData4GS"
+		implementor="com.ahzd.webservice.service.impl.XMLData4GSImpl" address="/XMLData4GS" ></jaxws:endpoint>
+	<jaxws:endpoint id="FileData4GD"
+		implementor="com.ahzd.webservice.service.impl.FileData4GSImpl" address="/FileData4GD" ></jaxws:endpoint>
+
+	<!-- <jaxws:endpoint id="JSONData4GS" implementor="com.ahzd.webservice.service.impl.JSONData4GSImpl" -->
+	<!-- address="/JSONData4GS" /> -->
+
+	<!-- <jaxws:endpoint id="FileData4GS" implementor="com.ahzd.webservice.service.impl.FileData4GSImpl" -->
+	<!-- address="/FileData4GS" /> -->
+
+
+
+
+
+
+
+
+
+
+</beans>
