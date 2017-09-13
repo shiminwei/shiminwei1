@@ -50,6 +50,8 @@ public class EmptyUtils {
 			new BigDecimal(str);
 			flag = true;
 		} catch (Exception e) {
+			
+			System.out.println("1111111111111");
 			// TODO: handle exception
 		}
 		return flag;
